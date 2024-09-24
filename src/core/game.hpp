@@ -7,6 +7,8 @@
 
 using namespace std;
 
+namespace core {
+
 class Scene;
 
 class Game {
@@ -27,12 +29,13 @@ public:
 
     void init();
 
-    void start();
+    void start() const;
 
     // ===
     // Static getters
     // ===
     static OgreBites::ApplicationContext* appContext() { return instance().m_ctx; }
+    static Ogre::Root* root() { return instance().m_ctx->getRoot(); }
     static Ogre::SceneManager* sceneManager() { return instance().m_sceneManager; }
     static shared_ptr<Input> input() { return instance().m_input; }
     static shared_ptr<Scene> scene() { return instance().m_scene; }
@@ -46,3 +49,5 @@ private:
     shared_ptr<Input> m_input;
     shared_ptr<Scene> m_scene;
 };
+
+} // end namespace core

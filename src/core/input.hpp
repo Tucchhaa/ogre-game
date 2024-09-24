@@ -5,6 +5,8 @@
 #include "OgreApplicationContext.h"
 #include "SDL2/SDL_keycode.h"
 
+namespace core {
+
 enum class Key {
     W = SDLK_w,
     A = SDLK_a,
@@ -74,3 +76,5 @@ private:
     bool m_shift = false;
     bool m_escape = false;
 };
+
+} // end namespace core

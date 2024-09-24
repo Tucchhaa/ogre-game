@@ -15,5 +15,9 @@ add_executable(ogre_game
         src/core/game.cpp
         src/core/game.hpp
         src/core/scene.cpp
-        src/core/scene.hpp)
+        src/core/scene.hpp
+        src/core/objects/base_movable_object.hpp
+        src/core/objects/free_character_controller.cpp
+        src/core/objects/free_character_controller.hpp
+)
 

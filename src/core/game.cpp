@@ -1,5 +1,9 @@
 #include "game.hpp"
+
 #include "scene.hpp"
+#include "objects/free_character_controller.hpp"
+
+namespace core {
 
 void Game::configure() {
     const string projectPath = filesystem::current_path().parent_path();
@@ -13,6 +17,7 @@ void Game::init() {
     m_ctx->initApp();
 
     Ogre::Root* root = m_ctx->getRoot();
+    root->addMovableObjectFactory(new FreeCameraControllerFactory);
 
     m_sceneManager = root->createSceneManager();
 
@@ -27,6 +32,8 @@ void Game::init() {
     m_ctx->getRenderWindow()->addViewport(m_scene->mainCamera);
 }
 
-void Game::start() {
+void Game::start() const {
     m_ctx->getRoot()->startRendering();
 }
+
+} // end namespace core

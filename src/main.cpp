@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class SimpleScene : public Scene {
+class SimpleScene : public core::Scene {
     void init() override {
         Scene::init();
 
@@ -16,15 +16,19 @@ class SimpleScene : public Scene {
         lightNode->attachObject(light);
 
         // also need to tell where we are
-        Ogre::SceneNode* camNode = m_rootNode->createChildSceneNode();
-        camNode->setPosition(0, 0, 15);
-        camNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
+        Ogre::SceneNode* cameraNode = m_rootNode->createChildSceneNode();
+        cameraNode->setPosition(0, 0, 15);
+        cameraNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
 
         // create the camera
         mainCamera = m_sceneManager->createCamera("myCam");
         mainCamera->setNearClipDistance(5); // specific to this sample
         mainCamera->setAutoAspectRatio(true);
-        camNode->attachObject(mainCamera);
+        cameraNode->attachObject(mainCamera);
+
+        // create controller
+        auto* controller = m_sceneManager->createMovableObject("FreeCameraController");
+        cameraNode->attachObject(controller);
 
         // finally something to render
         Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
@@ -50,7 +54,7 @@ int main()
 {
     const auto scene = make_shared<SimpleScene>();
 
-    auto& game = Game::instance();
+    auto& game = core::Game::instance();
     game.configure();
     game.scene(scene);
     game.init();

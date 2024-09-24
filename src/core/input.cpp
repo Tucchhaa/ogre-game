@@ -1,5 +1,7 @@
 #include "input.hpp"
 
+namespace core {
+
 void BaseInput::frameRendered(const Ogre::FrameEvent& evt) {
     for(auto& it: m_keyState) {
         if(it.second == KeyState::Down) {
@@ -32,7 +34,7 @@ void Input::readInput() {
     const float posX = isKeyPressed(Key::D) ? 1.0 : 0.0;
     const float negX = isKeyPressed(Key::A) ? 1.0 : 0.0;
     const float posY = isKeyPressed(Key::W) ? 1.0 : 0.0;
-    const float negY = isKeyPressed(Key::A) ? 1.0 : 0.0;
+    const float negY = isKeyPressed(Key::S) ? 1.0 : 0.0;
 
     m_deltaX = posX - negX;
     m_deltaY = posY - negY;
@@ -40,3 +42,5 @@ void Input::readInput() {
     m_shift = isKeyPressed(Key::SHIFT);
     m_escape = isKeyPressed(Key::ESCAPE);
 }
+
+} // end namespace core

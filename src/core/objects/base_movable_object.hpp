@@ -15,13 +15,12 @@ namespace core {
  */
 class BaseMovableObject : public Ogre::MovableObject, public Ogre::FrameListener {
 public:
-    BaseMovableObject() {
-        Game::root()->addFrameListener(this);
-    };
-    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name) {
-        Game::root()->addFrameListener(this);
-    }
+    BaseMovableObject() { init(); }
+    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name) { init(); }
 
+    // ===
+    // MovableObject overrides
+    // ===
     const Ogre::AxisAlignedBox& getBoundingBox() const override {
         static Ogre::AxisAlignedBox box;
         return box;
@@ -34,6 +33,38 @@ public:
     void _updateRenderQueue(Ogre::RenderQueue* queue) override {}
 
     void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables) override {}
+
+protected:
+    void init() {
+        Game::root()->addFrameListener(this);
+        setListener(new Listener());
+    }
+
+    // ===
+    // MovableObject lifecycle events
+    // ===
+    virtual void objectDestroyed() {}
+
+    virtual void objectAttached() {}
+
+    virtual void objectDetached() {}
+
+    virtual void objectMoved() {}
+
+private:
+    class Listener final : public MovableObject::Listener {
+        void objectDestroyed(MovableObject* object) override
+            { dynamic_cast<BaseMovableObject*>(object)->objectDestroyed(); }
+
+        void objectAttached(MovableObject* object) override
+            { dynamic_cast<BaseMovableObject*>(object)->objectAttached(); }
+
+        void objectDetached(MovableObject* object) override
+            { dynamic_cast<BaseMovableObject*>(object)->objectDetached(); }
+
+        void objectMoved(MovableObject* object) override
+            { dynamic_cast<BaseMovableObject*>(object)->objectMoved(); }
+    };
 };
 
 } // end namespace core

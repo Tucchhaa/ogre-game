@@ -5,7 +5,7 @@
 
 namespace core {
 
-const string FREE_CAMERA_CONTROLLER_TYPE = "FreeCameraController";
+const Ogre::String FREE_CAMERA_CONTROLLER_TYPE = "FreeCameraController";
 
 /**
  * Attach this object to a node with a @link Ogre::Camera to enable free movement in space
@@ -18,7 +18,7 @@ public:
     FreeCameraController() = default;
     explicit FreeCameraController(const Ogre::String& name);
 
-    const Ogre::String& getMovableType() const override { return FREE_CAMERA_CONTROLLER_TYPE; };
+    const Ogre::String& getMovableType() const override { return FREE_CAMERA_CONTROLLER_TYPE; }
 
     bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
 };

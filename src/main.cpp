@@ -2,11 +2,13 @@
 
 #include "core/game.hpp"
 #include "core/scene.hpp"
+#include "core/objects/collider.hpp"
 
 using namespace std;
 
 class SimpleScene : public core::Scene {
     void init() override {
+        core::Game::root()->addFrameListener(this);
         Scene::init();
 
         // without light we would just get a black screen
@@ -32,8 +34,16 @@ class SimpleScene : public core::Scene {
 
         // finally something to render
         Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
-        Ogre::SceneNode* node = m_rootNode->createChildSceneNode();
-        node->attachObject(ent);
+        Ogre::SceneNode* sinbadNode = m_rootNode->createChildSceneNode();
+        sinbadNode->translate(Ogre::Vector3(0, 4, 0));
+        sinbadNode->attachObject(ent);
+        // sinbad collider
+        auto sinbadColliderShape = core::Shape(
+            make_shared<btBoxShape>(btVector3(1, 1, 1))
+        );
+        auto sinbadCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("SinbadCollider", "Collider"));
+        sinbadCollider->setShapes({ sinbadColliderShape });
+        sinbadNode->attachObject(sinbadCollider);
 
         // ground
         Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -47,6 +57,22 @@ class SimpleScene : public core::Scene {
         auto* groundNode = m_rootNode->createChildSceneNode();
         groundNode->setPosition(Ogre::Vector3(0, -10, 0));
         groundNode->attachObject(groundEntity);
+
+        // ground collider
+        auto groundColliderShape = core::Shape(
+            make_shared<btBoxShape>(btVector3(100, 1, 100))
+        );
+        groundColliderShape.transform()->setOrigin(btVector3(0, 3, 0));
+        auto groundCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("GroundCollider", "Collider"));
+        groundCollider->setShapes({ groundColliderShape });
+        groundCollider->setMass(0);
+        groundNode->attachObject(groundCollider);
+    }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
+        core::Game::physics()->stepSimulation(evt.timeSinceLastFrame);
+
+        return true;
     }
 };
 

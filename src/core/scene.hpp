@@ -4,9 +4,9 @@
 
 namespace core {
 
-class Scene {
+class Scene : public Ogre::FrameListener {
 public:
-    virtual ~Scene() = default;
+    ~Scene() override = default;
 
     virtual void init();
 

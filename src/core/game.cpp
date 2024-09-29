@@ -1,6 +1,7 @@
 #include "game.hpp"
 
 #include "scene.hpp"
+#include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"
 
 namespace core {
@@ -14,10 +15,13 @@ void Game::configure() {
 }
 
 void Game::init() {
+    m_physics = make_shared<PhysicsWorld>();
+
     m_ctx->initApp();
 
     Ogre::Root* root = m_ctx->getRoot();
     root->addMovableObjectFactory(new FreeCameraControllerFactory);
+    root->addMovableObjectFactory(new ColliderFactory);
 
     m_sceneManager = root->createSceneManager();
 

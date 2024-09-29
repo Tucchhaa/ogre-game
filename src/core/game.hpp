@@ -4,6 +4,7 @@
 #include <OgreApplicationContext.h>
 
 #include "input.hpp"
+#include "physics_world.hpp"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ public:
     static Ogre::SceneManager* sceneManager() { return instance().m_sceneManager; }
     static shared_ptr<Input> input() { return instance().m_input; }
     static shared_ptr<Scene> scene() { return instance().m_scene; }
+    static shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
 
     void scene(const shared_ptr<Scene>& scene) { m_scene = scene; }
 
@@ -48,6 +50,7 @@ private:
 
     shared_ptr<Input> m_input;
     shared_ptr<Scene> m_scene;
+    shared_ptr<PhysicsWorld> m_physics;
 };
 
 } // end namespace core

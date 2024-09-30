@@ -26,5 +26,7 @@ add_executable(ogre_game
         src/core/physics_world.hpp
         src/core/objects/collider.cpp
         src/core/objects/collider.hpp
+        src/core/collider_drawer.cpp
+        src/core/collider_drawer.hpp
 )
 

@@ -39,8 +39,9 @@ class SimpleScene : public core::Scene {
         sinbadNode->attachObject(ent);
         // sinbad collider
         auto sinbadColliderShape = core::Shape(
-            make_shared<btBoxShape>(btVector3(1, 1, 1))
+            make_shared<btBoxShape>(btVector3(2, 4.5, 1))
         );
+        sinbadColliderShape.transform()->setOrigin(btVector3(0, -0.35, 0));
         auto sinbadCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("SinbadCollider", "Collider"));
         sinbadCollider->setShapes({ sinbadColliderShape });
         sinbadNode->attachObject(sinbadCollider);
@@ -62,17 +63,11 @@ class SimpleScene : public core::Scene {
         auto groundColliderShape = core::Shape(
             make_shared<btBoxShape>(btVector3(100, 1, 100))
         );
-        groundColliderShape.transform()->setOrigin(btVector3(0, 3, 0));
+        groundColliderShape.transform()->setOrigin(btVector3(0, -1, 0));
         auto groundCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("GroundCollider", "Collider"));
         groundCollider->setShapes({ groundColliderShape });
         groundCollider->setMass(0);
         groundNode->attachObject(groundCollider);
-    }
-
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
-        core::Game::physics()->stepSimulation(evt.timeSinceLastFrame);
-
-        return true;
     }
 };
 
@@ -81,6 +76,7 @@ int main()
     const auto scene = make_shared<SimpleScene>();
 
     auto& game = core::Game::instance();
+    game.debugMode(true);
     game.configure();
     game.scene(scene);
     game.init();

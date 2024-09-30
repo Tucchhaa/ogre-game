@@ -11,8 +11,10 @@ PhysicsWorld::PhysicsWorld() {
         m_dispatcher.get(), m_overlappingPairCache.get(),
         m_solver.get(), m_collisionConfiguration.get()
     );
+    m_colliderDrawer = make_unique<debug::ColliderDrawer>();
 
     m_dynamicsWorld->setGravity(gravity);
+    m_dynamicsWorld->setDebugDrawer(m_colliderDrawer.get());
 }
 
 void PhysicsWorld::addRigidBody(const shared_ptr<btRigidBody>& rigidBody) const {
@@ -24,7 +26,12 @@ void PhysicsWorld::removeRigidBody(const shared_ptr<btRigidBody>& rigidBody) con
 }
 
 void PhysicsWorld::stepSimulation(float dt) const {
-    m_dynamicsWorld->stepSimulation(dt); // TODO: make simulation step every constant seconds
+    // TODO: make simulation step every constant seconds
+    m_dynamicsWorld->stepSimulation(dt);
 }
 
+void PhysicsWorld::drawColliders() const {
+    m_dynamicsWorld->debugDrawWorld();
+    m_colliderDrawer->render();
+}
 } // end namespace core

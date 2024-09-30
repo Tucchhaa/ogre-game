@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+
+#include "collider_drawer.hpp"
 #include "bullet/btBulletDynamicsCommon.h"
 
 using namespace std;
@@ -25,6 +27,8 @@ public:
      */
     void stepSimulation(float dt) const;
 
+    void drawColliders() const;
+
 private:
     unique_ptr<btDynamicsWorld> m_dynamicsWorld;
 
@@ -39,6 +43,8 @@ private:
     btVector3 gravity = btVector3(0, -10, 0);
 
     btAlignedObjectArray<shared_ptr<btCollisionShape>> collisionShapes;
+
+    unique_ptr<debug::ColliderDrawer> m_colliderDrawer;
 };
 
 } // end namespace core

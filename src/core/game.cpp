@@ -15,8 +15,6 @@ void Game::configure() {
 }
 
 void Game::init() {
-    m_physics = make_shared<PhysicsWorld>();
-
     m_ctx->initApp();
 
     Ogre::Root* root = m_ctx->getRoot();
@@ -24,12 +22,15 @@ void Game::init() {
     root->addMovableObjectFactory(new ColliderFactory);
 
     m_sceneManager = root->createSceneManager();
+    m_materialManager = Ogre::MaterialManager::getSingletonPtr();
 
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);
 
     m_input = make_shared<Input>();
     m_ctx->addInputListener(m_input.get());
+
+    m_physics = make_shared<PhysicsWorld>();
 
     // scene must initiated last
     m_scene->init();

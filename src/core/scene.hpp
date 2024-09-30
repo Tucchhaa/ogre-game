@@ -12,6 +12,8 @@ public:
 
     Ogre::Camera* mainCamera = nullptr;
 
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
+
 protected:
     Ogre::SceneNode* m_rootNode = nullptr;
     Ogre::SceneManager* m_sceneManager = nullptr;

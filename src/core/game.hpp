@@ -32,11 +32,13 @@ public:
 
     void start() const;
 
+    void stop() const;
+
     // ===
     // Static getters
     // ===
     static OgreBites::ApplicationContext* appContext() { return instance().m_ctx; }
-    static Ogre::Root* root() { return instance().m_ctx->getRoot(); }
+    static Ogre::Root* root() { return instance().m_root; }
     static Ogre::SceneManager* sceneManager() { return instance().m_sceneManager; }
     static Ogre::MaterialManager* materialManager() { return instance().m_materialManager; }
     static shared_ptr<Input> input() { return instance().m_input; }
@@ -57,6 +59,7 @@ private:
     bool m_debugMode = false;
 
     OgreBites::ApplicationContext* m_ctx = nullptr;
+    Ogre::Root* m_root = nullptr;
     Ogre::SceneManager* m_sceneManager = nullptr;
     Ogre::MaterialManager* m_materialManager = nullptr;
 

@@ -69,6 +69,16 @@ class SimpleScene : public core::Scene {
         groundCollider->setMass(0);
         groundNode->attachObject(groundCollider);
     }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
+        Scene::frameRenderingQueued(evt);
+
+        if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
+            core::Game::instance().stop();
+        }
+
+        return true;
+    }
 };
 
 int main()

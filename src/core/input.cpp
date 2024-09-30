@@ -10,6 +10,16 @@ void BaseInput::frameRendered(const Ogre::FrameEvent& evt) {
     }
 }
 
+bool BaseInput::keyPressed(const OgreBites::KeyboardEvent& evt) {
+    m_keyState[evt.keysym.sym] = KeyState::Down;
+    return false;
+}
+
+bool BaseInput::keyReleased(const OgreBites::KeyboardEvent& evt) {
+    m_keyState[evt.keysym.sym] = KeyState::Up;
+    return false;
+}
+
 void Input::frameRendered(const Ogre::FrameEvent& evt) {
     BaseInput::frameRendered(evt);
 

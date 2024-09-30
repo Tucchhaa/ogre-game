@@ -32,15 +32,9 @@ protected:
 
     void frameRendered(const Ogre::FrameEvent& evt) override;
 
-    bool keyPressed(const OgreBites::KeyboardEvent& evt) override {
-        m_keyState[evt.keysym.sym] = KeyState::Down;
-        return false;
-    }
+    bool keyPressed(const OgreBites::KeyboardEvent& evt) override;
 
-    bool keyReleased(const OgreBites::KeyboardEvent& evt) override {
-        m_keyState[evt.keysym.sym] = KeyState::Up;
-        return false;
-    }
+    bool keyReleased(const OgreBites::KeyboardEvent& evt) override;
 };
 
 class Input : public BaseInput {

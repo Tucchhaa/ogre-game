@@ -23,6 +23,7 @@ void Game::init() {
 
     m_sceneManager = m_root->createSceneManager();
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
+    m_renderWindow = m_ctx->getRenderWindow();
 
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);
@@ -34,7 +35,7 @@ void Game::init() {
 
     // scene must initiated last
     m_scene->init();
-    m_ctx->getRenderWindow()->addViewport(m_scene->mainCamera);
+    m_renderWindow->addViewport(m_scene->mainCamera);
 }
 
 void Game::start() const {

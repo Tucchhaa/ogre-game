@@ -13,7 +13,7 @@ const Ogre::String FREE_CAMERA_CONTROLLER_TYPE = "FreeCameraController";
 class FreeCameraController : public BaseMovableObject {
 public:
     float linearSpeed = 20.0f;
-    float angluarSpeed = 2.0f;
+    float angluarSpeed = 20.0f;
 
     FreeCameraController() = default;
     explicit FreeCameraController(const Ogre::String& name);

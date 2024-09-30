@@ -9,6 +9,8 @@ using namespace std;
 class SimpleScene : public core::Scene {
     void init() override {
         core::Game::root()->addFrameListener(this);
+        core::Game::input()->relativeMouse(true);
+
         Scene::init();
 
         // without light we would just get a black screen

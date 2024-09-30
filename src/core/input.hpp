@@ -13,7 +13,8 @@ enum class Key {
     S = SDLK_s,
     D = SDLK_d,
     SHIFT = SDLK_LSHIFT,
-    ESCAPE = SDLK_ESCAPE
+    ESCAPE = SDLK_ESCAPE,
+    SPACE = SDLK_SPACE
 };
 
 /**
@@ -28,19 +29,23 @@ protected:
         Pressed
     };
 
+    struct MouseState {
+        int posX = 0;
+        int posY = 0;
+        int deltaX = 0;
+        int deltaY = 0;
+    };
+
     std::map<SDL_Keycode, KeyState> m_keyState;
+    MouseState m_mouseState;
 
     void frameRendered(const Ogre::FrameEvent& evt) override;
 
-    bool keyPressed(const OgreBites::KeyboardEvent& evt) override {
-        m_keyState[evt.keysym.sym] = KeyState::Down;
-        return false;
-    }
+    bool keyPressed(const OgreBites::KeyboardEvent& evt) override;
 
-    bool keyReleased(const OgreBites::KeyboardEvent& evt) override {
-        m_keyState[evt.keysym.sym] = KeyState::Up;
-        return false;
-    }
+    bool keyReleased(const OgreBites::KeyboardEvent& evt) override;
+
+    bool mouseMoved(const OgreBites::MouseMotionEvent& evt) override;
 };
 
 class Input : public BaseInput {
@@ -50,6 +55,8 @@ public:
 
     float deltaX() const { return m_deltaX; }
     float deltaY() const { return m_deltaY; }
+    float mouseDeltaX() const;
+    float mouseDeltaY() const;
     bool shift() const { return m_shift; }
     bool escape() const { return m_escape; }
 
@@ -68,6 +75,13 @@ public:
      */
     bool isKeyPressed(Key keycode);
 
+    /**
+     * If relative mouse is enabled, the mouse cursor will be hidden and the
+     * mouse will be locked in the center of the screen
+     */
+    void relativeMouse(bool value);
+    bool relativeMouse() const { return m_isRelativeMouse; }
+
 private:
     void readInput();
 
@@ -75,6 +89,7 @@ private:
     float m_deltaY = 0;
     bool m_shift = false;
     bool m_escape = false;
+    bool m_isRelativeMouse = false;
 };
 
 } // end namespace core

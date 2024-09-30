@@ -17,12 +17,13 @@ void Game::configure() {
 void Game::init() {
     m_ctx->initApp();
 
-    Ogre::Root* root = m_ctx->getRoot();
-    root->addMovableObjectFactory(new FreeCameraControllerFactory);
-    root->addMovableObjectFactory(new ColliderFactory);
+    m_root = m_ctx->getRoot();
+    m_root->addMovableObjectFactory(new FreeCameraControllerFactory);
+    m_root->addMovableObjectFactory(new ColliderFactory);
 
-    m_sceneManager = root->createSceneManager();
+    m_sceneManager = m_root->createSceneManager();
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
+    m_renderWindow = m_ctx->getRenderWindow();
 
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);
@@ -34,11 +35,14 @@ void Game::init() {
 
     // scene must initiated last
     m_scene->init();
-    m_ctx->getRenderWindow()->addViewport(m_scene->mainCamera);
+    m_renderWindow->addViewport(m_scene->mainCamera);
 }
 
 void Game::start() const {
-    m_ctx->getRoot()->startRendering();
+    m_root->startRendering();
 }
 
+void Game::stop() const {
+    m_root->queueEndRendering();
+}
 } // end namespace core

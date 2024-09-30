@@ -9,6 +9,8 @@ using namespace std;
 class SimpleScene : public core::Scene {
     void init() override {
         core::Game::root()->addFrameListener(this);
+        core::Game::input()->relativeMouse(true);
+
         Scene::init();
 
         // without light we would just get a black screen
@@ -68,6 +70,16 @@ class SimpleScene : public core::Scene {
         groundCollider->setShapes({ groundColliderShape });
         groundCollider->setMass(0);
         groundNode->attachObject(groundCollider);
+    }
+
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
+        Scene::frameRenderingQueued(evt);
+
+        if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
+            core::Game::instance().stop();
+        }
+
+        return true;
     }
 };
 

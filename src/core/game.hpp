@@ -32,13 +32,17 @@ public:
 
     void start() const;
 
+    void stop() const;
+
     // ===
     // Static getters
     // ===
     static OgreBites::ApplicationContext* appContext() { return instance().m_ctx; }
-    static Ogre::Root* root() { return instance().m_ctx->getRoot(); }
+    static Ogre::Root* root() { return instance().m_root; }
     static Ogre::SceneManager* sceneManager() { return instance().m_sceneManager; }
     static Ogre::MaterialManager* materialManager() { return instance().m_materialManager; }
+    static Ogre::RenderWindow* renderWindow() { return instance().m_renderWindow; }
+
     static shared_ptr<Input> input() { return instance().m_input; }
     static shared_ptr<Scene> scene() { return instance().m_scene; }
     static shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
@@ -57,8 +61,10 @@ private:
     bool m_debugMode = false;
 
     OgreBites::ApplicationContext* m_ctx = nullptr;
+    Ogre::Root* m_root = nullptr;
     Ogre::SceneManager* m_sceneManager = nullptr;
     Ogre::MaterialManager* m_materialManager = nullptr;
+    Ogre::RenderWindow* m_renderWindow = nullptr;
 
     shared_ptr<Input> m_input;
     shared_ptr<Scene> m_scene;

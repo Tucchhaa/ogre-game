@@ -6,7 +6,6 @@
 #include "scene.hpp"
 #include "input.hpp"
 #include "physics_world.hpp"
-#include "state_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
 
 using namespace std;

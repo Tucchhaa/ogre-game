@@ -3,7 +3,6 @@
 #include "OgreMovableObject.h"
 
 #include "../game.hpp"
-#include "state.hpp"
 
 namespace core {
 
@@ -71,8 +70,6 @@ protected:
     virtual void frameRenderingQueued(const Ogre::FrameEvent& evt) {}
 
 private:
-    shared_ptr<State> m_state;
-
     class Listener final : public MovableObject::Listener {
     public:
         explicit Listener(BaseMovableObject* object): m_object(object) {}

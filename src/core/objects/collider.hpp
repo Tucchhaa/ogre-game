@@ -71,7 +71,7 @@ public:
      */
     void updateSceneNodeTransform() const;
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
+    void frameRenderingQueued(const Ogre::FrameEvent& evt) override;
 
 protected:
     void objectAttached() override;

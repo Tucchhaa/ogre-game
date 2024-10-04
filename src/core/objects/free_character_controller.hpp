@@ -20,7 +20,7 @@ public:
 
     const Ogre::String& getMovableType() const override { return FREE_CAMERA_CONTROLLER_TYPE; }
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
+    void frameRenderingQueued(const Ogre::FrameEvent& evt) override;
 };
 
 class FreeCameraControllerFactory : public Ogre::MovableObjectFactory {

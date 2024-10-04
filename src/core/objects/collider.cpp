@@ -61,12 +61,10 @@ void core::Collider::updateSceneNodeTransform() const {
     getParentNode()->setOrientation(Ogre::Quaternion(rotation.w(), rotation.x(), rotation.y(), rotation.z()));
 }
 
-bool core::Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+void core::Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     if(getParentNode() != nullptr) {
         updateSceneNodeTransform();
     }
-
-    return true;
 }
 
 void core::Collider::objectAttached() {

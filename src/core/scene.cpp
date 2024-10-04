@@ -10,8 +10,6 @@ void Scene::init() {
 }
 
 bool Scene::frameRenderingQueued(const Ogre::FrameEvent& evt) {
-    Game::physics()->stepSimulation(evt.timeSinceLastFrame);
-
     if(Game::debugMode()) {
         Game::physics()->drawColliders();
     }

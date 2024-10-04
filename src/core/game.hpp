@@ -3,14 +3,15 @@
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
 
+#include "scene.hpp"
 #include "input.hpp"
 #include "physics_world.hpp"
+#include "state_manager.hpp"
+#include "network_layer/network_layer_manager.hpp"
 
 using namespace std;
 
 namespace core {
-
-class Scene;
 
 class Game {
 public:
@@ -46,12 +47,14 @@ public:
     static shared_ptr<Input> input() { return instance().m_input; }
     static shared_ptr<Scene> scene() { return instance().m_scene; }
     static shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
+    static shared_ptr<NetworkLayerManager> networkLayerManager() { return instance().m_networkLayerManager; }
     static bool debugMode() { return instance().m_debugMode; }
 
     // ===
     // Setters
     // ===
     void scene(const shared_ptr<Scene>& scene) { m_scene = scene; }
+
     /**
      * When debug mode is enabled, the game will draw collider shapes
      */
@@ -69,6 +72,7 @@ private:
     shared_ptr<Input> m_input;
     shared_ptr<Scene> m_scene;
     shared_ptr<PhysicsWorld> m_physics;
+    shared_ptr<NetworkLayerManager> m_networkLayerManager;
 };
 
 } // end namespace core

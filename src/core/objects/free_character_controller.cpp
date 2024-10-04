@@ -4,7 +4,7 @@ namespace core {
 
 FreeCameraController::FreeCameraController(const Ogre::String& name): BaseMovableObject(name) {}
 
-bool FreeCameraController::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+void FreeCameraController::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     // rotation
     if(Game::input()->relativeMouse()) {
         // Don't multiply by timeSinceLastFrame because mouseDeltaX/Y are already frame-rate independent
@@ -20,8 +20,6 @@ bool FreeCameraController::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     const float z = Game::input()->deltaY() * evt.timeSinceLastFrame * linearSpeed;
 
     getParentNode()->translate(x, 0, -z, Ogre::Node::TS_LOCAL);
-
-    return true;
 }
 
 } // end namespace core

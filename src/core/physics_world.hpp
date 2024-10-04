@@ -23,9 +23,17 @@ public:
     void removeRigidBody(const shared_ptr<btRigidBody>& rigidBody) const;
 
     /**
-     * Step physics simulation by delta time (seconds)
+     * Step physics simulation by delta time (seconds).
+     * Note: Use when simulate physics on each frame
      */
     void stepSimulation(float dt) const;
+
+    /**
+     * Step physics simulation by constant delta time.
+     * Note: use when simulate physics in a logic thread
+     * @param dt delta time
+     */
+    void stepSimulationFixed(float dt) const;
 
     void drawColliders() const;
 

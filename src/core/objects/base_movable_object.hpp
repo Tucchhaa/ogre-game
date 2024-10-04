@@ -1,7 +1,9 @@
 #pragma once
 
-#include "../game.hpp"
 #include "OgreMovableObject.h"
+
+#include "../game.hpp"
+#include "state.hpp"
 
 namespace core {
 
@@ -13,10 +15,18 @@ namespace core {
  *
  * You must implement @link Ogre::MovableObject::getMovableType() in your derived class.
  */
-class BaseMovableObject : public Ogre::MovableObject, public Ogre::FrameListener {
+class BaseMovableObject : public Ogre::MovableObject {
 public:
     BaseMovableObject() { init(); }
     explicit BaseMovableObject(const Ogre::String& name): MovableObject(name) { init(); }
+
+    /**
+     * Invoked at fixed rate. All logic must be implemented here.
+     * Note: This function is called in a diffrent thread (not main thread),
+     * so be careful about concurrency
+     * @return next state
+     */
+    virtual void fixedUpdate(float dt) {}
 
     // ===
     // MovableObject overrides
@@ -36,13 +46,16 @@ public:
 
 protected:
     void init() {
-        Game::root()->addFrameListener(this);
-        setListener(new Listener());
+        setListener(new Listener(this));
+        Game::root()->addFrameListener(new FrameListener(this));
+
+        getUserObjectBindings().setUserAny(this);
     }
 
     // ===
     // MovableObject lifecycle events
     // ===
+
     virtual void objectDestroyed() {}
 
     virtual void objectAttached() {}
@@ -51,19 +64,42 @@ protected:
 
     virtual void objectMoved() {}
 
+    // ===
+    // Frame events
+    // ===
+
+    virtual void frameRenderingQueued(const Ogre::FrameEvent& evt) {}
+
 private:
+    shared_ptr<State> m_state;
+
     class Listener final : public MovableObject::Listener {
-        void objectDestroyed(MovableObject* object) override
-            { dynamic_cast<BaseMovableObject*>(object)->objectDestroyed(); }
+    public:
+        explicit Listener(BaseMovableObject* object): m_object(object) {}
 
-        void objectAttached(MovableObject* object) override
-            { dynamic_cast<BaseMovableObject*>(object)->objectAttached(); }
+        void objectDestroyed(MovableObject*) override { m_object->objectDestroyed(); }
 
-        void objectDetached(MovableObject* object) override
-            { dynamic_cast<BaseMovableObject*>(object)->objectDetached(); }
+        void objectAttached(MovableObject*) override { m_object->objectAttached(); }
 
-        void objectMoved(MovableObject* object) override
-            { dynamic_cast<BaseMovableObject*>(object)->objectMoved(); }
+        void objectDetached(MovableObject*) override { m_object->objectDetached(); }
+
+        void objectMoved(MovableObject*) override { m_object->objectMoved(); }
+
+    private:
+        BaseMovableObject* m_object;
+    };
+
+    class FrameListener final : public Ogre::FrameListener {
+    public:
+        explicit FrameListener(BaseMovableObject* object): m_object(object) {}
+
+        bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
+            m_object->frameRenderingQueued(evt);
+            return true;
+        }
+
+    private:
+        BaseMovableObject* m_object;
     };
 };
 

@@ -26,8 +26,11 @@ void PhysicsWorld::removeRigidBody(const shared_ptr<btRigidBody>& rigidBody) con
 }
 
 void PhysicsWorld::stepSimulation(float dt) const {
-    // TODO: make simulation step every constant seconds
     m_dynamicsWorld->stepSimulation(dt);
+}
+
+void PhysicsWorld::stepSimulationFixed(float dt) const {
+    m_dynamicsWorld->stepSimulation(dt, 0);
 }
 
 void PhysicsWorld::drawColliders() const {

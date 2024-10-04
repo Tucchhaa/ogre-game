@@ -1,5 +1,7 @@
 #include "server.hpp"
 
+#include <queue>
+
 #include "../game.hpp"
 #include "../objects/base_movable_object.hpp"
 

@@ -1,6 +1,12 @@
 #include "network_layer.hpp"
 
-void core::INetworkLayer::start() {
+namespace core {
+
+INetworkLayer::~INetworkLayer() {
+    stop();
+}
+
+void INetworkLayer::start() {
     m_running.store(true);
 
     m_tickThread = thread([this]() {
@@ -23,10 +29,12 @@ void core::INetworkLayer::start() {
     });
 }
 
-void core::INetworkLayer::stop() {
+void INetworkLayer::stop() {
     m_running.store(false);
 
     if (m_tickThread.joinable()) {
         m_tickThread.join();
     }
 }
+
+} // end namespace core

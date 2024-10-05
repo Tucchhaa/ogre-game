@@ -1,47 +1,37 @@
 #include "server.hpp"
 
-#include <queue>
+#include <functional>
 
 #include "../game.hpp"
 #include "../objects/base_movable_object.hpp"
+#include "../physics_world.hpp"
 
-void core::Server::tick(float dt) {
+namespace core {
+
+void TickEvent::fire(const function<void(callback_type)>& emitter) {
+    lock_guard _(m_callbacks_mutex);
+
+    for(const auto& [id, callback]: m_callbacks)
+        emitter(callback);
+}
+
+void Server::tick(float dt) {
     simulatePhysics(dt);
     callFixedUpdate(dt);
 }
 
-void core::Server::simulatePhysics(float dt) {
+void Server::simulatePhysics(float dt) {
     Game::physics()->stepSimulationFixed(dt);
 }
 
-void core::Server::callFixedUpdate(float dt) {
-    queue<Ogre::SceneNode*> q;
-    q.push(Game::sceneManager()->getRootSceneNode());
+void Server::callFixedUpdate(float dt) {
+    tickEvent.fire([&dt](const function<BaseMovableObject*(float)>& callback) {
+        const auto object = callback(dt);
 
-    // TODO: consider iterating through callbacks, instead of the scene tree
-    while(!q.empty()) {
-        const auto node = q.front();
-        q.pop();
-
-        for(auto child: node->getChildren()) {
-            q.push(static_cast<Ogre::SceneNode*>(child));
+        if(object->state() != nullptr) {
+            object->state()->popChanges();
         }
-
-        for(const auto object: node->getAttachedObjects()) {
-            auto binding =  object->getUserObjectBindings().getUserAny();
-
-            if(binding.has_value() == false)
-                continue;
-
-            auto* casted = Ogre::any_cast<BaseMovableObject*>(binding);
-
-            casted->fixedUpdate(dt);
-
-            // Here server could store all changes and send them to clients
-
-            if(casted->state() != nullptr) {
-                casted->state()->applyChanges();
-            }
-        }
-    }
+    });
 }
+
+} // end namespace core

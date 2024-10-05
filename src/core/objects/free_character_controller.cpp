@@ -1,5 +1,7 @@
 #include "free_character_controller.hpp"
 
+#include "../input.hpp"
+
 namespace core {
 
 FreeCameraController::FreeCameraController(const Ogre::String& name): BaseMovableObject(name) {}

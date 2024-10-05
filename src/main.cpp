@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "core/game.hpp"
+#include "core/input.hpp"
 #include "core/scene.hpp"
 #include "core/objects/collider.hpp"
 
@@ -90,8 +91,8 @@ int main()
     auto& game = core::Game::instance();
     game.debugMode(true);
     game.configure();
-    game.scene(scene);
     game.init();
+    game.scene(scene);
     game.start();
 
     return 0;

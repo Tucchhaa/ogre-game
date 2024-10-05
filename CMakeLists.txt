@@ -21,6 +21,7 @@ add_executable(ogre_game
         src/core/scene.hpp
 
         src/core/objects/base_movable_object.hpp
+        src/core/objects/base_movable_object.cpp
         src/core/objects/free_character_controller.cpp
         src/core/objects/free_character_controller.hpp
         src/core/objects/collider.cpp
@@ -31,8 +32,8 @@ add_executable(ogre_game
         src/core/collider_drawer.cpp
         src/core/collider_drawer.hpp
 
-        src/core/objects/state.cpp
         src/core/objects/state.hpp
+        src/core/event.hpp
 
         src/core/network_layer/network_layer_manager.cpp
         src/core/network_layer/network_layer_manager.hpp

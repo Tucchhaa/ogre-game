@@ -3,15 +3,14 @@
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
 
-#include "scene.hpp"
-#include "input.hpp"
-#include "physics_world.hpp"
-#include "network_layer/network_layer_manager.hpp"
-#include "state_manager.hpp"
-
 using namespace std;
 
 namespace core {
+
+class NetworkLayerManager;
+class PhysicsWorld;
+class Scene;
+class Input;
 
 class Game {
 public:
@@ -38,6 +37,7 @@ public:
     // ===
     // Static getters
     // ===
+
     static OgreBites::ApplicationContext* appContext() { return instance().m_ctx; }
     static Ogre::Root* root() { return instance().m_root; }
     static Ogre::SceneManager* sceneManager() { return instance().m_sceneManager; }
@@ -53,6 +53,7 @@ public:
     // ===
     // Setters
     // ===
+
     void scene(const shared_ptr<Scene>& scene) { m_scene = scene; }
 
     /**

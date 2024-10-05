@@ -11,6 +11,7 @@ namespace core {
 #define STATE_PROP(type, name)    \
     public:                       \
     void name(type value) {       \
+        m_##name = value;         \
         m_changes[#name] = value; \
     }                             \
     type name() {                 \
@@ -19,29 +20,26 @@ namespace core {
     private:                      \
     type m_##name
 
-// TODO: this is temporary solution. We want to avoid code duplication
-#define STATE_PROP_SETTER(type, name)       \
-    m_setters[#name] = [this](any value) {  \
-        this->name = any_cast<type>(value); \
-    }
-
+/**
+ * Stores a state of a MovableObject.
+ * Changes of state must be implemented in fixedUpdate
+ * Note: not concurrency safe, use only in fixedUpdate
+ */
 class State {
 public:
+    State() = default;
     virtual ~State() = default;
 
-    void applyChanges() {
-        for(const auto& [key, value]: m_changes) {
-            m_setters[key](value);
-        }
+    map<string, any> popChanges() {
+        auto value = m_changes;
 
         m_changes.clear();
+
+        return value;
     }
 
 protected:
     map<string, any> m_changes;
-    map<string, function<void(any)>> m_setters;
-
-    void virtual registerSetters() = 0;
 };
 
-}
+} // end namespace core

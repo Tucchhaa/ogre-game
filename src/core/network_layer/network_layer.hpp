@@ -1,4 +1,5 @@
 #pragma once
+
 #include <thread>
 
 using namespace std;
@@ -7,7 +8,7 @@ namespace core {
 
 class INetworkLayer {
 public:
-    virtual ~INetworkLayer() = default;
+    virtual ~INetworkLayer();
 
     void start();
 

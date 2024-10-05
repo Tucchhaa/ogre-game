@@ -1,15 +1,15 @@
 #pragma once
 
-#include "OgreMovableObject.h"
-#include "state.hpp"
+#include <OgreFrameListener.h>
+#include <OgreMovableObject.h>
 
-#include "../game.hpp"
+#include "../objects/state.hpp"
+
+class State;
 
 namespace core {
 
-/**
- * Do not use this class directly. Instead, extend it for your custom objects.
- *
+/** *
  * This class provides default implementations for abstract functions from @link Ogre::MovableObject
  * and integrates @link Ogre::FrameListener for frame callbacks in derived classes
  *
@@ -27,9 +27,11 @@ public:
      * Note: This function is called in a diffrent thread (not main thread),
      * so be careful about concurrency
      */
-    virtual void fixedUpdate(float dt) {}
+    virtual BaseMovableObject* fixedUpdate(float dt) {
+        return this;
+    }
 
-    virtual shared_ptr<State> state() { return nullptr; }
+    virtual std::shared_ptr<State> state() { return nullptr; }
 
     // ===
     // MovableObject overrides
@@ -50,12 +52,7 @@ public:
 
 protected:
 
-    void virtual init() {
-        setListener(new Listener(this));
-        Game::root()->addFrameListener(new FrameListener(this));
-
-        getUserObjectBindings().setUserAny(this);
-    }
+    void virtual init();
 
     // ===
     // MovableObject lifecycle events
@@ -63,9 +60,9 @@ protected:
 
     virtual void objectDestroyed() {}
 
-    virtual void objectAttached() {}
+    virtual void objectAttached();
 
-    virtual void objectDetached() {}
+    virtual void objectDetached();
 
     virtual void objectMoved() {}
 
@@ -76,6 +73,8 @@ protected:
     virtual void frameRenderingQueued(const Ogre::FrameEvent& evt) {}
 
 private:
+    int m_fixedUpdateCallbackId = -1;
+
     class Listener final : public MovableObject::Listener {
     public:
         explicit Listener(BaseMovableObject* object): m_object(object) {}

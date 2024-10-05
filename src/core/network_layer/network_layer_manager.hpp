@@ -1,10 +1,14 @@
 #pragma once
 
-#include "network_layer.hpp"
+#include <memory>
 
 using namespace std;
 
 namespace core {
+
+class Server;
+class Client;
+class INetworkLayer;
 
 enum class GameType {
     None,
@@ -17,14 +21,18 @@ class NetworkLayerManager {
 public:
     NetworkLayerManager() = default;
 
-    void init(GameType gameType);
+    void start(GameType gameType);
 
-    void start() const;
+    shared_ptr<Server> server() const;
+
+    shared_ptr<Client> client() const;
 
 private:
     GameType m_gameType = GameType::None;
 
     shared_ptr<INetworkLayer> m_networkLayer;
+
+    shared_ptr<INetworkLayer> createNetworkLayer(GameType gameType);
 };
 
 } // end namespace core

@@ -1,6 +1,7 @@
 #include "scene.hpp"
 
 #include "game.hpp"
+#include "physics_world.hpp"
 
 namespace core {
 

@@ -2,23 +2,25 @@
 
 #include "game.hpp"
 
-core::debug::ColliderDrawer::ColliderDrawer() {
+namespace core {
+
+debug::ColliderDrawer::ColliderDrawer() {
     m_material = createMaterial();
     m_manualObject = createManualObject();
 
     Game::sceneManager()->getRootSceneNode()->attachObject(m_manualObject);
 }
 
-core::debug::ColliderDrawer::~ColliderDrawer() {
+debug::ColliderDrawer::~ColliderDrawer() {
     Game::sceneManager()->destroyManualObject(m_manualObject);
 }
 
-void core::debug::ColliderDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color) {
+void debug::ColliderDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color) {
     m_lines.emplace_back(Ogre::Vector3(from.x(), from.y(), from.z()));
     m_lines.emplace_back(Ogre::Vector3(to.x(), to.y(), to.z()));
 }
 
-void core::debug::ColliderDrawer::render() {
+void debug::ColliderDrawer::render() {
     if (m_lines.empty()) return;
 
     m_manualObject->clear();
@@ -33,7 +35,7 @@ void core::debug::ColliderDrawer::render() {
     m_lines.clear();
 }
 
-Ogre::MaterialPtr core::debug::ColliderDrawer::createMaterial() {
+Ogre::MaterialPtr debug::ColliderDrawer::createMaterial() {
     auto material = Game::materialManager()->create(
         "CollidersWireframe", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
     );
@@ -54,7 +56,7 @@ Ogre::MaterialPtr core::debug::ColliderDrawer::createMaterial() {
     return material;
 }
 
-Ogre::ManualObject* core::debug::ColliderDrawer::createManualObject() {
+Ogre::ManualObject* debug::ColliderDrawer::createManualObject() {
     const auto manualObject = Game::sceneManager()->createManualObject("PhysicsDebugDrawer");
 
     manualObject->setDynamic(true);
@@ -62,3 +64,5 @@ Ogre::ManualObject* core::debug::ColliderDrawer::createManualObject() {
 
     return manualObject;
 }
+
+} // end namespace core

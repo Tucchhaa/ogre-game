@@ -2,8 +2,8 @@
 
 #include <map>
 
-#include "OgreApplicationContext.h"
-#include "SDL2/SDL_keycode.h"
+#include <OgreApplicationContext.h>
+#include <SDL2/SDL_keycode.h>
 
 namespace core {
 

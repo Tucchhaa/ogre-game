@@ -1,7 +1,8 @@
 #include "input.hpp"
 
-#include "game.hpp"
 #include <SDL2/SDL.h>
+
+#include "game.hpp"
 
 namespace core {
 

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <btBulletDynamicsCommon.h>
-
-#include "OgreManualObject.h"
+#include <OgreManualObject.h>
 
 namespace core::debug {
 

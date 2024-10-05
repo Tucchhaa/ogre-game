@@ -3,6 +3,11 @@
 #include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"
 
+#include "scene.hpp"
+#include "input.hpp"
+#include "physics_world.hpp"
+#include "network_layer/network_layer_manager.hpp"
+
 namespace core {
 
 void Game::configure() {
@@ -28,21 +33,17 @@ void Game::init() {
     m_physics = make_shared<PhysicsWorld>();
     m_networkLayerManager = make_shared<NetworkLayerManager>();
 
-    // TODO: remove this line
-    m_networkLayerManager->init(GameType::SinglePlayer);
-
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);
 
     m_ctx->addInputListener(m_input.get());
-
-    // scene must initiated last
-    m_scene->init();
-    m_renderWindow->addViewport(m_scene->mainCamera);
 }
 
 void Game::start() const {
-    m_networkLayerManager->start();
+    m_networkLayerManager->start(GameType::SinglePlayer);
+    m_scene->init();
+    m_renderWindow->addViewport(m_scene->mainCamera);
+
     m_root->startRendering();
 }
 

@@ -1,16 +1,19 @@
 #include "collider.hpp"
 
 #include "../game.hpp"
+#include "../physics_world.hpp"
 
-core::Collider::Collider(const Ogre::String& name): BaseMovableObject(name) { }
+namespace core {
 
-void core::Collider::setShapes(const vector<Shape>& shapes) {
+Collider::Collider(const Ogre::String& name): BaseMovableObject(name) { }
+
+void Collider::setShapes(const vector<Shape>& shapes) {
     m_shapes = shapes;
     m_shape = createCompoundShape();
     m_rigidBody = createRigidBody();
 }
 
-void core::Collider::setMass(float mass) {
+void Collider::setMass(float mass) {
     this->m_mass = mass;
     btVector3 inertia(0, 0, 0);
 
@@ -24,11 +27,11 @@ void core::Collider::setMass(float mass) {
     m_rigidBody->activate();
 }
 
-bool core::Collider::isDynamic() const {
+bool Collider::isDynamic() const {
     return m_mass != 0.f;
 }
 
-void core::Collider::resetRigidbodyTransform() const {
+void Collider::resetRigidbodyTransform() const {
     const auto nodePosition = &getParentNode()->getPosition();
     const auto nodeRotation = &getParentNode()->getOrientation();
 
@@ -44,7 +47,7 @@ void core::Collider::resetRigidbodyTransform() const {
     m_rigidBody->setWorldTransform(transform);
 }
 
-void core::Collider::updateSceneNodeTransform() const {
+void Collider::updateSceneNodeTransform() const {
     btTransform colliderTransform;
 
     if (m_rigidBody && m_rigidBody->getMotionState()) {
@@ -61,19 +64,19 @@ void core::Collider::updateSceneNodeTransform() const {
     getParentNode()->setOrientation(Ogre::Quaternion(rotation.w(), rotation.x(), rotation.y(), rotation.z()));
 }
 
-void core::Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+void Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     if(getParentNode() != nullptr) {
         updateSceneNodeTransform();
     }
 }
 
-void core::Collider::objectAttached() {
+void Collider::objectAttached() {
     resetRigidbodyTransform();
 
     Game::physics()->addRigidBody(m_rigidBody);
 }
 
-shared_ptr<btCompoundShape> core::Collider::createCompoundShape() const {
+shared_ptr<btCompoundShape> Collider::createCompoundShape() const {
     auto compoundShape = make_shared<btCompoundShape>();
 
     for(const auto& shape: m_shapes) {
@@ -83,7 +86,7 @@ shared_ptr<btCompoundShape> core::Collider::createCompoundShape() const {
     return compoundShape;
 }
 
-shared_ptr<btRigidBody> core::Collider::createRigidBody() const {
+shared_ptr<btRigidBody> Collider::createRigidBody() const {
     btVector3 localInertia(0, 0, 0);
 
     if (isDynamic()) {
@@ -96,3 +99,5 @@ shared_ptr<btRigidBody> core::Collider::createRigidBody() const {
 
     return rigidBody;
 }
+
+} // end namespace core

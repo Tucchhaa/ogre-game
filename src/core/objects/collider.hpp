@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <btBulletDynamicsCommon.h>
 
 #include "base_movable_object.hpp"
-#include "btBulletDynamicsCommon.h"
 
 using namespace std;
 

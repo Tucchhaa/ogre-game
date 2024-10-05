@@ -36,6 +36,12 @@ void core::Server::callFixedUpdate(float dt) {
             auto* casted = Ogre::any_cast<BaseMovableObject*>(binding);
 
             casted->fixedUpdate(dt);
+
+            // Here server could store all changes and send them to clients
+
+            if(casted->state() != nullptr) {
+                casted->state()->applyChanges();
+            }
         }
     }
 }

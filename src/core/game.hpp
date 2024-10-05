@@ -7,6 +7,7 @@
 #include "input.hpp"
 #include "physics_world.hpp"
 #include "network_layer/network_layer_manager.hpp"
+#include "state_manager.hpp"
 
 using namespace std;
 
@@ -57,7 +58,7 @@ public:
     /**
      * When debug mode is enabled, the game will draw collider shapes
      */
-    bool debugMode(bool value) { return m_debugMode = value; }
+    bool debugMode(bool value);
 
 private:
     bool m_debugMode = false;

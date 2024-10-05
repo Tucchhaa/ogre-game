@@ -31,6 +31,9 @@ add_executable(ogre_game
         src/core/collider_drawer.cpp
         src/core/collider_drawer.hpp
 
+        src/core/objects/state.cpp
+        src/core/objects/state.hpp
+
         src/core/network_layer/network_layer_manager.cpp
         src/core/network_layer/network_layer_manager.hpp
         src/core/network_layer/network_layer.cpp

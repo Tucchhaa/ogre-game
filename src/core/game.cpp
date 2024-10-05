@@ -50,4 +50,8 @@ void Game::stop() const {
     m_root->queueEndRendering();
 }
 
+bool Game::debugMode(bool value) {
+    return m_debugMode = value;
+}
+
 } // end namespace core

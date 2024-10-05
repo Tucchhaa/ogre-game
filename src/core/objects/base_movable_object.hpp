@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OgreMovableObject.h"
+#include "state.hpp"
 
 #include "../game.hpp"
 
@@ -16,20 +17,24 @@ namespace core {
  */
 class BaseMovableObject : public Ogre::MovableObject {
 public:
-    BaseMovableObject() { init(); }
-    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name) { init(); }
+    BaseMovableObject()
+        { BaseMovableObject::init(); }
+    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name)
+        { BaseMovableObject::init(); }
 
     /**
      * Invoked at fixed rate. All logic must be implemented here.
      * Note: This function is called in a diffrent thread (not main thread),
      * so be careful about concurrency
-     * @return next state
      */
     virtual void fixedUpdate(float dt) {}
+
+    virtual shared_ptr<State> state() { return nullptr; }
 
     // ===
     // MovableObject overrides
     // ===
+
     const Ogre::AxisAlignedBox& getBoundingBox() const override {
         static Ogre::AxisAlignedBox box;
         return box;
@@ -44,7 +49,8 @@ public:
     void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables) override {}
 
 protected:
-    void init() {
+
+    void virtual init() {
         setListener(new Listener(this));
         Game::root()->addFrameListener(new FrameListener(this));
 

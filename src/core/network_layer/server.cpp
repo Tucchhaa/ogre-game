@@ -25,11 +25,11 @@ void Server::simulatePhysics(float dt) {
 }
 
 void Server::callFixedUpdate(float dt) {
-    tickEvent.fire([&dt](const function<BaseMovableObject*(float)>& callback) {
+    tickEvent.fire([dt](const function<BaseMovableObject*(float)>& callback) {
         const auto object = callback(dt);
 
         if(object->state() != nullptr) {
-            object->state()->popChanges();
+            object->state()->popChanges(); // TODO: collect all changes and them to clients
         }
     });
 }

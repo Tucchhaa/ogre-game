@@ -16,7 +16,7 @@ public:
  * Physics simulation and fixed updates are called from the Server.
  * Synchronizes game states between all the clients.
  */
-class Server : public INetworkLayer {
+class Server : public NetworkLayer {
 public:
     /**
      * For BaseMovableObject::fixedUpdate

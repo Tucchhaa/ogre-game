@@ -27,9 +27,7 @@ public:
      * Note: This function is called in a diffrent thread (not main thread),
      * so be careful about concurrency
      */
-    virtual BaseMovableObject* fixedUpdate(float dt) {
-        return this;
-    }
+    virtual void fixedUpdate(float dt) {};
 
     virtual std::shared_ptr<State> state() { return nullptr; }
 

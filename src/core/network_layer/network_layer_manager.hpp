@@ -8,7 +8,7 @@ namespace core {
 
 class Server;
 class Client;
-class INetworkLayer;
+class NetworkLayer;
 
 enum class GameType {
     None,
@@ -22,17 +22,18 @@ public:
     NetworkLayerManager() = default;
 
     void start(GameType gameType);
+    void stop();
 
+    shared_ptr<NetworkLayer> networkLayer() const { return m_networkLayer; }
     shared_ptr<Server> server() const;
-
     shared_ptr<Client> client() const;
 
 private:
     GameType m_gameType = GameType::None;
 
-    shared_ptr<INetworkLayer> m_networkLayer;
+    shared_ptr<NetworkLayer> m_networkLayer;
 
-    shared_ptr<INetworkLayer> createNetworkLayer(GameType gameType);
+    shared_ptr<NetworkLayer> createNetworkLayer(GameType gameType);
 };
 
 } // end namespace core

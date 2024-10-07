@@ -12,6 +12,13 @@ void NetworkLayerManager::start(GameType gameType) {
     m_networkLayer->start();
 }
 
+void NetworkLayerManager::stop() {
+    if(m_networkLayer != nullptr) {
+        m_networkLayer->stop();
+        m_networkLayer.reset();
+    }
+}
+
 shared_ptr<Server> NetworkLayerManager::server() const {
     if(m_gameType == GameType::SinglePlayer || m_gameType == GameType::LANHost)
         return static_pointer_cast<Server>(m_networkLayer);
@@ -26,13 +33,10 @@ shared_ptr<Client> NetworkLayerManager::client() const {
     return nullptr;
 }
 
-shared_ptr<INetworkLayer> NetworkLayerManager::createNetworkLayer(GameType gameType) {
+shared_ptr<NetworkLayer> NetworkLayerManager::createNetworkLayer(GameType gameType) {
     m_gameType = gameType;
 
-    if(m_networkLayer != nullptr) {
-        m_networkLayer->stop();
-        m_networkLayer.reset();
-    }
+    stop();
 
     switch (m_gameType) {
         case GameType::SinglePlayer:

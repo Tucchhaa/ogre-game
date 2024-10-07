@@ -5,7 +5,7 @@
 #include <any>
 #include <shared_mutex>
 
-#include <Ogre/OgreVector.h>
+#include <OGRE/OgreVector.h>
 
 using namespace std;
 
@@ -30,7 +30,7 @@ protected:
     static Ogre::Quaternion interpolate(const Ogre::Quaternion& a, const Ogre::Quaternion& b);
 
 private:
-    static static float calcInterpolationFactor();
+    static float calcInterpolationFactor();
 };
 
 /**
@@ -65,7 +65,7 @@ private:
  */
 #define STATE_INTERPOLATABLE_PROP(type, name)                   \
     public:                                                     \
-    type interpolate_##name##() {                               \
+    type interpolate_##name() {                               \
         shared_lock _(m_mutex);                                 \
         return interpolate_##name##_unsafe();                   \
     }                                                           \

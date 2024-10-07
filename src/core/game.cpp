@@ -40,16 +40,17 @@ void Game::init() {
 }
 
 void Game::start() const {
-    m_networkLayerManager->start(GameType::SinglePlayer);
+    m_networkLayerManager->initNetworkLayer(GameType::SinglePlayer);
     m_scene->init();
     m_renderWindow->addViewport(m_scene->mainCamera);
 
+    m_networkLayerManager->start();
     m_root->startRendering();
 }
 
 void Game::stop() const {
-    m_networkLayerManager->stop();
     m_root->queueEndRendering();
+    m_networkLayerManager->stop();
 }
 
 bool Game::debugMode(bool value) {

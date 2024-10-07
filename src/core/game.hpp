@@ -3,14 +3,16 @@
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
 
+#include "network_layer/network_layer_manager.hpp"
+
 using namespace std;
 
 namespace core {
 
-class NetworkLayerManager;
-class PhysicsWorld;
-class Scene;
 class Input;
+class Scene;
+class PhysicsWorld;
+class NetworkLayer;
 
 class Game {
 public:
@@ -48,6 +50,7 @@ public:
     static shared_ptr<Scene> scene() { return instance().m_scene; }
     static shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
     static shared_ptr<NetworkLayerManager> networkLayerManager() { return instance().m_networkLayerManager; }
+    static shared_ptr<NetworkLayer> networkLayer() { return networkLayerManager()->networkLayer(); }
     static bool debugMode() { return instance().m_debugMode; }
 
     // ===

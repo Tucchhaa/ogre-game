@@ -4,7 +4,7 @@
 
 namespace core {
 
-class Client : public INetworkLayer {
+class Client : public NetworkLayer {
 protected:
     void tick(float dt) override;
 };

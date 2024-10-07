@@ -48,6 +48,7 @@ void Game::start() const {
 }
 
 void Game::stop() const {
+    m_networkLayerManager->stop();
     m_root->queueEndRendering();
 }
 

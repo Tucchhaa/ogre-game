@@ -43,5 +43,7 @@ add_executable(ogre_game
         src/core/network_layer/server.hpp
         src/core/network_layer/client.cpp
         src/core/network_layer/client.hpp
+        src/core/utils.hpp
+        src/core/objects/state.cpp
 )
 

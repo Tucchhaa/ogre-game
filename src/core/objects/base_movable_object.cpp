@@ -14,7 +14,10 @@ void BaseMovableObject::init() {
 }
 
 void BaseMovableObject::objectAttached() {
-    auto callback = [this](float dt) { return this->fixedUpdate(dt); };
+    auto callback = [this](float dt) {
+        this->fixedUpdate(dt);
+        return this;
+    };
 
     m_fixedUpdateCallbackId = Game::networkLayerManager()->server()->tickEvent.subscribe(callback);
 }

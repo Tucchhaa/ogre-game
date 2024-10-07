@@ -6,13 +6,16 @@ using namespace std;
 
 namespace core {
 
-class INetworkLayer {
+class NetworkLayer {
 public:
-    virtual ~INetworkLayer();
+    virtual ~NetworkLayer();
 
     void start();
 
     void stop();
+
+    long long currentUpdateTimestamp() const { return m_currentUpdateTimestamp; }
+    long long previousUpdateTimestamp() const { return m_previousUpdateTimestamp; }
 
 protected:
     void virtual tick(float dt) = 0;
@@ -22,6 +25,9 @@ private:
 
     atomic<bool> m_running;
     thread m_tickThread;
+
+    long long m_currentUpdateTimestamp = 0.0;
+    long long m_previousUpdateTimestamp = 0.0;
 };
 
 } // end namespace core

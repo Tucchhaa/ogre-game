@@ -21,7 +21,8 @@ class NetworkLayerManager {
 public:
     NetworkLayerManager() = default;
 
-    void start(GameType gameType);
+    void initNetworkLayer(GameType gameType);
+    void start() const;
     void stop();
 
     shared_ptr<NetworkLayer> networkLayer() const { return m_networkLayer; }

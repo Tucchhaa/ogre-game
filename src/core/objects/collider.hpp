@@ -31,6 +31,19 @@ private:
     btTransform m_btTransform;
 };
 
+/**
+ * Synchronizes colliders position and rotation between render and logic threads
+ */
+class ColliderState: public State {
+    STATE_INTERPOLATABLE_PROP(Ogre::Vector3, position);
+    STATE_INTERPOLATABLE_PROP(Ogre::Quaternion, rotation);
+
+public:
+    void setValues(const btVector3& position, const btQuaternion& rotation);
+
+    void getValues(Ogre::Vector3& position, Ogre::Quaternion& rotation);
+};
+
 const Ogre::String COLLIDER_TYPE = "Collider";
 
 /**
@@ -42,8 +55,12 @@ public:
     explicit Collider(const Ogre::String& name);
 
     const Ogre::String& getMovableType() const override { return COLLIDER_TYPE; }
-
     shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
+    shared_ptr<State> state() override { return static_pointer_cast<State>(m_state); }
+
+    void fixedUpdate(float dt) override;
+
+    void frameRenderingQueued(const Ogre::FrameEvent& evt) override;
 
     /**
      * Sets shapes of the collider.
@@ -71,16 +88,16 @@ public:
      */
     void updateSceneNodeTransform() const;
 
-    void frameRenderingQueued(const Ogre::FrameEvent& evt) override;
-
 protected:
     void objectAttached() override;
 
+    btTransform getTransform() const;
+
 private:
+    shared_ptr<ColliderState> m_state = make_shared<ColliderState>();
     shared_ptr<btCompoundShape> m_shape;
     vector<Shape> m_shapes;
     shared_ptr<btRigidBody> m_rigidBody;
-
     float m_mass = 1.;
 
     shared_ptr<btCompoundShape> createCompoundShape() const;

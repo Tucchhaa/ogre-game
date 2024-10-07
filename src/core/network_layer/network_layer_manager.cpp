@@ -6,9 +6,11 @@
 
 namespace core {
 
-void NetworkLayerManager::start(GameType gameType) {
+void NetworkLayerManager::initNetworkLayer(GameType gameType) {
     m_networkLayer = createNetworkLayer(gameType);
+}
 
+void NetworkLayerManager::start() const {
     m_networkLayer->start();
 }
 

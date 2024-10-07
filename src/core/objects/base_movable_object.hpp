@@ -17,19 +17,17 @@ namespace core {
  */
 class BaseMovableObject : public Ogre::MovableObject {
 public:
-    BaseMovableObject()
-        { BaseMovableObject::init(); }
-    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name)
-        { BaseMovableObject::init(); }
+    BaseMovableObject() { init(); }
+    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name) { init(); }
 
     /**
      * Invoked at fixed rate. All logic must be implemented here.
      * Note: This function is called in a diffrent thread (not main thread),
      * so be careful about concurrency
      */
-    virtual void fixedUpdate(float dt) {};
+    virtual void fixedUpdate(float dt) {}
 
-    virtual std::shared_ptr<State> state() { return nullptr; }
+    virtual shared_ptr<State> state() { return nullptr; }
 
     // ===
     // MovableObject overrides
@@ -49,8 +47,6 @@ public:
     void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables) override {}
 
 protected:
-
-    void virtual init();
 
     // ===
     // MovableObject lifecycle events
@@ -72,6 +68,8 @@ protected:
 
 private:
     int m_fixedUpdateCallbackId = -1;
+
+    void init();
 
     class Listener final : public MovableObject::Listener {
     public:

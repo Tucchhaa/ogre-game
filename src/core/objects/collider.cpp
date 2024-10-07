@@ -5,6 +5,25 @@
 
 namespace core {
 
+void ColliderState::setValues(const btVector3& position, const btQuaternion& rotation) {
+    auto ogrePosition = Ogre::Vector3(position.x(), position.y(), position.z());
+    auto ogreRotation = Ogre::Quaternion(rotation.w(), rotation.x(), rotation.y(), rotation.z());
+
+    unique_lock _(m_mutex);
+
+    // use unsafe functions because mutex is already locked
+    set_position_unsafe(ogrePosition);
+    set_rotation_unsafe(ogreRotation);
+}
+
+void ColliderState::getValues(Ogre::Vector3& position, Ogre::Quaternion& rotation) {
+    shared_lock _(m_mutex);
+
+    // use unsafe functions because mutex is already locked
+    position = interpolate_position_unsafe();
+    rotation = interpolate_rotation_unsafe();
+}
+
 Collider::Collider(const Ogre::String& name): BaseMovableObject(name) { }
 
 void Collider::setShapes(const vector<Shape>& shapes) {
@@ -45,23 +64,23 @@ void Collider::resetRigidbodyTransform() const {
     }
 
     m_rigidBody->setWorldTransform(transform);
+    m_state->setValues(transform.getOrigin(), transform.getRotation());
 }
 
 void Collider::updateSceneNodeTransform() const {
-    btTransform colliderTransform;
+    Ogre::Vector3 position;
+    Ogre::Quaternion rotation;
 
-    if (m_rigidBody && m_rigidBody->getMotionState()) {
-        m_rigidBody->getMotionState()->getWorldTransform(colliderTransform);
-    }
-    else {
-        colliderTransform = m_rigidBody->getWorldTransform();
-    }
+    m_state->getValues(position, rotation);
 
-    const auto& position = colliderTransform.getOrigin();
-    const auto& rotation = colliderTransform.getRotation();
+    getParentNode()->setPosition(position);
+    getParentNode()->setOrientation(rotation);
+}
 
-    getParentNode()->setPosition(Ogre::Vector3(position.x(), position.y(), position.z()));
-    getParentNode()->setOrientation(Ogre::Quaternion(rotation.w(), rotation.x(), rotation.y(), rotation.z()));
+void Collider::fixedUpdate(float dt) {
+    auto transform = getTransform();
+
+    m_state->setValues(transform.getOrigin(), transform.getRotation());
 }
 
 void Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
@@ -71,9 +90,24 @@ void Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 }
 
 void Collider::objectAttached() {
+    BaseMovableObject::objectAttached();
+
     resetRigidbodyTransform();
 
     Game::physics()->addRigidBody(m_rigidBody);
+}
+
+btTransform Collider::getTransform() const {
+    btTransform colliderTransform;
+
+    if (m_rigidBody && m_rigidBody->getMotionState()) {
+        m_rigidBody->getMotionState()->getWorldTransform(colliderTransform);
+    }
+    else {
+        colliderTransform = m_rigidBody->getWorldTransform();
+    }
+
+    return colliderTransform;
 }
 
 shared_ptr<btCompoundShape> Collider::createCompoundShape() const {

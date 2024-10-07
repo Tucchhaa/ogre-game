@@ -3,7 +3,13 @@ project(ogre_game)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(./vcpkg/installed/arm64-osx/include)
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    include_directories(./vcpkg/installed/arm64-osx/include)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    include_directories(./vcpkg/installed/x64-linux/include)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    include_directories(./vcpkg/installed/x64-windows/include)
+endif()
 
 find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
 link_libraries(OgreBites)

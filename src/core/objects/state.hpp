@@ -65,7 +65,7 @@ private:
  */
 #define STATE_INTERPOLATABLE_PROP(type, name)                   \
     public:                                                     \
-    type interpolate_##name() {                               \
+    type interpolate_##name() {                                 \
         shared_lock _(m_mutex);                                 \
         return interpolate_##name##_unsafe();                   \
     }                                                           \

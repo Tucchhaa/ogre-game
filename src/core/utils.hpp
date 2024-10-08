@@ -15,7 +15,7 @@ inline long long getTimestamp() {
 }
 
 inline Ogre::Vector3 lerp(float t, const Ogre::Vector3& a, const Ogre::Vector3& b) {
-    return t >= 1 ? a : a + (b - a) * t;
+    return t >= 1 ? b : a + (b - a) * t;
 }
 
 }

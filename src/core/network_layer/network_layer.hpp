@@ -14,14 +14,14 @@ public:
 
     void stop();
 
-    long long currentUpdateTimestamp() const { return m_currentUpdateTimestamp; }
-    long long previousUpdateTimestamp() const { return m_previousUpdateTimestamp; }
+    long long currentUpdateTimestamp() const { return m_currentUpdateTimestamp + MILLISECONDS_BETWEEN_TICKS; }
+    long long previousUpdateTimestamp() const { return m_previousUpdateTimestamp + MILLISECONDS_BETWEEN_TICKS; }
 
 protected:
     void virtual tick(float dt) = 0;
 
 private:
-    static constexpr int MILLISECONDS_BETWEEN_TICKS = 20;
+    static constexpr int MILLISECONDS_BETWEEN_TICKS = 20; // 50 updates per second
 
     atomic<bool> m_running;
     thread m_tickThread;

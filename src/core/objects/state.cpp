@@ -16,7 +16,8 @@ map<string, any> State::popChanges() {
 }
 
 Ogre::Vector3 State::interpolate(const Ogre::Vector3& a, const Ogre::Vector3& b) {
-    return utils::lerp(calcInterpolationFactor(), a, b);
+    const float f = calcInterpolationFactor();
+    return utils::lerp(f, a, b);
 }
 
 Ogre::Quaternion State::interpolate(const Ogre::Quaternion& a, const Ogre::Quaternion& b) {

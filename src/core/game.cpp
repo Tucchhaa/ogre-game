@@ -24,6 +24,7 @@ void Game::init() {
     m_root = m_ctx->getRoot();
     m_root->addMovableObjectFactory(new FreeCameraControllerFactory);
     m_root->addMovableObjectFactory(new ColliderFactory);
+    m_root->addFrameListener(new Listener);
 
     m_sceneManager = m_root->createSceneManager();
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
@@ -50,11 +51,19 @@ void Game::start() const {
 
 void Game::stop() const {
     m_root->queueEndRendering();
-    m_networkLayerManager->stop();
 }
 
 bool Game::debugMode(bool value) {
     return m_debugMode = value;
 }
 
+bool Game::Listener::frameEnded(const Ogre::FrameEvent& evt) {
+    if(root()->endRenderingQueued()) {
+        networkLayerManager()->stop();
+        appContext()->closeApp();
+        return false;
+    }
+
+    return true;
+}
 } // end namespace core

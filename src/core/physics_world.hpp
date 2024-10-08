@@ -12,6 +12,8 @@ class PhysicsWorld {
 public:
     PhysicsWorld();
 
+    ~PhysicsWorld();
+
     /**
      * Add rigidbody to physics simulation
      */
@@ -48,9 +50,9 @@ private:
 
     unique_ptr<btSequentialImpulseConstraintSolver> m_solver;
 
-    btVector3 gravity = btVector3(0, -10, 0);
+    btVector3 m_gravity = btVector3(0, -10, 0);
 
-    btAlignedObjectArray<shared_ptr<btCollisionShape>> collisionShapes;
+    btAlignedObjectArray<shared_ptr<btCollisionShape>> m_collisionShapes;
 
     unique_ptr<debug::ColliderDrawer> m_colliderDrawer;
 };

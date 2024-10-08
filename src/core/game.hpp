@@ -77,6 +77,11 @@ private:
     shared_ptr<Scene> m_scene;
     shared_ptr<PhysicsWorld> m_physics;
     shared_ptr<NetworkLayerManager> m_networkLayerManager;
+
+    class Listener : public Ogre::FrameListener {
+    public:
+        bool frameEnded(const Ogre::FrameEvent& evt) override;
+    };
 };
 
 } // end namespace core

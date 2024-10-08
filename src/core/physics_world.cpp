@@ -13,8 +13,32 @@ PhysicsWorld::PhysicsWorld() {
     );
     m_colliderDrawer = make_unique<debug::ColliderDrawer>();
 
-    m_dynamicsWorld->setGravity(gravity);
+    m_dynamicsWorld->setGravity(m_gravity);
     m_dynamicsWorld->setDebugDrawer(m_colliderDrawer.get());
+}
+
+PhysicsWorld::~PhysicsWorld() {
+    for (int i = 0; i < m_dynamicsWorld->getNumCollisionObjects(); i++) {
+        btCollisionObject* obj = m_dynamicsWorld->getCollisionObjectArray()[i];
+        btRigidBody* body = btRigidBody::upcast(obj);
+
+        if (body && body->getMotionState())
+            delete body->getMotionState();
+
+        m_dynamicsWorld->removeCollisionObject(obj);
+        delete obj;
+    }
+
+    for (int j = 0; j < m_collisionShapes.size(); j++)
+        m_collisionShapes[j].reset();
+
+    m_dynamicsWorld.reset();
+    m_solver.reset();
+    m_overlappingPairCache.reset();
+    m_dispatcher.reset();
+    m_collisionConfiguration.reset();
+
+    m_collisionShapes.clear();
 }
 
 void PhysicsWorld::addRigidBody(const shared_ptr<btRigidBody>& rigidBody) const {

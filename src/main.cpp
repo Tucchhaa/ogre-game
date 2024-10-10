@@ -3,14 +3,15 @@
 #include "core/game.hpp"
 #include "core/input.hpp"
 #include "core/scene.hpp"
+#include "core/window_listener.hpp"
 #include "core/objects/collider.hpp"
 
 using namespace std;
 
 class SimpleScene : public core::Scene {
     void init() override {
+        core::Game::windowManager()->relativeMouseEnabled(true);
         core::Game::root()->addFrameListener(this);
-        core::Game::input()->relativeMouse(true);
 
         Scene::init();
 
@@ -37,6 +38,7 @@ class SimpleScene : public core::Scene {
 
         // finally something to render
         Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
+
         Ogre::SceneNode* sinbadNode = m_rootNode->createChildSceneNode();
         sinbadNode->translate(Ogre::Vector3(0, 4, 0));
         sinbadNode->attachObject(ent);

@@ -51,5 +51,7 @@ add_executable(ogre_game
         src/core/network_layer/client.hpp
         src/core/utils.hpp
         src/core/objects/state.cpp
+        src/core/window_listener.cpp
+        src/core/window_listener.hpp
 )
 

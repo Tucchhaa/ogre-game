@@ -35,6 +35,22 @@ bool BaseInput::mouseMoved(const OgreBites::MouseMotionEvent& evt) {
     return false;
 }
 
+bool BaseInput::mousePressed(const OgreBites::MouseButtonEvent& evt) {
+    if(evt.button == SDL_BUTTON_LEFT) {
+        m_mouseState.leftButtonClicked = true;
+    }
+
+    return false;
+}
+
+bool BaseInput::mouseReleased(const OgreBites::MouseButtonEvent& evt) {
+    if(evt.button == SDL_BUTTON_LEFT) {
+        m_mouseState.leftButtonClicked = false;
+    }
+
+    return false;
+}
+
 void Input::frameRendered(const Ogre::FrameEvent& evt) {
     BaseInput::frameRendered(evt);
 
@@ -65,12 +81,6 @@ bool Input::isKeyPressed(const Key keycode) {
     const auto value = m_keyState[static_cast<int>(keycode)];
 
     return value == KeyState::Down || value == KeyState::Pressed;
-}
-
-void Input::relativeMouse(const bool value) {
-    m_isRelativeMouse = value;
-
-    SDL_SetRelativeMouseMode(value ? SDL_TRUE : SDL_FALSE);
 }
 
 void Input::readInput() {

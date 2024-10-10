@@ -16,13 +16,13 @@ void NetworkLayer::start() {
         constexpr auto interval = chrono::milliseconds(MILLISECONDS_BETWEEN_TICKS);
 
         auto nextTick = std::chrono::steady_clock::now();
-        m_currentUpdateTimestamp = utils::getTimestamp() - MILLISECONDS_BETWEEN_TICKS;
+        m_currentUpdateTimestamp = utils::getTimestamp();
 
         while(m_running.load()) {
             auto now = std::chrono::steady_clock::now();
 
             m_previousUpdateTimestamp = m_currentUpdateTimestamp;
-            m_currentUpdateTimestamp = utils::getTimestamp();
+            m_currentUpdateTimestamp = utils::getTimestamp() + MILLISECONDS_BETWEEN_TICKS;
 
             if(now >= nextTick) {
                 tick(dt);

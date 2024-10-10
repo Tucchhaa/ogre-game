@@ -1,6 +1,7 @@
 #include "free_character_controller.hpp"
 
 #include "../input.hpp"
+#include "../window_listener.hpp"
 
 namespace core {
 
@@ -8,7 +9,7 @@ FreeCameraController::FreeCameraController(const Ogre::String& name): BaseMovabl
 
 void FreeCameraController::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     // rotation
-    if(Game::input()->relativeMouse()) {
+    if(Game::windowManager()->relativeMouseEnabled()) {
         // Don't multiply by timeSinceLastFrame because mouseDeltaX/Y are already frame-rate independent
         const float rx = -Game::input()->mouseDeltaX() * angluarSpeed;
         const float ry = -Game::input()->mouseDeltaY() * angluarSpeed;

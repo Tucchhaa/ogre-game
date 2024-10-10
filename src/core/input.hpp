@@ -34,6 +34,7 @@ protected:
         int posY = 0;
         int deltaX = 0;
         int deltaY = 0;
+        bool leftButtonClicked = false;
     };
 
     std::map<SDL_Keycode, KeyState> m_keyState;
@@ -46,6 +47,10 @@ protected:
     bool keyReleased(const OgreBites::KeyboardEvent& evt) override;
 
     bool mouseMoved(const OgreBites::MouseMotionEvent& evt) override;
+
+    bool mousePressed(const OgreBites::MouseButtonEvent& evt) override;
+
+    bool mouseReleased(const OgreBites::MouseButtonEvent& evt) override;
 };
 
 class Input : public BaseInput {
@@ -75,13 +80,6 @@ public:
      */
     bool isKeyPressed(Key keycode);
 
-    /**
-     * If relative mouse is enabled, the mouse cursor will be hidden and the
-     * mouse will be locked in the center of the screen
-     */
-    void relativeMouse(bool value);
-    bool relativeMouse() const { return m_isRelativeMouse; }
-
 private:
     void readInput();
 
@@ -89,7 +87,6 @@ private:
     float m_deltaY = 0;
     bool m_shift = false;
     bool m_escape = false;
-    bool m_isRelativeMouse = false;
 };
 
 } // end namespace core

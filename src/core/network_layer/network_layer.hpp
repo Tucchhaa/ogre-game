@@ -14,8 +14,8 @@ public:
 
     void stop();
 
-    long long currentUpdateTimestamp() const { return m_currentUpdateTimestamp + MILLISECONDS_BETWEEN_TICKS; }
-    long long previousUpdateTimestamp() const { return m_previousUpdateTimestamp + MILLISECONDS_BETWEEN_TICKS; }
+    long long currentUpdateTimestamp() const { return m_currentUpdateTimestamp; }
+    long long previousUpdateTimestamp() const { return m_previousUpdateTimestamp; }
 
 protected:
     void virtual tick(float dt) = 0;

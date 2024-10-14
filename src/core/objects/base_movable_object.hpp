@@ -1,8 +1,8 @@
 #pragma once
 
-#include <OgreFrameListener.h>
 #include <OgreMovableObject.h>
 
+#include "../game_event_listener.hpp"
 #include "../objects/state.hpp"
 
 class State;
@@ -15,19 +15,22 @@ namespace core {
  *
  * You must implement @link Ogre::MovableObject::getMovableType() in your derived class.
  */
-class BaseMovableObject : public Ogre::MovableObject {
+class BaseMovableObject : public Ogre::MovableObject, GameEventListener {
 public:
-    BaseMovableObject() { init(); }
-    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name) { init(); }
+    const int ID;
 
-    /**
-     * Invoked at fixed rate. All logic must be implemented here.
-     * Note: This function is called in a diffrent thread (not main thread),
-     * so be careful about concurrency
-     */
-    virtual void fixedUpdate(float dt) {}
+    BaseMovableObject(): ID(generateID())
+        { init(); }
+    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name), ID(generateID())
+        { init(); }
+
+    ~BaseMovableObject() {
+        m_instances.erase(m_instances.find(ID));
+    }
 
     virtual shared_ptr<State> state() { return nullptr; }
+
+    static map<int, BaseMovableObject*> instances() { return m_instances; }
 
     // ===
     // MovableObject overrides
@@ -38,13 +41,11 @@ public:
         return box;
     }
 
-    Ogre::Real getBoundingRadius() const override {
-        return 10.0f;
-    };
+    Ogre::Real getBoundingRadius() const override { return 10.0f; }
 
-    void _updateRenderQueue(Ogre::RenderQueue* queue) override {}
+    void _updateRenderQueue(Ogre::RenderQueue*) override {}
 
-    void visitRenderables(Ogre::Renderable::Visitor* visitor, bool debugRenderables) override {}
+    void visitRenderables(Ogre::Renderable::Visitor*, bool) override {}
 
 protected:
 
@@ -54,22 +55,24 @@ protected:
 
     virtual void objectDestroyed() {}
 
-    virtual void objectAttached();
+    virtual void objectAttached() {}
 
-    virtual void objectDetached();
+    virtual void objectDetached() {}
 
     virtual void objectMoved() {}
 
-    // ===
-    // Frame events
-    // ===
-
-    virtual void frameRenderingQueued(const Ogre::FrameEvent& evt) {}
-
 private:
-    int m_fixedUpdateCallbackId = -1;
+    static map<int, BaseMovableObject*> m_instances;
 
-    void init();
+    static int generateID() {
+        static int lastID = 0;
+        return ++lastID;
+    }
+
+    void init() {
+        setListener(new Listener(this));
+        m_instances[ID] = this;
+    }
 
     class Listener final : public MovableObject::Listener {
     public:
@@ -82,19 +85,6 @@ private:
         void objectDetached(MovableObject*) override { m_object->objectDetached(); }
 
         void objectMoved(MovableObject*) override { m_object->objectMoved(); }
-
-    private:
-        BaseMovableObject* m_object;
-    };
-
-    class FrameListener final : public Ogre::FrameListener {
-    public:
-        explicit FrameListener(BaseMovableObject* object): m_object(object) {}
-
-        bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
-            m_object->frameRenderingQueued(evt);
-            return true;
-        }
 
     private:
         BaseMovableObject* m_object;

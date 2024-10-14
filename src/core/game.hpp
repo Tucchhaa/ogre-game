@@ -83,6 +83,8 @@ private:
 
     class Listener : public Ogre::FrameListener {
     public:
+        bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
+
         bool frameEnded(const Ogre::FrameEvent& evt) override;
     };
 };

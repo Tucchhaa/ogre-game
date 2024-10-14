@@ -1,12 +1,13 @@
 #include "input.hpp"
 
+#include <iostream>
 #include <SDL2/SDL.h>
 
 #include "game.hpp"
 
 namespace core {
 
-void BaseInput::frameRendered(const Ogre::FrameEvent& evt) {
+void BaseInput::updateInputState() {
     for(auto& it: m_keyState) {
         if(it.second == KeyState::Down) {
             it.second = KeyState::Pressed;
@@ -51,10 +52,16 @@ bool BaseInput::mouseReleased(const OgreBites::MouseButtonEvent& evt) {
     return false;
 }
 
-void Input::frameRendered(const Ogre::FrameEvent& evt) {
-    BaseInput::frameRendered(evt);
+void Input::updateInputState() {
+    BaseInput::updateInputState();
 
-    readInput();
+    const float posX = isKeyPressed(Key::D) ? 1.0 : 0.0;
+    const float negX = isKeyPressed(Key::A) ? 1.0 : 0.0;
+    const float posY = isKeyPressed(Key::W) ? 1.0 : 0.0;
+    const float negY = isKeyPressed(Key::S) ? 1.0 : 0.0;
+
+    m_deltaX = posX - negX;
+    m_deltaY = posY - negY;
 }
 
 float Input::mouseDeltaX() const {
@@ -81,19 +88,6 @@ bool Input::isKeyPressed(const Key keycode) {
     const auto value = m_keyState[static_cast<int>(keycode)];
 
     return value == KeyState::Down || value == KeyState::Pressed;
-}
-
-void Input::readInput() {
-    const float posX = isKeyPressed(Key::D) ? 1.0 : 0.0;
-    const float negX = isKeyPressed(Key::A) ? 1.0 : 0.0;
-    const float posY = isKeyPressed(Key::W) ? 1.0 : 0.0;
-    const float negY = isKeyPressed(Key::S) ? 1.0 : 0.0;
-
-    m_deltaX = posX - negX;
-    m_deltaY = posY - negY;
-
-    m_shift = isKeyPressed(Key::SHIFT);
-    m_escape = isKeyPressed(Key::ESCAPE);
 }
 
 } // end namespace core

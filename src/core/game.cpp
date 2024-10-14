@@ -1,12 +1,13 @@
 #include "game.hpp"
 
+#include "game_event_listener.hpp"
 #include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"
 
 #include "scene.hpp"
 #include "input.hpp"
 #include "physics_world.hpp"
-#include "window_listener.hpp"
+#include "window_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
 
 namespace core {
@@ -57,6 +58,13 @@ void Game::stop() const {
 
 bool Game::debugMode(bool value) {
     return m_debugMode = value;
+}
+
+bool Game::Listener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+    GameEventListener::callUpdate(evt.timeSinceLastFrame);
+    input()->updateInputState();
+
+    return true;
 }
 
 bool Game::Listener::frameEnded(const Ogre::FrameEvent& evt) {

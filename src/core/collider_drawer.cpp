@@ -40,18 +40,19 @@ Ogre::MaterialPtr debug::ColliderDrawer::createMaterial() {
         "CollidersWireframe", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
     );
     material->setReceiveShadows(false);
-    material->setDepthWriteEnabled(false);
-    material->setLightingEnabled(false);
-    material->setCullingMode(Ogre::CULL_NONE);
 
     auto* pass = material->getTechnique(0)->getPass(0);
+
     pass->setDepthCheckEnabled(true);
+    pass->setDepthFunction(Ogre::CMPF_LESS_EQUAL);
+    pass->setDepthWriteEnabled(false);
+    pass->setDepthBias(1.0, 1.0);
+    pass->setCullingMode(Ogre::CULL_NONE);
+    pass->setLightingEnabled(false);
     pass->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
     pass->setPolygonMode(Ogre::PM_WIREFRAME);
     pass->setDiffuse(1.0, 1.0, 1.0, 1.0);
-
     pass->setVertexColourTracking(Ogre::TVC_DIFFUSE);
-    pass->setDepthBias(1.0, 1);
 
     return material;
 }

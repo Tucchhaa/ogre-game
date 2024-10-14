@@ -40,7 +40,7 @@ protected:
     std::map<SDL_Keycode, KeyState> m_keyState;
     MouseState m_mouseState;
 
-    void frameRendered(const Ogre::FrameEvent& evt) override;
+    virtual void updateInputState();
 
     bool keyPressed(const OgreBites::KeyboardEvent& evt) override;
 
@@ -55,15 +55,12 @@ protected:
 
 class Input : public BaseInput {
 public:
-
-    void frameRendered(const Ogre::FrameEvent& evt) override;
+    void updateInputState() override;
 
     float deltaX() const { return m_deltaX; }
     float deltaY() const { return m_deltaY; }
     float mouseDeltaX() const;
     float mouseDeltaY() const;
-    bool shift() const { return m_shift; }
-    bool escape() const { return m_escape; }
 
     /**
      * @return true, if key was released this frame
@@ -81,12 +78,8 @@ public:
     bool isKeyPressed(Key keycode);
 
 private:
-    void readInput();
-
     float m_deltaX = 0;
     float m_deltaY = 0;
-    bool m_shift = false;
-    bool m_escape = false;
 };
 
 } // end namespace core

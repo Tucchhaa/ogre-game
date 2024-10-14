@@ -2,9 +2,11 @@
 
 #include <OGRE/Ogre.h>
 
+#include "game_event_listener.hpp"
+
 namespace core {
 
-class Scene : public Ogre::FrameListener {
+class Scene : public GameEventListener {
 public:
     ~Scene() override = default;
 
@@ -12,7 +14,7 @@ public:
 
     Ogre::Camera* mainCamera = nullptr;
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override;
+    void update(float dt) override;
 
 protected:
     Ogre::SceneNode* m_rootNode = nullptr;

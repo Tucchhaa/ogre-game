@@ -62,7 +62,7 @@ bool Game::debugMode(bool value) {
 
 bool Game::Listener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     GameEventListener::callUpdate(evt.timeSinceLastFrame);
-    input()->updatesFinished();
+    input()->updateInputState();
 
     return true;
 }

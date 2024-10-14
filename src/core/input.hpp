@@ -40,7 +40,7 @@ protected:
     std::map<SDL_Keycode, KeyState> m_keyState;
     MouseState m_mouseState;
 
-    virtual void updatesFinished();
+    virtual void updateInputState();
 
     bool keyPressed(const OgreBites::KeyboardEvent& evt) override;
 
@@ -55,8 +55,7 @@ protected:
 
 class Input : public BaseInput {
 public:
-
-    void updatesFinished() override;
+    void updateInputState() override;
 
     float deltaX() const { return m_deltaX; }
     float deltaY() const { return m_deltaY; }
@@ -79,8 +78,6 @@ public:
     bool isKeyPressed(Key keycode);
 
 private:
-    void readInput();
-
     float m_deltaX = 0;
     float m_deltaY = 0;
 };

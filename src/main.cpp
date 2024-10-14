@@ -3,7 +3,7 @@
 #include "core/game.hpp"
 #include "core/input.hpp"
 #include "core/scene.hpp"
-#include "core/window_listener.hpp"
+#include "core/window_manager.hpp"
 #include "core/objects/collider.hpp"
 
 using namespace std;
@@ -11,7 +11,6 @@ using namespace std;
 class SimpleScene : public core::Scene {
     void init() override {
         core::Game::windowManager()->relativeMouseEnabled(true);
-        core::Game::root()->addFrameListener(this);
 
         Scene::init();
 
@@ -75,14 +74,17 @@ class SimpleScene : public core::Scene {
         groundNode->attachObject(groundCollider);
     }
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt) override {
-        Scene::frameRenderingQueued(evt);
+    void update(float dt) override {
+        Scene::update(dt);
 
         if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
             core::Game::instance().stop();
         }
-
-        return true;
+        if(core::Game::input()->isKeyDown(core::Key::SPACE)) {
+            core::Game::windowManager()->relativeMouseEnabled(
+                !core::Game::windowManager()->relativeMouseEnabled()
+            );
+        }
     }
 };
 

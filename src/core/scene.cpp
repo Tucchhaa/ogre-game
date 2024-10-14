@@ -10,12 +10,10 @@ void Scene::init() {
     m_rootNode = m_sceneManager->getRootSceneNode();
 }
 
-bool Scene::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+void Scene::update(float dt) {
     if(Game::debugMode()) {
         Game::physics()->drawColliders();
     }
-
-    return true;
 }
 
 } // end namespace core

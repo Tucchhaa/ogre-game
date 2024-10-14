@@ -60,7 +60,7 @@ public:
 
     void fixedUpdate(float dt) override;
 
-    void frameRenderingQueued(const Ogre::FrameEvent& evt) override;
+    void update(float dt) override;
 
     /**
      * Sets shapes of the collider.

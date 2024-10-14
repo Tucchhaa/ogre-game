@@ -83,7 +83,7 @@ void Collider::fixedUpdate(float dt) {
     m_state->setValues(transform.getOrigin(), transform.getRotation());
 }
 
-void Collider::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+void Collider::update(float dt) {
     if(getParentNode() != nullptr) {
         updateSceneNodeTransform();
     }

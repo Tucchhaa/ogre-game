@@ -1,37 +1,21 @@
 #include "server.hpp"
 
-#include <functional>
-
 #include "../game.hpp"
+#include "../game_event_listener.hpp"
 #include "../objects/base_movable_object.hpp"
 #include "../physics_world.hpp"
 
 namespace core {
 
-void TickEvent::fire(const function<void(callback_type)>& emitter) {
-    lock_guard _(m_callbacks_mutex);
-
-    for(const auto& [id, callback]: m_callbacks)
-        emitter(callback);
-}
-
 void Server::tick(float dt) {
-    simulatePhysics(dt);
-    callFixedUpdate(dt);
-}
-
-void Server::simulatePhysics(float dt) {
     Game::physics()->stepSimulationFixed(dt);
-}
+    GameEventListener::callFixedUpdate(dt);
 
-void Server::callFixedUpdate(float dt) {
-    tickEvent.fire([dt](const function<BaseMovableObject*(float)>& callback) {
-        const auto object = callback(dt);
-
+    for(auto [ID, object] : BaseMovableObject::instances()) {
         if(object->state() != nullptr) {
-            object->state()->popChanges(); // TODO: collect all changes and them to clients
+            object->state()->popChanges(); // TODO: collect all changes and send them to the clients
         }
-    });
+    }
 }
 
 } // end namespace core

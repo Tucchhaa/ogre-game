@@ -1,12 +1,13 @@
 #include "input.hpp"
 
+#include <iostream>
 #include <SDL2/SDL.h>
 
 #include "game.hpp"
 
 namespace core {
 
-void BaseInput::frameRendered(const Ogre::FrameEvent& evt) {
+void BaseInput::updatesFinished() {
     for(auto& it: m_keyState) {
         if(it.second == KeyState::Down) {
             it.second = KeyState::Pressed;
@@ -51,9 +52,8 @@ bool BaseInput::mouseReleased(const OgreBites::MouseButtonEvent& evt) {
     return false;
 }
 
-void Input::frameRendered(const Ogre::FrameEvent& evt) {
-    BaseInput::frameRendered(evt);
-
+void Input::updatesFinished() {
+    BaseInput::updatesFinished();
     readInput();
 }
 
@@ -91,9 +91,6 @@ void Input::readInput() {
 
     m_deltaX = posX - negX;
     m_deltaY = posY - negY;
-
-    m_shift = isKeyPressed(Key::SHIFT);
-    m_escape = isKeyPressed(Key::ESCAPE);
 }
 
 } // end namespace core

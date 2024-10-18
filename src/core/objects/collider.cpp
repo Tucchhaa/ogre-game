@@ -51,9 +51,8 @@ bool Collider::isDynamic() const {
 }
 
 void Collider::resetRigidbodyTransform() const {
-    const auto nodePosition = &getParentNode()->getPosition();
-    const auto nodeRotation = &getParentNode()->getOrientation();
-
+    const auto nodePosition = &getParentNode()->_getDerivedPosition();
+    const auto nodeRotation = &getParentNode()->_getDerivedOrientation();
     btTransform transform;
 
     transform.setOrigin(btVector3(nodePosition->x, nodePosition->y, nodePosition->z));
@@ -73,8 +72,8 @@ void Collider::updateSceneNodeTransform() const {
 
     m_state->getValues(position, rotation);
 
-    getParentNode()->setPosition(position);
-    getParentNode()->setOrientation(rotation);
+    getParentNode()->_setDerivedPosition(position);
+    getParentNode()->_setDerivedOrientation(rotation);
 }
 
 void Collider::fixedUpdate(float dt) {

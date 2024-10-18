@@ -1,14 +1,25 @@
+/*
+ * Game Development Programming mini exercise 1
+ * Student ID: 112550085
+ * Name: Eldar Iusupzhanov
+ * Repository: https://github.com/Tucchhaa/ogre-game/tree/eldar_mini_exercise1_demo
+ */
+
 #include <iostream>
 
 #include "core/game.hpp"
 #include "core/input.hpp"
 #include "core/scene.hpp"
+#include "core/utils.hpp"
 #include "core/window_manager.hpp"
 #include "core/objects/collider.hpp"
 
 using namespace std;
 
 class SimpleScene : public core::Scene {
+    Ogre::SceneNode* m_sphereNode = nullptr;
+    core::Collider* m_sphereCollider = nullptr;
+
     void init() override {
         core::Game::windowManager()->relativeMouseEnabled(true);
 
@@ -35,22 +46,93 @@ class SimpleScene : public core::Scene {
         auto* controller = m_sceneManager->createMovableObject("FreeCameraController");
         cameraNode->attachObject(controller);
 
-        // finally something to render
-        Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
+        createCubes();
+        createGround();
+        createSphere();
+    }
 
-        Ogre::SceneNode* sinbadNode = m_rootNode->createChildSceneNode();
-        sinbadNode->translate(Ogre::Vector3(0, 4, 0));
-        sinbadNode->attachObject(ent);
-        // sinbad collider
-        auto sinbadColliderShape = core::Shape(
-            make_shared<btBoxShape>(btVector3(2, 4.5, 1))
-        );
-        sinbadColliderShape.transform()->setOrigin(btVector3(0, -0.35, 0));
-        auto sinbadCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("SinbadCollider", "Collider"));
-        sinbadCollider->setShapes({ sinbadColliderShape });
-        sinbadNode->attachObject(sinbadCollider);
+    void update(float dt) override {
+        Scene::update(dt);
+        auto input = core::Game::input();
 
-        // ground
+        if(input->isKeyPressed(core::Key::ESCAPE)) {
+            core::Game::instance().stop();
+        }
+        if(input->isKeyDown(core::Key::SPACE)) {
+            core::Game::windowManager()->relativeMouseEnabled(
+                !core::Game::windowManager()->relativeMouseEnabled()
+            );
+        }
+
+        static long long lastShootTime = core::utils::getTimestamp();
+        static long long reloadTime = 500;
+
+        if(input->leftMouseClicked() && core::utils::getTimestamp() - lastShootTime >= reloadTime) {
+            shootSphere();
+        }
+    }
+
+    void shootSphere() {
+        const auto OFFSET = Ogre::Vector3(-0.5, -0.5, 0.5);
+        const float SPHERE_SPEED = 50;
+        auto dir = mainCamera->getDerivedDirection();
+        auto bt_dir = btVector3(dir.x, dir.y, dir.z);
+
+        m_sphereNode->setPosition(mainCamera->getParentNode()->getPosition() + OFFSET);
+
+        m_sphereCollider->resetRigidbodyTransform();
+        m_sphereCollider->rigidbody()->activate(true);
+        m_sphereCollider->rigidbody()->clearForces();
+        m_sphereCollider->rigidbody()->setLinearVelocity(bt_dir * SPHERE_SPEED);
+        m_sphereCollider->rigidbody()->setAngularVelocity(btVector3(0, 0, 0));
+    }
+
+    void createSphere() {
+        const float RADIUS = 0.25;
+        m_sphereNode = m_rootNode->createChildSceneNode("sphere");
+
+        auto* entity = m_sceneManager->createEntity("sphere.obj");
+
+        auto shape = core::Shape(make_shared<btSphereShape>(RADIUS));
+        m_sphereCollider = static_cast<core::Collider*>(m_sceneManager->createMovableObject("Collider"));
+
+        m_sphereCollider->setShapes({ shape });
+        m_sphereCollider->setMass(5.0);
+        m_sphereCollider->rigidbody()->setRestitution(0.5);
+
+        m_sphereNode->scale(Ogre::Vector3(RADIUS));
+        m_sphereNode->translate(Ogre::Vector3(100)); // put the sphere far away initially
+        m_sphereNode->attachObject(entity);
+        m_sphereNode->attachObject(m_sphereCollider);
+    }
+
+    void createCubes() {
+        const int N = 5;
+        const float CUBE_SCALE = 1.0f;
+        const auto CUBES_OFFSET = Ogre::Vector3(0, 5, 0);
+        auto* cubesNode = m_rootNode->createChildSceneNode("cubes", CUBES_OFFSET);
+
+        for(int i=0; i < N; i++) {
+            for(int j=0; j < N; j++) {
+                for(int k=0; k < N; k++) {
+                    auto position = Ogre::Vector3(i, j, k) * CUBE_SCALE;
+                    auto* cube = m_sceneManager->createEntity("cube.obj");
+
+                    auto shape = core::Shape(make_shared<btBoxShape>(btVector3(CUBE_SCALE, CUBE_SCALE, CUBE_SCALE)));
+                    auto* collider = static_cast<core::Collider*>(m_sceneManager->createMovableObject("Collider"));
+                    collider->setShapes({ shape });
+
+                    auto* node = cubesNode->createChildSceneNode();
+                    node->translate(position);
+                    node->scale(Ogre::Vector3(CUBE_SCALE));
+                    node->attachObject(cube);
+                    node->attachObject(collider);
+                }
+            }
+        }
+    }
+
+    void createGround() {
         Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
         Ogre::MeshManager::getSingleton().createPlane(
             "ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
@@ -73,19 +155,6 @@ class SimpleScene : public core::Scene {
         groundCollider->setMass(0);
         groundNode->attachObject(groundCollider);
     }
-
-    void update(float dt) override {
-        Scene::update(dt);
-
-        if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
-            core::Game::instance().stop();
-        }
-        if(core::Game::input()->isKeyDown(core::Key::SPACE)) {
-            core::Game::windowManager()->relativeMouseEnabled(
-                !core::Game::windowManager()->relativeMouseEnabled()
-            );
-        }
-    }
 };
 
 int main()
@@ -93,7 +162,7 @@ int main()
     const auto scene = make_shared<SimpleScene>();
 
     auto& game = core::Game::instance();
-    game.debugMode(true);
+    // game.debugMode(true);
     game.configure();
     game.init();
     game.scene(scene);

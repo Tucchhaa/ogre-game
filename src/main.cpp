@@ -1,3 +1,10 @@
+/*
+ * Game Development Programming mini exercise 1
+ * Student ID: 112550085
+ * Name: Eldar Iusupzhanov
+ * Repository: https://github.com/Tucchhaa/ogre-game
+ */
+
 #include <iostream>
 
 #include "core/game.hpp"

@@ -79,7 +79,8 @@ public:
     bool isDynamic() const;
 
     /**
-     * Resets rigid body transform to parent scene node's transform
+     * Resets rigid body transform to parent scene node's transform.
+     * Call it after Ogre::SceneNode transform was changed to update rigidbody's state
      */
     void resetRigidbodyTransform() const;
 

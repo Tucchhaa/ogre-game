@@ -2,7 +2,7 @@
  * Game Development Programming mini exercise 1
  * Student ID: 112550085
  * Name: Eldar Iusupzhanov
- * Repository: https://github.com/Tucchhaa/ogre-game
+ * Repository: https://github.com/Tucchhaa/ogre-game/tree/eldar_mini_exercise1_demo
  */
 
 #include <iostream>

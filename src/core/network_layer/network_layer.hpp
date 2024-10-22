@@ -1,6 +1,8 @@
 #pragma once
 
 #include <thread>
+#include <atomic>
+#include <mutex>
 #include <enet/enet.h>
 
 using namespace std;

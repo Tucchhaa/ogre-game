@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.28)
 project(ogre_game)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     include_directories(./vcpkg/installed/arm64-osx/include)
@@ -16,6 +18,9 @@ link_libraries(OgreBites)
 
 find_package(Bullet CONFIG REQUIRED)
 link_libraries(${BULLET_LIBRARIES})
+
+find_package(SDL2 REQUIRED)
+link_libraries(${SDL2_LIBRARIES})
 
 find_package(unofficial-enet CONFIG REQUIRED)
 link_libraries(unofficial::enet::enet)

@@ -1,5 +1,7 @@
 #include "game.hpp"
 
+#include <filesystem>
+
 #include "game_event_listener.hpp"
 #include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"
@@ -9,21 +11,16 @@
 #include "physics_world.hpp"
 #include "window_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
-#include <mach-o/dyld.h>
 
 #include "utils.hpp"
 
 namespace core {
 
 void Game::configure() {
-    char buffer[1024];
-    uint32_t size = sizeof(buffer);
-    _NSGetExecutablePath(buffer, &size);
-    const filesystem::path executablePath = std::filesystem::canonical(buffer);
-    // TODO: change this to executableDir
-    const string projectPath = executablePath.parent_path().parent_path();
+    const filesystem::path projectPath = filesystem::current_path().parent_path();
 
-    setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
+//    setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
+//    putenv(("OGRE_CONFIG_DIR=" + projectPath.string()).c_str());
 
     m_ctx = new OgreBites::ApplicationContext("OgreTutorialApp");
 }

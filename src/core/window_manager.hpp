@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Bites/OgreWindowEventUtilities.h>
+//#include <Bites/OgreWindowEventUtilities.h>
 
 namespace core {
 
@@ -32,15 +32,15 @@ private:
 
     void updateRelativeMouseMode() const;
 
-    class Listener : public OgreBites::WindowEventListener {
-    public:
-        explicit Listener(WindowManager* manager): m_manager(manager) {}
-
-        void windowFocusChange(Ogre::RenderWindow*) override { m_manager->windowFocusChange(); }
-
-    private:
-        WindowManager* m_manager;
-    };
+//    class Listener : public OgreBites::WindowEventListener {
+//    public:
+//        explicit Listener(WindowManager* manager): m_manager(manager) {}
+//
+//        void windowFocusChange(Ogre::RenderWindow*) override { m_manager->windowFocusChange(); }
+//
+//    private:
+//        WindowManager* m_manager;
+//    };
 };
 
 } // end namespace core

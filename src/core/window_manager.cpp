@@ -7,9 +7,9 @@
 namespace core {
 
 WindowManager::WindowManager() {
-    OgreBites::WindowEventUtilities::addWindowEventListener(
-        Game::renderWindow(), new Listener(this)
-    );
+//    OgreBites::WindowEventUtilities::addWindowEventListener(
+//        Game::renderWindow(), new Listener(this)
+//    );
 }
 
 void WindowManager::updateRelativeMouseMode() const {

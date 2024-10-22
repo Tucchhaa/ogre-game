@@ -20,7 +20,7 @@ void Game::configure() {
     const filesystem::path projectPath = filesystem::current_path().parent_path();
 
 //    setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
-//    putenv(("OGRE_CONFIG_DIR=" + projectPath.string()).c_str());
+    putenv(("OGRE_CONFIG_DIR=" + projectPath.string()).c_str());
 
     m_ctx = new OgreBites::ApplicationContext("OgreTutorialApp");
 }

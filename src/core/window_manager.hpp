@@ -1,7 +1,5 @@
 #pragma once
 
-//#include <Bites/OgreWindowEventUtilities.h>
-
 namespace core {
 
 /**
@@ -9,7 +7,7 @@ namespace core {
  */
 class WindowManager {
 public:
-    WindowManager();
+    WindowManager() = default;
 
     /**
      * If relative mouse is enabled, the mouse cursor will be hidden and the
@@ -23,6 +21,10 @@ public:
         return m_relativeMouseEnabled;
     }
 
+    /**
+     * Need to implement Windows Event Listener, which will listen
+     * to window focus change and invoke this function
+     */
     void windowFocusChange() const {
         updateRelativeMouseMode();
     }
@@ -31,16 +33,6 @@ private:
     bool m_relativeMouseEnabled = false;
 
     void updateRelativeMouseMode() const;
-
-//    class Listener : public OgreBites::WindowEventListener {
-//    public:
-//        explicit Listener(WindowManager* manager): m_manager(manager) {}
-//
-//        void windowFocusChange(Ogre::RenderWindow*) override { m_manager->windowFocusChange(); }
-//
-//    private:
-//        WindowManager* m_manager;
-//    };
 };
 
 } // end namespace core

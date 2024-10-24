@@ -1,5 +1,7 @@
 #include "game.hpp"
 
+#include <filesystem>
+
 #include "game_event_listener.hpp"
 #include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"
@@ -13,9 +15,13 @@
 namespace core {
 
 void Game::configure() {
-    const string projectPath = filesystem::current_path().parent_path();
+    const filesystem::path projectPath = filesystem::current_path().parent_path();
 
-    setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
+    #ifdef _WIN32
+        putenv(("OGRE_CONFIG_DIR=" + projectPath.string()).c_str());
+    #elif __APPLE__
+        setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
+    #endif
 
     m_ctx = new OgreBites::ApplicationContext("OgreTutorialApp");
 }

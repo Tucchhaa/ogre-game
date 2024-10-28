@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CMAKE_TOOLCHAIN_FILE ./vcpkg/scripts/buildsystems/vcpkg.cmake)
+
 find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
 find_package(Bullet CONFIG REQUIRED)
 find_package(SDL2 REQUIRED)
@@ -21,12 +23,11 @@ add_executable(ogre_game
     ${CORE_SOURCE_FILES}
 )
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    target_include_directories(ogre_game PRIVATE ./vcpkg/installed/arm64-osx/include)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_include_directories(ogre_game PRIVATE ./vcpkg/installed/x64-linux/include)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    target_include_directories(ogre_game PRIVATE ./vcpkg/installed/x64-windows/include)
+if(WIN32)
+    # enable static build
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    # enable ogre static import TODO: check if has effect
+    set(OGRE_STATIC ON)
 endif()
 
 target_link_libraries(ogre_game

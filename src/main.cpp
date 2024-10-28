@@ -36,19 +36,19 @@ class SimpleScene : public core::Scene {
         cameraNode->attachObject(controller);
 
         // finally something to render
-//        Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
-//
-//        Ogre::SceneNode* sinbadNode = m_rootNode->createChildSceneNode();
-//        sinbadNode->translate(Ogre::Vector3(0, 4, 0));
-//        sinbadNode->attachObject(ent);
-//        // sinbad collider
-//        auto sinbadColliderShape = core::Shape(
-//            make_shared<btBoxShape>(btVector3(2, 4.5, 1))
-//        );
-//        sinbadColliderShape.transform()->setOrigin(btVector3(0, -0.35, 0));
-//        auto sinbadCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("SinbadCollider", "Collider"));
-//        sinbadCollider->setShapes({ sinbadColliderShape });
-//        sinbadNode->attachObject(sinbadCollider);
+        // Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
+        //
+        // Ogre::SceneNode* sinbadNode = m_rootNode->createChildSceneNode();
+        // sinbadNode->translate(Ogre::Vector3(0, 4, 0));
+        // sinbadNode->attachObject(ent);
+        // // sinbad collider
+        // auto sinbadColliderShape = core::Shape(
+        //     make_shared<btBoxShape>(btVector3(2, 4.5, 1))
+        // );
+        // sinbadColliderShape.transform()->setOrigin(btVector3(0, -0.35, 0));
+        // auto sinbadCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("SinbadCollider", "Collider"));
+        // sinbadCollider->setShapes({ sinbadColliderShape });
+        // sinbadNode->attachObject(sinbadCollider);
 
         // ground
         Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);

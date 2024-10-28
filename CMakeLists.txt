@@ -10,7 +10,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     include_directories(./vcpkg/installed/x64-linux/include)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    include_directories(./vcpkg/installed/x64-windows/include)
+    include_directories(./vcpkg/installed/x64-windows-static/include)
+
+    set(CMAKE_PREFIX_PATH
+        ./vcpkg/installed/x64-windows-static
+        ./vcpkg/installed/x64-windows-static/share
+    )
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/installed/x64-windows-static/share/stb)
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/installed/x64-windows-static/share/jxr)
+    set(RESOURCE_RC ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/buildtrees/ogre/src/v14.2.2-365de132fa.clean/Components/Bites/misc/OgreWin32Resources.rc)
 endif()
 
 find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
@@ -24,6 +34,7 @@ link_libraries(${SDL2_LIBRARIES})
 
 add_executable(ogre_game
         src/main.cpp
+        ${RESOURCE_RC}
         src/core/input.cpp
         src/core/input.hpp
         src/core/game.cpp

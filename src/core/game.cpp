@@ -40,6 +40,7 @@ void Game::init() {
     m_physics = make_shared<PhysicsWorld>();
     m_networkLayerManager = make_shared<NetworkLayerManager>();
 
+    //Ogre::RTShader::ShaderGenerator::initialize();
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);
 

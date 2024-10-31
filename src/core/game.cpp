@@ -9,11 +9,19 @@
 #include "physics_world.hpp"
 #include "window_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
+#include <mach-o/dyld.h>
+
+#include "utils.hpp"
 
 namespace core {
 
 void Game::configure() {
-    const string projectPath = filesystem::current_path().parent_path();
+    char buffer[1024];
+    uint32_t size = sizeof(buffer);
+    _NSGetExecutablePath(buffer, &size);
+    const filesystem::path executablePath = std::filesystem::canonical(buffer);
+    // TODO: change this to executableDir
+    const string projectPath = executablePath.parent_path().parent_path();
 
     setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
 
@@ -43,17 +51,26 @@ void Game::init() {
     m_ctx->addInputListener(m_input.get());
 }
 
-void Game::start() const {
-    m_networkLayerManager->initNetworkLayer(GameType::SinglePlayer);
+void Game::startRendering() const {
     m_scene->init();
     m_renderWindow->addViewport(m_scene->mainCamera);
-
-    m_networkLayerManager->start();
     m_root->startRendering();
 }
 
-void Game::stop() const {
+void Game::stopRendering() const {
     m_root->queueEndRendering();
+}
+
+void Game::startNetwork() const {
+    if(utils::isClientExecutable()) {
+        m_networkLayerManager->searchLANGames();
+        m_networkLayerManager->initNetworkLayer(NetworkType::LANPeer);
+    }
+    else {
+        m_networkLayerManager->initNetworkLayer(NetworkType::LANHost);
+    }
+
+    m_networkLayerManager->start();
 }
 
 bool Game::debugMode(bool value) {

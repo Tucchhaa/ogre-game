@@ -3,6 +3,8 @@
 #include <string>
 #include <map>
 #include <any>
+#include <istream>
+#include <ostream>
 #include <shared_mutex>
 
 #include <OGRE/OgreVector.h>
@@ -22,6 +24,9 @@ public:
 
     map<string, any> popChanges();
 
+    virtual void serialize(std::ostream& stream) { }
+    virtual void deserialize(std::istream& stream) { }
+
 protected:
     map<string, any> m_changes;
     mutable shared_mutex m_mutex;
@@ -35,7 +40,7 @@ private:
 
 /**
  * Defines props getter and setter
- * @param type type of the property: int, string, Vec3, pointer...
+ * @param type type of the property: int, string, Vec3...
  */
 #define STATE_PROP(type, name)                    \
     public:                                       \

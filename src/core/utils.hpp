@@ -2,8 +2,7 @@
 
 #include <OGRE/OgreVector.h>
 #include <btBulletDynamicsCommon.h>
-
-using namespace std;
+#include <chrono>
 
 namespace core::utils {
 
@@ -18,7 +17,7 @@ namespace core::utils {
 
 inline long long getTimestamp() {
     const auto now = std::chrono::system_clock::now();
-    const auto duration = chrono::duration_cast<chrono::milliseconds>(now.time_since_epoch());
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
 
     return duration.count();
 }

@@ -17,7 +17,7 @@
 namespace core {
 
 void Game::configure() {
-    const filesystem::path projectPath = filesystem::current_path().parent_path();
+    const std::filesystem::path projectPath = std::filesystem::current_path().parent_path();
 
     #ifdef _WIN32
         putenv(("OGRE_CONFIG_DIR=" + projectPath.string()).c_str());
@@ -40,10 +40,10 @@ void Game::init() {
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
     m_renderWindow = m_ctx->getRenderWindow();
 
-    m_windowManager = make_shared<WindowManager>();
-    m_input = make_shared<Input>();
-    m_physics = make_shared<PhysicsWorld>();
-    m_networkLayerManager = make_shared<NetworkLayerManager>();
+    m_windowManager = std::make_shared<WindowManager>();
+    m_input = std::make_shared<Input>();
+    m_physics = std::make_shared<PhysicsWorld>();
+    m_networkLayerManager = std::make_shared<NetworkLayerManager>();
 
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);

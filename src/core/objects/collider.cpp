@@ -4,6 +4,8 @@
 #include "../physics_world.hpp"
 #include "../utils.hpp"
 
+using namespace std;
+
 namespace core {
 
 void ColliderState::setValues(const btVector3& position, const btQuaternion& rotation) {

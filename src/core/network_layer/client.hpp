@@ -14,7 +14,7 @@ protected:
 
     void onConnected() override;
 
-    void onMessage(istream& stream) override;
+    void onMessage(std::istream& stream) override;
 
     void tick(float dt) override;
 

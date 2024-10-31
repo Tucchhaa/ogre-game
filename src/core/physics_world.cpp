@@ -1,5 +1,7 @@
 #include "physics_world.hpp"
 
+using namespace std;
+
 namespace core {
 
 PhysicsWorld::PhysicsWorld() {

@@ -32,8 +32,6 @@ find_package(Bullet CONFIG REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(unofficial-enet CONFIG REQUIRED)
 
-get_core_source_files()
-
 add_executable(ogre_game
     src/main.cpp
     ${CORE_SOURCE_FILES}

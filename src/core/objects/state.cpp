@@ -4,6 +4,8 @@
 #include "../utils.hpp"
 #include "../network_layer/network_layer.hpp"
 
+using namespace std;
+
 namespace core {
 
 map<string, any> State::popChanges() {

@@ -8,6 +8,8 @@
 #include "../physics_world.hpp"
 #include "../utils.hpp"
 
+using namespace std;
+
 namespace core {
 
 Server::Server(): NetworkLayer(HostType::Server) {

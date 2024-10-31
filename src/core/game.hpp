@@ -5,8 +5,6 @@
 
 #include "network_layer/network_layer_manager.hpp"
 
-using namespace std;
-
 namespace core {
 
 class Input;
@@ -49,19 +47,19 @@ public:
     static Ogre::MaterialManager* materialManager() { return instance().m_materialManager; }
     static Ogre::RenderWindow* renderWindow() { return instance().m_renderWindow; }
 
-    static shared_ptr<Input> input() { return instance().m_input; }
-    static shared_ptr<WindowManager> windowManager() { return instance().m_windowManager; }
-    static shared_ptr<Scene> scene() { return instance().m_scene; }
-    static shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
-    static shared_ptr<NetworkLayerManager> networkLayerManager() { return instance().m_networkLayerManager; }
-    static shared_ptr<NetworkLayer> networkLayer() { return networkLayerManager()->networkLayer(); }
+    static std::shared_ptr<Input> input() { return instance().m_input; }
+    static std::shared_ptr<WindowManager> windowManager() { return instance().m_windowManager; }
+    static std::shared_ptr<Scene> scene() { return instance().m_scene; }
+    static std::shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
+    static std::shared_ptr<NetworkLayerManager> networkLayerManager() { return instance().m_networkLayerManager; }
+    static std::shared_ptr<NetworkLayer> networkLayer() { return networkLayerManager()->networkLayer(); }
     static bool debugMode() { return instance().m_debugMode; }
 
     // ===
     // Setters
     // ===
 
-    void scene(const shared_ptr<Scene>& scene) { m_scene = scene; }
+    void scene(const std::shared_ptr<Scene>& scene) { m_scene = scene; }
 
     /**
      * When debug mode is enabled, the game will draw collider shapes
@@ -77,11 +75,11 @@ private:
     Ogre::MaterialManager* m_materialManager = nullptr;
     Ogre::RenderWindow* m_renderWindow = nullptr;
 
-    shared_ptr<Input> m_input;
-    shared_ptr<WindowManager> m_windowManager;
-    shared_ptr<Scene> m_scene;
-    shared_ptr<PhysicsWorld> m_physics;
-    shared_ptr<NetworkLayerManager> m_networkLayerManager;
+    std::shared_ptr<Input> m_input;
+    std::shared_ptr<WindowManager> m_windowManager;
+    std::shared_ptr<Scene> m_scene;
+    std::shared_ptr<PhysicsWorld> m_physics;
+    std::shared_ptr<NetworkLayerManager> m_networkLayerManager;
 
     class Listener : public Ogre::FrameListener {
     public:

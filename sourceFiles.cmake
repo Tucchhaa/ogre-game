@@ -32,6 +32,12 @@ set(CORE_SOURCE_FILES
     src/core/network_layer/server.hpp
     src/core/network_layer/client.cpp
     src/core/network_layer/client.hpp
+    src/core/network_layer/lan_scanner.hpp
+    src/core/network_layer/lan_scanner.cpp
+    src/core/network_layer/lan_listener.cpp
+    src/core/network_layer/lan_listener.hpp
+    src/core/network_layer/const.hpp
+    src/core/network_layer/server_info.hpp
 
     src/core/event.hpp
     src/core/utils.hpp

@@ -5,6 +5,8 @@
 #include "../utils.hpp"
 #include "const.hpp"
 
+using namespace std;
+
 namespace core {
 
 LANScanner::LANScanner() {
@@ -43,7 +45,7 @@ vector<ServerInfo> LANScanner::scan() const {
 }
 
 string LANScanner::receiveData(ENetAddress* serverAddress, unsigned int* serverPort) const {
-    int bufferLength = (int)LAN_DISCOVERED_MESSAGE_LEN + sizeof(int);
+    constexpr int bufferLength = (int)LAN_DISCOVERED_MESSAGE_LEN + sizeof(int);
     char buffer[bufferLength];
 
     ENetBuffer payload;

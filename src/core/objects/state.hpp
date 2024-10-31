@@ -9,8 +9,6 @@
 
 #include <OGRE/OgreVector.h>
 
-using namespace std;
-
 namespace core {
 
 /**
@@ -22,14 +20,14 @@ public:
     State() = default;
     virtual ~State() = default;
 
-    map<string, any> popChanges();
+    std::map<std::string, std::any> popChanges();
 
     virtual void serialize(std::ostream& stream) { }
     virtual void deserialize(std::istream& stream) { }
 
 protected:
-    map<string, any> m_changes;
-    mutable shared_mutex m_mutex;
+    std::map<std::string, std::any> m_changes;
+    mutable std::shared_mutex m_mutex;
 
     static Ogre::Vector3 interpolate(const Ogre::Vector3& a, const Ogre::Vector3& b);
     static Ogre::Quaternion interpolate(const Ogre::Quaternion& a, const Ogre::Quaternion& b);
@@ -45,11 +43,11 @@ private:
 #define STATE_PROP(type, name)                    \
     public:                                       \
     void name(const type& value) {                \
-        unique_lock _(m_mutex);                   \
+        std::unique_lock _(m_mutex);              \
         set_##name##_unsafe(value);               \
     }                                             \
     type name() const {                           \
-        shared_lock _(m_mutex);                   \
+        std::shared_lock _(m_mutex);              \
         return m_##name;                          \
     }                                             \
                                                   \
@@ -71,7 +69,7 @@ private:
 #define STATE_INTERPOLATABLE_PROP(type, name)                   \
     public:                                                     \
     type interpolate_##name() {                                 \
-        shared_lock _(m_mutex);                                 \
+        std::shared_lock _(m_mutex);                            \
         return interpolate_##name##_unsafe();                   \
     }                                                           \
     type interpolate_##name##_unsafe() {                        \

@@ -42,6 +42,12 @@ public:
     void setValues(const btVector3& position, const btQuaternion& rotation);
 
     void getValues(Ogre::Vector3& position, Ogre::Quaternion& rotation);
+
+    void resetValues(const btVector3& position, const btQuaternion& rotation);
+
+    void serialize(std::ostream& stream) override;
+
+    void deserialize(std::istream& stream) override;
 };
 
 const Ogre::String COLLIDER_TYPE = "Collider";
@@ -52,7 +58,7 @@ const Ogre::String COLLIDER_TYPE = "Collider";
 class Collider : public BaseMovableObject {
 public:
     Collider() = default;
-    explicit Collider(const Ogre::String& name);
+    explicit Collider(const Ogre::String& name): BaseMovableObject(name) {}
 
     const Ogre::String& getMovableType() const override { return COLLIDER_TYPE; }
     shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
@@ -79,7 +85,8 @@ public:
     bool isDynamic() const;
 
     /**
-     * Resets rigid body transform to parent scene node's transform
+     * Resets rigid body transform to parent scene node's transform.
+     * Call it after Ogre::SceneNode transform was changed to update rigid body's state
      */
     void resetRigidbodyTransform() const;
 

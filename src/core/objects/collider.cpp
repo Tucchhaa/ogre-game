@@ -2,18 +2,16 @@
 
 #include "../game.hpp"
 #include "../physics_world.hpp"
+#include "../utils.hpp"
 
 namespace core {
 
 void ColliderState::setValues(const btVector3& position, const btQuaternion& rotation) {
-    auto ogrePosition = Ogre::Vector3(position.x(), position.y(), position.z());
-    auto ogreRotation = Ogre::Quaternion(rotation.w(), rotation.x(), rotation.y(), rotation.z());
-
     unique_lock _(m_mutex);
 
     // use unsafe functions because mutex is already locked
-    set_position_unsafe(ogrePosition);
-    set_rotation_unsafe(ogreRotation);
+    set_position_unsafe(utils::convertVec3(position));
+    set_rotation_unsafe(utils::convertQuat(rotation));
 }
 
 void ColliderState::getValues(Ogre::Vector3& position, Ogre::Quaternion& rotation) {
@@ -24,7 +22,33 @@ void ColliderState::getValues(Ogre::Vector3& position, Ogre::Quaternion& rotatio
     rotation = interpolate_rotation_unsafe();
 }
 
-Collider::Collider(const Ogre::String& name): BaseMovableObject(name) { }
+void ColliderState::resetValues(const btVector3& position, const btQuaternion& rotation) {
+    unique_lock _(m_mutex);
+
+    m_position = m_previous_position = utils::convertVec3(position);
+    m_rotation = m_previous_rotation = utils::convertQuat(rotation);
+}
+
+void ColliderState::serialize(std::ostream& stream) {
+    shared_lock _(m_mutex);
+
+    STREAM_WRITE(stream, m_position);
+    STREAM_WRITE(stream, m_rotation);
+}
+
+void ColliderState::deserialize(std::istream& stream) {
+    Ogre::Vector3 position;
+    Ogre::Quaternion rotation;
+
+    STREAM_READ(stream, position);
+    STREAM_READ(stream, rotation);
+
+    unique_lock _(m_mutex);
+
+    // use unsafe functions because mutex is already locked
+    set_position_unsafe(position);
+    set_rotation_unsafe(rotation);
+}
 
 void Collider::setShapes(const vector<Shape>& shapes) {
     m_shapes = shapes;
@@ -63,7 +87,7 @@ void Collider::resetRigidbodyTransform() const {
     }
 
     m_rigidBody->setWorldTransform(transform);
-    m_state->setValues(transform.getOrigin(), transform.getRotation());
+    m_state->resetValues(transform.getOrigin(), transform.getRotation());
 }
 
 void Collider::updateSceneNodeTransform() const {

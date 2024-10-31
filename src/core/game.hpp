@@ -33,9 +33,11 @@ public:
 
     void init();
 
-    void start() const;
+    void startRendering() const;
 
-    void stop() const;
+    void stopRendering() const;
+
+    void startNetwork() const;
 
     // ===
     // Static getters

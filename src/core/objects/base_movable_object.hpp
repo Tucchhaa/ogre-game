@@ -30,7 +30,9 @@ public:
 
     virtual shared_ptr<State> state() { return nullptr; }
 
-    static map<int, BaseMovableObject*> instances() { return m_instances; }
+    static const map<int, BaseMovableObject*>& instances() { return m_instances; }
+
+    static BaseMovableObject* getInstance(int objectID) { return m_instances[objectID]; }
 
     // ===
     // MovableObject overrides

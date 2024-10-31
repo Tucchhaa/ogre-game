@@ -17,6 +17,9 @@ link_libraries(OgreBites)
 find_package(Bullet CONFIG REQUIRED)
 link_libraries(${BULLET_LIBRARIES})
 
+find_package(unofficial-enet CONFIG REQUIRED)
+link_libraries(unofficial::enet::enet)
+
 add_executable(ogre_game
         src/main.cpp
         src/core/input.cpp
@@ -52,6 +55,12 @@ add_executable(ogre_game
         src/core/network_layer/server.hpp
         src/core/network_layer/client.cpp
         src/core/network_layer/client.hpp
+        src/core/network_layer/lan_scanner.hpp
+        src/core/network_layer/lan_scanner.cpp
+        src/core/network_layer/lan_listener.cpp
+        src/core/network_layer/lan_listener.hpp
+        src/core/network_layer/const.hpp
+        src/core/network_layer/server_info.hpp
 
         src/core/event.hpp
         src/core/utils.hpp

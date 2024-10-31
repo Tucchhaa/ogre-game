@@ -78,7 +78,7 @@ class SimpleScene : public core::Scene {
         Scene::update(dt);
 
         if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
-            core::Game::instance().stop();
+            core::Game::instance().stopRendering();
         }
         if(core::Game::input()->isKeyDown(core::Key::SPACE)) {
             core::Game::windowManager()->relativeMouseEnabled(
@@ -97,7 +97,9 @@ int main()
     game.configure();
     game.init();
     game.scene(scene);
-    game.start();
+
+    game.startNetwork();
+    game.startRendering();
 
     return 0;
 }

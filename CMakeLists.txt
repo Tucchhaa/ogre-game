@@ -35,6 +35,8 @@ add_executable(ogre_game
     src/main.cpp
     ${CORE_SOURCE_FILES}
     ${RESOURCE_RC}
+        src/ui/main_menu.cpp
+        src/ui/main_menu.h
 )
 
 target_link_libraries(ogre_game

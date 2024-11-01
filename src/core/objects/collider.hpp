@@ -5,8 +5,6 @@
 
 #include "base_movable_object.hpp"
 
-using namespace std;
-
 namespace core {
 
 /**
@@ -17,7 +15,7 @@ namespace core {
 class Shape {
 public:
     explicit Shape(
-        const shared_ptr<btCollisionShape>& shape,
+        const std::shared_ptr<btCollisionShape>& shape,
         const btTransform& transform = btTransform::getIdentity()
     ): m_btShape(shape), m_btTransform(transform) {}
 
@@ -27,7 +25,7 @@ public:
     btTransform* transform() { return &m_btTransform; }
 
 private:
-    shared_ptr<btCollisionShape> m_btShape;
+    std::shared_ptr<btCollisionShape> m_btShape;
     btTransform m_btTransform;
 };
 
@@ -61,8 +59,8 @@ public:
     explicit Collider(const Ogre::String& name): BaseMovableObject(name) {}
 
     const Ogre::String& getMovableType() const override { return COLLIDER_TYPE; }
-    shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
-    shared_ptr<State> state() override { return static_pointer_cast<State>(m_state); }
+    std::shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
+    std::shared_ptr<State> state() override { return std::static_pointer_cast<State>(m_state); }
 
     void fixedUpdate(float dt) override;
 
@@ -72,7 +70,7 @@ public:
      * Sets shapes of the collider.
      * Note: call this method only once.
      */
-    void setShapes(const vector<Shape> &shapes);
+    void setShapes(const std::vector<Shape> &shapes);
 
     /**
      * Sets mass of the collider. If mass is 0, the collider is fixed in space.
@@ -101,15 +99,15 @@ protected:
     btTransform getTransform() const;
 
 private:
-    shared_ptr<ColliderState> m_state = make_shared<ColliderState>();
-    shared_ptr<btCompoundShape> m_shape;
-    vector<Shape> m_shapes;
-    shared_ptr<btRigidBody> m_rigidBody;
+    std::shared_ptr<ColliderState> m_state = std::make_shared<ColliderState>();
+    std::shared_ptr<btCompoundShape> m_shape;
+    std::vector<Shape> m_shapes;
+    std::shared_ptr<btRigidBody> m_rigidBody;
     float m_mass = 1.;
 
-    shared_ptr<btCompoundShape> createCompoundShape() const;
+    std::shared_ptr<btCompoundShape> createCompoundShape() const;
 
-    shared_ptr<btRigidBody> createRigidBody() const;
+    std::shared_ptr<btRigidBody> createRigidBody() const;
 };
 
 class ColliderFactory : public Ogre::MovableObjectFactory {

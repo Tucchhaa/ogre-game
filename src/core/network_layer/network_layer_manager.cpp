@@ -5,6 +5,8 @@
 #include "server.hpp"
 #include "client.hpp"
 
+using namespace std;
+
 namespace core {
 
 NetworkLayerManager::NetworkLayerManager() {

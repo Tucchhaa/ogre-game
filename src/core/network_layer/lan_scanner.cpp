@@ -5,6 +5,8 @@
 #include "../utils.hpp"
 #include "const.hpp"
 
+using namespace std;
+
 namespace core {
 
 LANScanner::LANScanner() {
@@ -43,11 +45,11 @@ vector<ServerInfo> LANScanner::scan() const {
 }
 
 string LANScanner::receiveData(ENetAddress* serverAddress, unsigned int* serverPort) const {
-    int bufferLength = (int)LAN_DISCOVERED_MESSAGE_LEN + sizeof(int);
-    char buffer[bufferLength];
+    const unsigned int bufferLength = LAN_DISCOVERED_MESSAGE_LEN + sizeof(int);
+    const std::unique_ptr<char[]> buffer(new char[bufferLength]);
 
     ENetBuffer payload;
-    payload.data = &buffer;
+    payload.data = buffer.get();
     payload.dataLength = bufferLength;
 
     // Note: blocking function. TODO: make it to not block
@@ -55,9 +57,9 @@ string LANScanner::receiveData(ENetAddress* serverAddress, unsigned int* serverP
         return "";
     }
 
-    string message(buffer, LAN_DISCOVERED_MESSAGE_LEN);
+    string message(buffer.get(), LAN_DISCOVERED_MESSAGE_LEN);
     // extract server port
-    memcpy(serverPort, buffer + LAN_DISCOVERED_MESSAGE_LEN, sizeof(int));
+    memcpy(serverPort, buffer.get() + LAN_DISCOVERED_MESSAGE_LEN, sizeof(int));
 
     return message;
 }

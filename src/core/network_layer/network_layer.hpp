@@ -1,9 +1,9 @@
 #pragma once
 
 #include <thread>
+#include <atomic>
+#include <mutex>
 #include <enet/enet.h>
-
-using namespace std;
 
 namespace core {
 
@@ -36,7 +36,7 @@ public:
      * Timestamp of the most recent update.
      */
     long long currentUpdateTimestamp() {
-        lock_guard _(updateTimestampMutex);
+        std::lock_guard _(updateTimestampMutex);
         return m_currentUpdateTimestamp;
     }
 
@@ -44,7 +44,7 @@ public:
      * The timestamp of the previous update.
      */
     long long previousUpdateTimestamp() {
-        lock_guard _(updateTimestampMutex);
+        std::lock_guard _(updateTimestampMutex);
         return m_previousUpdateTimestamp;
     }
 
@@ -72,17 +72,17 @@ protected:
      * If client, then called when a message from the server was received.
      * If server, then called when a message from a client was received.
      */
-    virtual void onMessage(istream& stream) {}
+    virtual void onMessage(std::istream& stream) {}
 
-    static ENetPacket* createPacket(const ostringstream &stream, enet_uint8 channel_id);
+    static ENetPacket* createPacket(const std::ostringstream &stream, enet_uint8 channel_id);
 
 private:
     static constexpr int MILLISECONDS_BETWEEN_TICKS = 20; // 50 updates per second
 
-    atomic<bool> m_running{false};
-    thread m_tickThread;
+    std::atomic<bool> m_running{false};
+    std::thread m_tickThread;
     // mutex for reading/writing @m_currentUpdateTimestamp, @m_previousUpdateTimestamp
-    mutex updateTimestampMutex;
+    std::mutex updateTimestampMutex;
 
     // Important note: this is accessed from multiple threads.
     long long m_currentUpdateTimestamp = 0;

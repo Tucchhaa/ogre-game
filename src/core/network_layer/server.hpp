@@ -38,21 +38,21 @@ protected:
     void onDisconnected() override;
 
 private:
-     atomic<ServerState> m_state{};
+     std::atomic<ServerState> m_state{};
 
-     shared_ptr<LANListener> m_LANListener;
+    std::shared_ptr<LANListener> m_LANListener;
 
     void tickGame(float dt) const;
 
     /**
      * Sends data to all connected clients.
      */
-    void broadcast(const ostringstream& stream, enet_uint8 channel_id) const;
+    void broadcast(const std::ostringstream& stream, enet_uint8 channel_id) const;
 
     /**
      * Sends data to a specific client.
      */
-    void send(ENetPeer* peer, const ostringstream &stream, enet_uint8 channel_id) const;
+    void send(ENetPeer* peer, const std::ostringstream &stream, enet_uint8 channel_id) const;
 };
 
 };

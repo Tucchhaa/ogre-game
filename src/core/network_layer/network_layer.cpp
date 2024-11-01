@@ -5,6 +5,8 @@
 #include "../utils.hpp"
 #include "const.hpp"
 
+using namespace std;
+
 namespace core {
 
 NetworkLayer::~NetworkLayer() {

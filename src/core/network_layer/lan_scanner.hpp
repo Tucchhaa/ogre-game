@@ -1,6 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <vector>
+#include <string>
+
 #include <enet/enet.h>
 
 #include "server_info.hpp"

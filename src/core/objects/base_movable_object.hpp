@@ -28,9 +28,9 @@ public:
         m_instances.erase(m_instances.find(ID));
     }
 
-    virtual shared_ptr<State> state() { return nullptr; }
+    virtual std::shared_ptr<State> state() { return nullptr; }
 
-    static const map<int, BaseMovableObject*>& instances() { return m_instances; }
+    static const std::map<int, BaseMovableObject*>& instances() { return m_instances; }
 
     static BaseMovableObject* getInstance(int objectID) { return m_instances[objectID]; }
 
@@ -64,7 +64,7 @@ protected:
     virtual void objectMoved() {}
 
 private:
-    static map<int, BaseMovableObject*> m_instances;
+    static std::map<int, BaseMovableObject*> m_instances;
 
     static int generateID() {
         static int lastID = 0;

@@ -6,11 +6,15 @@
 #include "../utils.hpp"
 #include "../objects/base_movable_object.hpp"
 
-core::Client::Client(ServerInfo server): NetworkLayer(HostType::Client),
-    m_server(server)
+using namespace std;
+
+namespace core {
+
+Client::Client(ServerInfo server): NetworkLayer(HostType::Client),
+                                         m_server(server)
 { }
 
-void core::Client::init() {
+void Client::init() {
     NetworkLayer::init();
 
     // connect to server
@@ -28,11 +32,11 @@ void core::Client::init() {
     // enet_peer_reset(peer)
 }
 
-void core::Client::onConnected() {
+void Client::onConnected() {
     cout << "Connected to server at port: " << m_server.port << endl;
 }
 
-void core::Client::onMessage(istream& stream) {
+void Client::onMessage(istream& stream) {
     int statesCount;
     STREAM_READ(stream, statesCount);
 
@@ -45,4 +49,6 @@ void core::Client::onMessage(istream& stream) {
     }
 }
 
-void core::Client::tick(float dt) { }
+void Client::tick(float dt) { }
+
+} // end namespace core

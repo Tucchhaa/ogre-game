@@ -1,10 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "server_info.hpp"
-
-using namespace std;
 
 namespace core {
 
@@ -42,17 +41,17 @@ public:
     void start() const;
     void stop();
 
-    shared_ptr<NetworkLayer> networkLayer() const { return m_networkLayer; }
-    shared_ptr<Server> server() const;
-    shared_ptr<Client> client() const;
+    std::shared_ptr<NetworkLayer> networkLayer() const { return m_networkLayer; }
+    std::shared_ptr<Server> server() const;
+    std::shared_ptr<Client> client() const;
 
 private:
     NetworkType m_networkType = NetworkType::None;
-    shared_ptr<NetworkLayer> m_networkLayer;
-    shared_ptr<LANScanner> m_LANScanner;
-    vector<ServerInfo> m_LANServers;
+    std::shared_ptr<NetworkLayer> m_networkLayer;
+    std::shared_ptr<LANScanner> m_LANScanner;
+    std::vector<ServerInfo> m_LANServers;
 
-    shared_ptr<NetworkLayer> createNetworkLayer(NetworkType gameType);
+    std::shared_ptr<NetworkLayer> createNetworkLayer(NetworkType gameType);
 };
 
 } // end namespace core

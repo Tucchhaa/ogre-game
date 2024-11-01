@@ -1,5 +1,7 @@
 #include "game.hpp"
 
+#include <filesystem>
+
 #include "game_event_listener.hpp"
 #include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"
@@ -9,21 +11,19 @@
 #include "physics_world.hpp"
 #include "window_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
-#include <mach-o/dyld.h>
 
 #include "utils.hpp"
 
 namespace core {
 
 void Game::configure() {
-    char buffer[1024];
-    uint32_t size = sizeof(buffer);
-    _NSGetExecutablePath(buffer, &size);
-    const filesystem::path executablePath = std::filesystem::canonical(buffer);
-    // TODO: change this to executableDir
-    const string projectPath = executablePath.parent_path().parent_path();
+    const std::filesystem::path projectPath = std::filesystem::current_path().parent_path();
 
-    setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
+    #ifdef _WIN32
+        putenv(("OGRE_CONFIG_DIR=" + projectPath.string()).c_str());
+    #elif __APPLE__
+        setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
+    #endif
 
     m_ctx = new OgreBites::ApplicationContext("OgreTutorialApp");
 }
@@ -40,10 +40,10 @@ void Game::init() {
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
     m_renderWindow = m_ctx->getRenderWindow();
 
-    m_windowManager = make_shared<WindowManager>();
-    m_input = make_shared<Input>();
-    m_physics = make_shared<PhysicsWorld>();
-    m_networkLayerManager = make_shared<NetworkLayerManager>();
+    m_windowManager = std::make_shared<WindowManager>();
+    m_input = std::make_shared<Input>();
+    m_physics = std::make_shared<PhysicsWorld>();
+    m_networkLayerManager = std::make_shared<NetworkLayerManager>();
 
     const auto shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
     shaderGenerator->addSceneManager(m_sceneManager);

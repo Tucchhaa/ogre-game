@@ -12,7 +12,7 @@ namespace core {
 LANListener::LANListener(unsigned int port) {
     m_port = port;
     m_listener = enet_socket_create(ENET_SOCKET_TYPE_DATAGRAM);
-    m_discoveredMessage = createDiscoveredMessage(m_messageBuffer);
+    m_discoveredMessage = createDiscoveredMessage();
     m_listenAddress.host = ENET_HOST_ANY;
     m_listenAddress.port = LAN_LISTEN_PORT;
 
@@ -62,15 +62,15 @@ string LANListener::receiveData(ENetAddress* peerAddress) const {
     return message;
 }
 
-ENetBuffer LANListener::createDiscoveredMessage(char* buffer) const {
-    int bufferLength = (int)LAN_DISCOVERED_MESSAGE_LEN + sizeof(int);
-    buffer = new char[bufferLength];
+ENetBuffer LANListener::createDiscoveredMessage() {
+    const int bufferLength = (int)LAN_DISCOVERED_MESSAGE_LEN + sizeof(int);
+    m_messageBuffer = new char[bufferLength];
 
-    memcpy(buffer, LAN_DISCOVERED_MESSAGE, LAN_DISCOVERED_MESSAGE_LEN);
-    memcpy(buffer + LAN_DISCOVERED_MESSAGE_LEN, &m_port, sizeof(m_port));
+    memcpy(m_messageBuffer, LAN_DISCOVERED_MESSAGE, LAN_DISCOVERED_MESSAGE_LEN);
+    memcpy(m_messageBuffer + LAN_DISCOVERED_MESSAGE_LEN, &m_port, sizeof(m_port));
 
     ENetBuffer payload;
-    payload.data = buffer;
+    payload.data = m_messageBuffer;
     payload.dataLength = bufferLength;
 
     return payload;

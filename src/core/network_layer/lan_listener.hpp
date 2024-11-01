@@ -28,7 +28,7 @@ private:
     char* m_messageBuffer = nullptr;
     ENetBuffer m_discoveredMessage{};
 
-    ENetBuffer createDiscoveredMessage(char* buffer) const;
+    ENetBuffer createDiscoveredMessage();
 };
 
 }

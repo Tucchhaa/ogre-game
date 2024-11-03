@@ -15,6 +15,11 @@ public:
     }
 
     /**
+     * Called before first frame rendered.
+     */
+    virtual void start() {}
+
+    /**
      * Called each frame. Triggered by @Ogre::FrameListener::frameRenderingQueued
      */
     virtual void update(float dt) {}
@@ -25,6 +30,11 @@ public:
      * so be careful about concurrency
      */
     virtual void fixedUpdate(float dt) {}
+
+    static void callStart() {
+        for(const auto& [ID, instance]: m_instances)
+            instance->start();
+    }
 
     static void callUpdate(float dt) {
         for(const auto& [ID, instance]: m_instances)

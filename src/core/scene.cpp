@@ -7,7 +7,7 @@ namespace core {
 
 void Scene::init() {
     m_sceneManager = Game::sceneManager();
-    m_rootNode = m_sceneManager->getRootSceneNode();
+    m_rootNode = static_cast<CustomSceneNode*>(m_sceneManager->getRootSceneNode());
 }
 
 void Scene::update(float dt) {

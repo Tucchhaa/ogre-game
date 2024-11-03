@@ -30,8 +30,16 @@ inline Ogre::Vector3 convertVec3(const btVector3& position) {
     return Ogre::Vector3(position.x(), position.y(), position.z());
 }
 
+inline btVector3 convertVec3(const Ogre::Vector3& position) {
+    return btVector3(position.x, position.y, position.z);
+}
+
 inline Ogre::Quaternion convertQuat(const btQuaternion& rotation) {
     return Ogre::Quaternion(rotation.w(), rotation.x(), rotation.y(), rotation.z());
+}
+
+inline btQuaternion convertQuat(const Ogre::Quaternion& rotation) {
+    return btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 }
 
 inline bool isClientExecutable() {

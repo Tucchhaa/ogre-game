@@ -5,9 +5,11 @@
 #include "../game_event_listener.hpp"
 #include "../objects/state.hpp"
 
-class State;
-
 namespace core {
+
+class CustomSceneNode;
+class State;
+class TransformState;
 
 /** *
  * This class provides default implementations for abstract functions from @link Ogre::MovableObject
@@ -19,16 +21,24 @@ class BaseMovableObject : public Ogre::MovableObject, GameEventListener {
 public:
     const int ID;
 
-    BaseMovableObject(): ID(generateID())
-        { init(); }
-    explicit BaseMovableObject(const Ogre::String& name): MovableObject(name), ID(generateID())
-        { init(); }
+    BaseMovableObject(): BaseMovableObject(Ogre::BLANKSTRING) { }
+
+    explicit BaseMovableObject(const Ogre::String& name)
+        : MovableObject(name), ID(generateID())
+    {
+        setListener(new Listener(this));
+        m_instances[ID] = this;
+    }
 
     ~BaseMovableObject() {
         m_instances.erase(m_instances.find(ID));
     }
 
     virtual std::shared_ptr<State> state() { return nullptr; }
+
+    std::shared_ptr<TransformState> transformState() const;
+
+    CustomSceneNode* getCustomNode() const;
 
     static const std::map<int, BaseMovableObject*>& instances() { return m_instances; }
 
@@ -50,7 +60,6 @@ public:
     void visitRenderables(Ogre::Renderable::Visitor*, bool) override {}
 
 protected:
-
     // ===
     // MovableObject lifecycle events
     // ===
@@ -69,11 +78,6 @@ private:
     static int generateID() {
         static int lastID = 0;
         return ++lastID;
-    }
-
-    void init() {
-        setListener(new Listener(this));
-        m_instances[ID] = this;
     }
 
     class Listener final : public MovableObject::Listener {

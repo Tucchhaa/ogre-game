@@ -9,15 +9,22 @@ set(CORE_SOURCE_FILES
     src/core/window_manager.hpp
     src/core/game_event_listener.hpp
     src/core/game_event_listener.cpp
+        src/core/custom_scene_manager.hpp
+    src/core/custom_scene_node.cpp
+    src/core/custom_scene_node.hpp
 
     src/core/objects/base_movable_object.hpp
     src/core/objects/base_movable_object.cpp
     src/core/objects/free_character_controller.cpp
     src/core/objects/free_character_controller.hpp
+    src/core/objects/transform.cpp
+    src/core/objects/transform.hpp
     src/core/objects/collider.cpp
     src/core/objects/collider.hpp
     src/core/objects/state.hpp
     src/core/objects/state.cpp
+    src/core/objects/transform_state.cpp
+    src/core/objects/transform_state.hpp
 
     src/core/physics_world.cpp
     src/core/physics_world.hpp

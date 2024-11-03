@@ -2,15 +2,17 @@
 
 #include <filesystem>
 
+#include "custom_scene_manager.hpp"
 #include "game_event_listener.hpp"
-#include "objects/collider.hpp"
-#include "objects/free_character_controller.hpp"
-
 #include "scene.hpp"
 #include "input.hpp"
 #include "physics_world.hpp"
 #include "window_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
+
+#include "objects/collider.hpp"
+#include "objects/free_character_controller.hpp"
+#include "objects/transform.hpp"
 
 #include "utils.hpp"
 
@@ -34,9 +36,11 @@ void Game::init() {
     m_root = m_ctx->getRoot();
     m_root->addMovableObjectFactory(new FreeCameraControllerFactory);
     m_root->addMovableObjectFactory(new ColliderFactory);
+    m_root->addMovableObjectFactory(new TransformFactory);
+    m_root->addSceneManagerFactory(new CustomSceneManagerFactory);
     m_root->addFrameListener(new Listener);
 
-    m_sceneManager = m_root->createSceneManager();
+    m_sceneManager = static_cast<CustomSceneManager*>(m_root->createSceneManager(CUSTOM_SCENE_MANAGER_TYPE));
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
     m_renderWindow = m_ctx->getRenderWindow();
 
@@ -54,6 +58,8 @@ void Game::init() {
 void Game::startRendering() const {
     m_scene->init();
     m_renderWindow->addViewport(m_scene->mainCamera);
+    m_sceneManager->_updateSceneGraph(m_scene->mainCamera);
+    GameEventListener::callStart();
     m_root->startRendering();
 }
 

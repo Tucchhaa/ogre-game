@@ -3,6 +3,7 @@
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
 
+#include "custom_scene_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
 
 namespace core {
@@ -43,7 +44,7 @@ public:
 
     static OgreBites::ApplicationContext* appContext() { return instance().m_ctx; }
     static Ogre::Root* root() { return instance().m_root; }
-    static Ogre::SceneManager* sceneManager() { return instance().m_sceneManager; }
+    static CustomSceneManager* sceneManager() { return instance().m_sceneManager; }
     static Ogre::MaterialManager* materialManager() { return instance().m_materialManager; }
     static Ogre::RenderWindow* renderWindow() { return instance().m_renderWindow; }
 
@@ -71,7 +72,7 @@ private:
 
     OgreBites::ApplicationContext* m_ctx = nullptr;
     Ogre::Root* m_root = nullptr;
-    Ogre::SceneManager* m_sceneManager = nullptr;
+    CustomSceneManager* m_sceneManager = nullptr;
     Ogre::MaterialManager* m_materialManager = nullptr;
     Ogre::RenderWindow* m_renderWindow = nullptr;
 

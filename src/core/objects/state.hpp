@@ -13,7 +13,7 @@ namespace core {
 
 /**
  * Stores a state of a MovableObject.
- * Note: Concurrency safe, can be used both in fixedUpdate and frameRenderingQueued
+ * Note: Concurrency safe, can be used both in fixedUpdate and update
  */
 class State {
 public:

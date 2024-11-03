@@ -14,33 +14,41 @@ class SimpleScene : public core::Scene {
 
         Scene::init();
 
-        // without light we would just get a black screen
-        Ogre::Light* light = m_sceneManager->createLight("MainLight");
-        Ogre::SceneNode* lightNode = m_rootNode->createChildSceneNode();
+        createLight();
+        createCamera();
+        createSinbad();
+        createGround();
+    }
+
+    void createLight() {
+        auto* light = m_sceneManager->createLight("MainLight");
+        auto* lightNode = m_rootNode->createChildSceneNode("MainLightNode");
+
         lightNode->setPosition(0, 10, 15);
         lightNode->attachObject(light);
+    }
 
-        // also need to tell where we are
-        Ogre::SceneNode* cameraNode = m_rootNode->createChildSceneNode();
+    void createCamera() {
+        auto* cameraNode = m_rootNode->createChildSceneNode("CameraNode");
         cameraNode->setPosition(0, 0, 15);
         cameraNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
 
-        // create the camera
-        mainCamera = m_sceneManager->createCamera("myCam");
+        mainCamera = m_sceneManager->createCamera("Camera");
         mainCamera->setNearClipDistance(5); // specific to this sample
         mainCamera->setAutoAspectRatio(true);
         cameraNode->attachObject(mainCamera);
 
-        // create controller
         auto* controller = m_sceneManager->createMovableObject("FreeCameraController");
         cameraNode->attachObject(controller);
+    }
 
-        // finally something to render
-        Ogre::Entity* ent = m_sceneManager->createEntity("Sinbad/Sinbad.mesh");
+    void createSinbad() {
+        auto* sinbadEntity = m_sceneManager->createEntity("SinbadEntity", "Sinbad/Sinbad.mesh");
 
-        Ogre::SceneNode* sinbadNode = m_rootNode->createChildSceneNode();
+        auto* sinbadNode = m_rootNode->createChildSceneNode("SinbadNode");
         sinbadNode->translate(Ogre::Vector3(0, 4, 0));
-        sinbadNode->attachObject(ent);
+        sinbadNode->attachObject(sinbadEntity);
+
         // sinbad collider
         auto sinbadColliderShape = core::Shape(
             make_shared<btBoxShape>(btVector3(2, 4.5, 1))
@@ -49,17 +57,19 @@ class SimpleScene : public core::Scene {
         auto sinbadCollider = dynamic_cast<core::Collider*>(m_sceneManager->createMovableObject("SinbadCollider", "Collider"));
         sinbadCollider->setShapes({ sinbadColliderShape });
         sinbadNode->attachObject(sinbadCollider);
+    }
 
-        // ground
+    void createGround() {
+        // ground mesh
         Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
         Ogre::MeshManager::getSingleton().createPlane(
             "ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane,
             1500, 1500, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z
         );
-        Ogre::Entity* groundEntity = m_sceneManager->createEntity("ground");
+        Ogre::Entity* groundEntity = m_sceneManager->createEntity("GroundEntity", "ground");
         groundEntity->setCastShadows(false);
 
-        auto* groundNode = m_rootNode->createChildSceneNode();
+        auto* groundNode = m_rootNode->createChildSceneNode("GroundNode");
         groundNode->setPosition(Ogre::Vector3(0, -10, 0));
         groundNode->attachObject(groundEntity);
 

@@ -56,11 +56,12 @@ void Game::init() {
     m_ctx->addInputListener(m_input.get());
 }
 
-void Game::startRendering() const {
+void Game::startRendering() {
     m_scene->init();
     m_renderWindow->addViewport(m_scene->mainCamera);
     m_sceneManager->_updateSceneGraph(m_scene->mainCamera);
     GameEventListener::callStart();
+    startedRendering.store(true);
     m_root->startRendering();
 }
 

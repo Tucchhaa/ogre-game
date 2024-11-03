@@ -61,6 +61,7 @@ public:
     float deltaY() const { return m_deltaY; }
     float mouseDeltaX() const;
     float mouseDeltaY() const;
+    bool leftMouseClicked() const { return m_mouseState.leftButtonClicked; }
 
     /**
      * @return true, if key was released this frame

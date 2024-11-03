@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "../game.hpp"
 #include "../utils.hpp"
 #include "../objects/base_movable_object.hpp"
 
@@ -37,6 +38,9 @@ void Client::onConnected() {
 }
 
 void Client::onMessage(istream& stream) {
+    if(Game::instance().startedRendering == false)
+        return;
+
     int statesCount;
     STREAM_READ(stream, statesCount);
 

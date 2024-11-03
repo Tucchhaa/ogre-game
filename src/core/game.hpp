@@ -16,6 +16,8 @@ class NetworkLayer;
 
 class Game {
 public:
+    std::atomic<bool> startedRendering{false};
+
     static Game& instance() {
         static Game _instance;
         return _instance;
@@ -32,7 +34,7 @@ public:
 
     void init();
 
-    void startRendering() const;
+    void startRendering();
 
     void stopRendering() const;
 

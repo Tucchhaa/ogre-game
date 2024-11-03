@@ -62,6 +62,11 @@ public:
      */
     bool isDynamic() const;
 
+    /**
+     * Resets rigid body transform to parent scene node's transform.
+     * Call it after Ogre::SceneNode transform was changed to update rigid body's state
+     */
+    void resetRigidbodyTransform() const;
 protected:
     void objectAttached() override;
 
@@ -75,12 +80,6 @@ private:
      * Update SceneNode's transfrom from rigidbody's transform
      */
     void updateTransform() const;
-
-    /**
-     * Resets rigid body transform to parent scene node's transform.
-     * Call it after Ogre::SceneNode transform was changed to update rigid body's state
-     */
-    void resetRigidbodyTransform() const;
 
     std::shared_ptr<btCompoundShape> createCompoundShape() const;
 

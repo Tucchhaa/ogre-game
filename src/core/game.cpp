@@ -27,7 +27,8 @@ void Game::configure() {
         setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
     #endif
 
-    m_ctx = new OgreBites::ApplicationContext("OgreTutorialApp");
+    const auto appName = utils::isClientExecutable() ? "OgreClient" : "OgreServer";
+    m_ctx = new OgreBites::ApplicationContext(appName);
 }
 
 void Game::init() {

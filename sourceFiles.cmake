@@ -9,7 +9,7 @@ set(CORE_SOURCE_FILES
     src/core/window_manager.hpp
     src/core/game_event_listener.hpp
     src/core/game_event_listener.cpp
-        src/core/custom_scene_manager.hpp
+    src/core/custom_scene_manager.hpp
     src/core/custom_scene_node.cpp
     src/core/custom_scene_node.hpp
 

@@ -2,8 +2,11 @@
 
 #include <filesystem>
 
-#include "custom_scene_manager.hpp"
+#include <Bites/OgreTrays.h>
+#include <Overlay/OgreOverlaySystem.h>
+
 #include "game_event_listener.hpp"
+#include "custom_scene_manager.hpp"
 #include "scene.hpp"
 #include "input.hpp"
 #include "physics_world.hpp"
@@ -15,6 +18,7 @@
 #include "objects/transform.hpp"
 
 #include "utils.hpp"
+#include "../ui/UI_Manager.h"
 
 namespace core {
 
@@ -54,6 +58,12 @@ void Game::init() {
     shaderGenerator->addSceneManager(m_sceneManager);
 
     m_ctx->addInputListener(m_input.get());
+
+    overlaySystem = m_ctx->getOverlaySystem();
+    m_sceneManager->addRenderQueueListener(overlaySystem);
+
+    m_trayManager = new OgreBites::TrayManager("MainTray",m_renderWindow);
+    m_ctx->addInputListener(m_trayManager);
 }
 
 void Game::startRendering() const {
@@ -61,6 +71,8 @@ void Game::startRendering() const {
     m_renderWindow->addViewport(m_scene->mainCamera);
     m_sceneManager->_updateSceneGraph(m_scene->mainCamera);
     GameEventListener::callStart();
+    UI_Manager m_gui = UI_Manager(m_root,m_sceneManager,m_trayManager);
+    m_renderWindow->addViewport(m_gui.getCamera());
     m_root->startRendering();
 }
 

@@ -6,6 +6,11 @@
 #include "custom_scene_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
 
+namespace OgreBites
+{
+    class TrayManager;
+}
+
 namespace core {
 
 class Input;
@@ -75,6 +80,8 @@ private:
     CustomSceneManager* m_sceneManager = nullptr;
     Ogre::MaterialManager* m_materialManager = nullptr;
     Ogre::RenderWindow* m_renderWindow = nullptr;
+    OgreBites::TrayManager* m_trayManager = nullptr;
+    Ogre::OverlaySystem* overlaySystem = nullptr;
 
     std::shared_ptr<Input> m_input;
     std::shared_ptr<WindowManager> m_windowManager;

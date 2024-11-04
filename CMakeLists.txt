@@ -20,7 +20,7 @@ if(WIN32)
     set(VCPKG_CRT_LINKAGE static)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     # without this Ogre can't open the window to prompt render options
-    set(RESOURCE_RC ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/buildtrees/ogre/src/v14.2.2-365de132fa.clean/Components/Bites/misc/OgreWin32Resources.rc)
+#    set(RESOURCE_RC ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/buildtrees/ogre/src/v14.2.2-365de132fa.clean/Components/Bites/misc/OgreWin32Resources.rc)
 
 endif()
 
@@ -42,4 +42,5 @@ target_link_libraries(ogre_game
     ${BULLET_LIBRARIES}
     ${SDL2_LIBRARIES}
     unofficial::enet::enet
+    Ws2_32
 )

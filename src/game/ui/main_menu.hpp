@@ -1,22 +1,16 @@
-//
-// Created by vince on 01/11/2024.
-//
+#pragma once
 
-#ifndef MAIN_MENU_H
-#define MAIN_MENU_H
 #include <OgreTrays.h>
 #include <vector>
 
-#include "Tray_Listener.h"
+#include "ui_listener.hpp"
 
-#endif //MAIN_MENU_H
+class UIManager;
 
-class UI_Manager;
-
-class MainMenu: public Tray_Listener
+class MainMenu: public UIListener
 {
 public:
-    MainMenu(Ogre::Root*, OgreBites::TrayManager*, UI_Manager*);
+    MainMenu(Ogre::Root*, OgreBites::TrayManager*, UIManager*);
 
 
     void initOverlay() override;
@@ -32,5 +26,5 @@ protected:
     std::vector<OgreBites::Widget*> mainMenuWidgets;
     OgreBites::TrayManager* m_trayManager;
     Ogre::Root* m_root;
-    UI_Manager* m_uiManager;
+    UIManager* m_uiManager;
 };

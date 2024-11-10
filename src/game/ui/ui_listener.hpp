@@ -1,19 +1,12 @@
-//
-// Created by vince on 01/11/2024.
-//
 #pragma once
 
-#ifndef TRAY_LISTENER_H
-#define TRAY_LISTENER_H
 #include <OgreTrays.h>
 
-#endif //TRAY_LISTENER_H
-
-class Tray_Listener
+class UIListener
 {
 public:
-    virtual ~Tray_Listener() = default;
-    Tray_Listener(){};
+    virtual ~UIListener() = default;
+    UIListener(){};
 
     virtual void initOverlay(){};
 

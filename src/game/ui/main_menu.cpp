@@ -1,18 +1,13 @@
-//
-// Created by vince on 01/11/2024.
-//
-
-
-#include "main_menu.h"
+#include "main_menu.hpp"
 
 #include <iostream>
 
 #include <SDL_main.h>
 
-// #include "lan_menu.h"
-#include "UI_Manager.h"
+// #include "lan_menu.hpp"
+#include "ui_manager.hpp"
 
-MainMenu::MainMenu(Ogre::Root* root, OgreBites::TrayManager* trayManager, UI_Manager* uiManager)
+MainMenu::MainMenu(Ogre::Root* root, OgreBites::TrayManager* trayManager, UIManager* uiManager)
 {
     m_root = root;
     m_uiManager = uiManager;

@@ -1,21 +1,15 @@
-//
-// Created by vince on 02/11/2024.
-//
+#pragma once
 
-#ifndef LAN_MENU_H
-#define LAN_MENU_H
 #include <OgreTrays.h>
 
-#include "Tray_Listener.h"
+#include "ui_listener.hpp"
 
-#endif //LAN_MENU_H
+class UIManager;
 
-class UI_Manager;
-
-class LAN_Menu : public Tray_Listener
+class LANMenu : public UIListener
 {
 public:
-    LAN_Menu(OgreBites::TrayManager* , UI_Manager*);
+    LANMenu(OgreBites::TrayManager* , UIManager*);
 
     void initOverlay() override;
     void createWidget(const std::vector<std::string>&);
@@ -31,5 +25,5 @@ protected:
     std::vector<OgreBites::Widget*> lanMenuWidgets;
     OgreBites::TrayManager* m_trayManager;
     std::map<OgreBites::Button*, std::string> buttonLines;
-    UI_Manager* m_uiManager;
+    UIManager* m_uiManager;
 };

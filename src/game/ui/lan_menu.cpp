@@ -1,20 +1,16 @@
-//
-// Created by vince on 02/11/2024.
-//
-
-#include "lan_menu.h"
+#include "lan_menu.hpp"
 
 #include <iostream>
 
-#include "UI_Manager.h"
+#include "ui_manager.hpp"
 
-LAN_Menu::LAN_Menu(OgreBites::TrayManager* trayManager, UI_Manager* uiManager)
+LANMenu::LANMenu(OgreBites::TrayManager* trayManager, UIManager* uiManager)
 {
     m_trayManager = trayManager;
     m_uiManager = uiManager;
 }
 
-void LAN_Menu::initOverlay()
+void LANMenu::initOverlay()
 {
     // Enable cursor
     m_trayManager->showCursor();
@@ -27,7 +23,7 @@ void LAN_Menu::initOverlay()
 
 }
 
-void LAN_Menu::buttonHit(OgreBites::Button* button)
+void LANMenu::buttonHit(OgreBites::Button* button)
 {
     if (button == nullptr) {
         std::cerr << "Error: button is null in buttonHit." << std::endl;
@@ -66,7 +62,7 @@ void LAN_Menu::buttonHit(OgreBites::Button* button)
     }
 }
 
-void LAN_Menu::createWidget(const std::vector<std::string>& lines)
+void LANMenu::createWidget(const std::vector<std::string>& lines)
 {
     for (size_t i = 0; i < lines.size(); ++i) {
         std::string line = lines[i];

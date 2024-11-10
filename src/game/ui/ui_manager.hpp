@@ -1,20 +1,13 @@
-//
-// Created by vince on 03/11/2024.
-//
-
-#ifndef UI_MANAGER_H
-#define UI_MANAGER_H
+#pragma once
 
 #include <OgreTrays.h>
 
-#include "Tray_Listener.h"
+#include "ui_listener.hpp"
 
-
-#endif //UI_MANAGER_H
-class UI_Manager: public OgreBites::TrayListener
+class UIManager: public OgreBites::TrayListener
 {
 public:
-    UI_Manager(Ogre::Root*, Ogre::SceneManager*, OgreBites::TrayManager* );
+    UIManager(Ogre::Root*, Ogre::SceneManager*, OgreBites::TrayManager* );
     void createMenuScene();
 
     void init_MainMenu();
@@ -38,9 +31,9 @@ private:
     Ogre::SceneManager* m_scene_manager;
     OgreBites::TrayManager* m_tray_manager;
     Ogre::Camera* m_camera{};
-    Tray_Listener* current_tray_listener;
+    UIListener* current_tray_listener;
 
     //Custom TrayListeners for each menu page
-    Tray_Listener* lan_tray_listener;
-    Tray_Listener* main_menu_tray_listener;
+    UIListener* lan_tray_listener;
+    UIListener* main_menu_tray_listener;
 };

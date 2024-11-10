@@ -49,7 +49,9 @@ void LANListener::listen() const {
 }
 
 string LANListener::receiveData(ENetAddress* peerAddress) const {
-    char buffer[LAN_DISCOVER_MESSAGE_LEN];
+    const unsigned int bufferLength = LAN_DISCOVER_MESSAGE_LEN;
+    unique_ptr<char[]> buffer(new char[bufferLength]);
+
     ENetBuffer payload;
     payload.data = &buffer;
     payload.dataLength = LAN_DISCOVER_MESSAGE_LEN;
@@ -58,7 +60,7 @@ string LANListener::receiveData(ENetAddress* peerAddress) const {
         return "";
     }
 
-    string message(buffer, LAN_DISCOVER_MESSAGE_LEN);
+    string message(buffer.get(), LAN_DISCOVER_MESSAGE_LEN);
     return message;
 }
 

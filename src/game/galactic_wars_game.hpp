@@ -5,6 +5,8 @@
 namespace game {
 
 class UIManager;
+class MenuScene;
+class DemoScene;
 
 class GalacticWarsGame : public core::Game {
 public:
@@ -16,9 +18,15 @@ public:
 
     static std::shared_ptr<game::UIManager> UIManager() { return instance().m_UIManager; }
 
+    void startMenuScene();
+    void startDemoScene();
+
 private:
     static std::shared_ptr<GalacticWarsGame> _instance;
     std::shared_ptr<game::UIManager> m_UIManager;
+
+    std::shared_ptr<MenuScene> m_menuScene;
+    std::shared_ptr<DemoScene> m_demoScene;
 };
 
 } // end namespace core

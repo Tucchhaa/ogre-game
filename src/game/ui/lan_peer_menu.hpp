@@ -4,7 +4,7 @@
 
 namespace game {
 
-class LANPeerMenu : public core::UIListener {
+class LANPeerMenu : public core::UserInterface {
     std::string getName() override { return "LAN_CLIENT_MENU"; }
 
     void show() override;

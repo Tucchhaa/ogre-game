@@ -42,7 +42,7 @@ public:
     const Ogre::String& getMovableType() const override { return COLLIDER_TYPE; }
     std::shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
 
-    void start() override;
+    void sceneInited() override;
 
     void fixedUpdate(float dt) override;
 

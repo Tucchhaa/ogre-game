@@ -17,7 +17,7 @@ public:
     /**
      * Called before first frame rendered.
      */
-    virtual void start() {}
+    virtual void sceneInited() {}
 
     /**
      * Called each frame. Triggered by @Ogre::FrameListener::frameRenderingQueued
@@ -31,9 +31,9 @@ public:
      */
     virtual void fixedUpdate(float dt) {}
 
-    static void callStart() {
+    static void callSceneInited() {
         for(const auto& [ID, instance]: m_instances)
-            instance->start();
+            instance->sceneInited();
     }
 
     static void callUpdate(float dt) {

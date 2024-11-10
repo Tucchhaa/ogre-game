@@ -4,7 +4,7 @@
 
 namespace core {
 
-class UIListener : public OgreBites::TrayListener {
+class UserInterface : public OgreBites::TrayListener {
 public:
     virtual std::string getName() = 0;
 
@@ -15,12 +15,12 @@ public:
 
 class UIManager {
 public:
-    void addListener(const std::shared_ptr<UIListener>& listener);
+    void addListener(const std::shared_ptr<UserInterface>& listener);
 
     void showOnly(const std::string& name);
 
 private:
-    std::map<std::string, std::shared_ptr<UIListener>> m_listeners;
+    std::map<std::string, std::shared_ptr<UserInterface>> m_interfaces;
 };
 
 } // end namespace core

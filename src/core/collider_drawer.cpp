@@ -36,9 +36,15 @@ void debug::ColliderDrawer::render() {
 }
 
 Ogre::MaterialPtr debug::ColliderDrawer::createMaterial() {
-    auto material = Game::materialManager()->create(
-        "CollidersWireframe", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
-    );
+    const std::string materialName = "CollidersWireframe";
+
+    auto material = Game::materialManager()->getByName(materialName);
+
+    if(material.get() != nullptr)
+        return material;
+
+    material = Game::materialManager()->create(materialName, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
     material->setReceiveShadows(false);
 
     auto* pass = material->getTechnique(0)->getPass(0);

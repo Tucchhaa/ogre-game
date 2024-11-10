@@ -1,45 +1,37 @@
 #include "lan_menu.hpp"
 
-#include <iostream>
-
-#include "ui_manager.hpp"
+#include "../../core/game.hpp"
 
 namespace game {
 
-LANMenu::LANMenu(OgreBites::TrayManager* trayManager, UIManager* uiManager)
-{
-    m_trayManager = trayManager;
-    m_uiManager = uiManager;
+void LANMenu::show() {
+    const auto tray = core::Game::trayManager();
+    tray->showCursor();
+
+    widgets.insert(widgets.end(), {
+        tray->createButton(OgreBites::TL_CENTER,"ClientButton","Client"),
+        tray->createButton(OgreBites::TL_CENTER,"HostButton","Host"),
+        tray->createButton(OgreBites::TL_BOTTOMLEFT,"ReturnButton","Return")
+    });
 }
 
-void LANMenu::initOverlay()
-{
-    // Enable cursor
-    m_trayManager->showCursor();
-    // Add Mission menu button
-    lanMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_CENTER,"ClientButton","Client"));
-    // Add LAN menu button
-    lanMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_CENTER,"HostButton","Host"));
-    // Add Return button
-    lanMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_BOTTOMLEFT,"ReturnButton","Return"));
+void LANMenu::hide() {
+    for(auto& widget: widgets) {
+        core::Game::trayManager()->destroyWidget(widget);
+    }
 
+    widgets.clear();
 }
 
 void LANMenu::buttonHit(OgreBites::Button* button)
 {
     if (button == nullptr) {
-        std::cerr << "Error: button is null in buttonHit." << std::endl;
         return;
     }
-    if (button->getName() == "ClientButton")
-    {
-        m_trayManager->destroyAllWidgetsInTray(OgreBites::TL_CENTER);
-        printf("Client button pressed\n");
-        // ===================================
-        // Here Launch the search for hosts
-        // then regroup all hosts in a string vector
-        // finally create custom widget
-        // ===================================
+
+    if (button->getName() == "ClientButton") {
+        core::Game::trayManager()->destroyAllWidgetsInTray(OgreBites::TL_CENTER);
+
         std::vector<std::string> host_list = {
             "192.168.0.1",
             "192.168.1.1",
@@ -51,16 +43,14 @@ void LANMenu::buttonHit(OgreBites::Button* button)
             "8.8.4.4",
             "1.1.1.1",
             "1.0.0.1"
-        }; // Change this to whatever string you actually want !
+        };
         createWidget(host_list);
     }
-    else if (button->getName() == "HostButton")
-    {
+    else if (button->getName() == "HostButton") {
 
     }
-    else if (button->getName() == "ReturnButton")
-    {
-        m_uiManager->show_MainMenu();
+    else if (button->getName() == "ReturnButton") {
+        core::Game::UIManager()->showOnly("MAIN_MENU");
     }
 }
 
@@ -75,10 +65,10 @@ void LANMenu::createWidget(const std::vector<std::string>& lines)
         OgreBites::TrayLocation rowLocation = static_cast<OgreBites::TrayLocation>(OgreBites::TL_CENTER);
 
         // Créer le label pour la ligne de texte
-        m_trayManager->createLabel(rowLocation, labelName, line, 300); // Largeur pour aligner les textes
+        core::Game::trayManager()->createLabel(rowLocation, labelName, line, 300); // Largeur pour aligner les textes
 
         // Créer le bouton pour cette ligne
-        OgreBites::Button* button = m_trayManager->createButton(rowLocation, buttonName, "Action " + std::to_string(i + 1), 100); // Largeur bouton
+        OgreBites::Button* button = core::Game::trayManager()->createButton(rowLocation, buttonName, "Action " + std::to_string(i + 1), 100); // Largeur bouton
         buttonLines[button] = line;  // Associer le bouton à la ligne de texte
     }
 }

@@ -2,32 +2,28 @@
 
 #include <OgreTrays.h>
 
-#include "ui_listener.hpp"
+#include "../../core/ui_manager.hpp"
 
 namespace game {
 
 class UIManager;
 
-class LANMenu : public UIListener
+class LANMenu : public core::UIListener
 {
 public:
-    LANMenu(OgreBites::TrayManager* , UIManager*);
+    std::string getName() override { return "LAN_MENU"; }
 
-    void initOverlay() override;
-    void createWidget(const std::vector<std::string>&);
+    void show() override;
+
+    void hide() override;
 
     void buttonHit(OgreBites::Button* button) override;
-    void itemSelected(OgreBites::SelectMenu* menu) override {}
-    void labelHit(OgreBites::Label* label) override {}
-    void sliderMoved(OgreBites::Slider* slider) override {}
-    void checkBoxToggled(OgreBites::CheckBox* box) override {}
-    void okDialogClosed(const Ogre::DisplayString& message) override {}
-    void yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit) override {}
+
+    void createWidget(const std::vector<std::string>&);
+
 protected:
-    std::vector<OgreBites::Widget*> lanMenuWidgets;
-    OgreBites::TrayManager* m_trayManager;
+    std::vector<OgreBites::Widget*> widgets;
     std::map<OgreBites::Button*, std::string> buttonLines;
-    UIManager* m_uiManager;
 };
 
 }

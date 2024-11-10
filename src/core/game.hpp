@@ -15,6 +15,7 @@ namespace core {
 
 class Input;
 class WindowManager;
+class UIManager;
 class Scene;
 class PhysicsWorld;
 class NetworkLayer;
@@ -55,6 +56,7 @@ public:
 
     static std::shared_ptr<Input> input() { return instance().m_input; }
     static std::shared_ptr<WindowManager> windowManager() { return instance().m_windowManager; }
+    static std::shared_ptr<UIManager> UIManager() { return instance().m_UIManager; }
     static std::shared_ptr<Scene> scene() { return instance().m_scene; }
     static std::shared_ptr<PhysicsWorld> physics() { return instance().m_physics; }
     static std::shared_ptr<NetworkLayerManager> networkLayerManager() { return instance().m_networkLayerManager; }
@@ -87,6 +89,7 @@ private:
 
     std::shared_ptr<Input> m_input;
     std::shared_ptr<WindowManager> m_windowManager;
+    std::shared_ptr<core::UIManager> m_UIManager;
     std::shared_ptr<Scene> m_scene;
     std::shared_ptr<PhysicsWorld> m_physics;
     std::shared_ptr<NetworkLayerManager> m_networkLayerManager;

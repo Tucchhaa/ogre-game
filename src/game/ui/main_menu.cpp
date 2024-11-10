@@ -1,47 +1,37 @@
 #include "main_menu.hpp"
 
-#include <iostream>
-
-#include <SDL_main.h>
-
-// #include "lan_menu.hpp"
-#include "ui_manager.hpp"
+#include "../../core/game.hpp"
 
 namespace game {
 
-MainMenu::MainMenu(Ogre::Root* root, OgreBites::TrayManager* trayManager, UIManager* uiManager)
-{
-    m_root = root;
-    m_uiManager = uiManager;
-    m_trayManager = trayManager;
+void MainMenu::show() {
+    const auto tray = core::Game::trayManager();
 
+    tray->showCursor();
+
+    widgets.insert(widgets.end(), {
+        tray->createButton(OgreBites::TL_CENTER,"MissionButton","Missions"),
+        tray->createButton(OgreBites::TL_CENTER,"LanButton","LAN"),
+        tray->createButton(OgreBites::TL_CENTER,"SettingsButton","Settings"),
+        tray->createButton(OgreBites::TL_CENTER,"ExitButton","Exit")
+    });
 }
 
+void MainMenu::hide() {
+    for(auto& widget: widgets) {
+        core::Game::trayManager()->destroyWidget(widget);
+    }
 
-void MainMenu::initOverlay()
-{
-    // Enable cursor
-    m_trayManager->showCursor();
-    // Add Mission menu button
-    mainMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_CENTER,"MissionButton","Missions"));
-    // Add LAN menu button
-    mainMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_CENTER,"LanButton","LAN"));
-    // Add Settings menu button
-    mainMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_CENTER,"SettingsButton","Settings"));
-    // Add Exit menu button
-    mainMenuWidgets.push_back(m_trayManager->createButton(OgreBites::TL_CENTER,"ExitButton","Exit"));
+    widgets.clear();
 }
 
 void MainMenu::buttonHit(OgreBites::Button* button)
 {
-    if (button->getName() == "MissionButton")
-    {
+    if (button->getName() == "MissionButton") {
 
     }
-    else if (button->getName() == "LanButton")
-    {
-        std::cout << "Address of trayManager: " << m_trayManager << std::endl;
-        m_uiManager->show_LanMenu();
+    else if (button->getName() == "LanButton") {
+        core::Game::UIManager()->showOnly("LAN_MENU");
     }
     else if (button->getName() == "SettingsButton")
     {
@@ -49,7 +39,7 @@ void MainMenu::buttonHit(OgreBites::Button* button)
     }
     else if (button->getName() == "ExitButton")
     {
-        m_root->queueEndRendering();
+        core::Game::root()->queueEndRendering();
     }
 }
 

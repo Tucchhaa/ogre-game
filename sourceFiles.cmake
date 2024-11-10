@@ -12,6 +12,8 @@ set(CORE_SOURCE_FILES
     src/core/custom_scene_manager.hpp
     src/core/custom_scene_node.cpp
     src/core/custom_scene_node.hpp
+    src/core/ui_manager.cpp
+    src/core/ui_manager.hpp
 
     src/core/objects/base_movable_object.hpp
     src/core/objects/base_movable_object.cpp
@@ -48,4 +50,16 @@ set(CORE_SOURCE_FILES
 
     src/core/event.hpp
     src/core/utils.hpp
+)
+
+set(GAME_SOURCE_FILES
+    src/game/galactic_wars_game.cpp
+    src/game/galactic_wars_game.hpp
+
+    src/game/ui/main_menu.cpp
+    src/game/ui/main_menu.hpp
+    src/game/ui/lan_menu.cpp
+    src/game/ui/lan_menu.hpp
+    src/game/ui/lan_peer_menu.cpp
+    src/game/ui/lan_peer_menu.hpp
 )

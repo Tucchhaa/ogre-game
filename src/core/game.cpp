@@ -2,11 +2,15 @@
 
 #include <filesystem>
 
-#include "custom_scene_manager.hpp"
+#include <Bites/OgreTrays.h>
+#include <Overlay/OgreOverlaySystem.h>
+
 #include "game_event_listener.hpp"
+#include "custom_scene_manager.hpp"
 #include "scene.hpp"
 #include "input.hpp"
 #include "physics_world.hpp"
+#include "ui_manager.hpp"
 #include "window_manager.hpp"
 #include "network_layer/network_layer_manager.hpp"
 
@@ -17,6 +21,8 @@
 #include "utils.hpp"
 
 namespace core {
+
+std::shared_ptr<Game> Game::_instance = nullptr;
 
 void Game::configure() {
     const std::filesystem::path projectPath = std::filesystem::current_path().parent_path();
@@ -43,9 +49,11 @@ void Game::init() {
 
     m_sceneManager = static_cast<CustomSceneManager*>(m_root->createSceneManager(CUSTOM_SCENE_MANAGER_TYPE));
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
+    m_trayManager = new OgreBites::TrayManager("MainTray", m_renderWindow);
     m_renderWindow = m_ctx->getRenderWindow();
 
     m_windowManager = std::make_shared<WindowManager>();
+    m_UIManager = std::make_shared<core::UIManager>();
     m_input = std::make_shared<Input>();
     m_physics = std::make_shared<PhysicsWorld>();
     m_networkLayerManager = std::make_shared<NetworkLayerManager>();
@@ -54,6 +62,10 @@ void Game::init() {
     shaderGenerator->addSceneManager(m_sceneManager);
 
     m_ctx->addInputListener(m_input.get());
+    m_ctx->addInputListener(m_trayManager);
+
+    overlaySystem = m_ctx->getOverlaySystem();
+    m_sceneManager->addRenderQueueListener(overlaySystem);
 }
 
 void Game::startRendering() const {
@@ -61,6 +73,7 @@ void Game::startRendering() const {
     m_renderWindow->addViewport(m_scene->mainCamera);
     m_sceneManager->_updateSceneGraph(m_scene->mainCamera);
     GameEventListener::callStart();
+
     m_root->startRendering();
 }
 

@@ -7,6 +7,8 @@
 // #include "lan_menu.hpp"
 #include "ui_manager.hpp"
 
+namespace game {
+
 MainMenu::MainMenu(Ogre::Root* root, OgreBites::TrayManager* trayManager, UIManager* uiManager)
 {
     m_root = root;
@@ -50,4 +52,6 @@ void MainMenu::buttonHit(OgreBites::Button* button)
         m_root->queueEndRendering();
     }
 }
+
+} // end namespace game
 

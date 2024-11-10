@@ -4,6 +4,8 @@
 
 #include "ui_manager.hpp"
 
+namespace game {
+
 LANMenu::LANMenu(OgreBites::TrayManager* trayManager, UIManager* uiManager)
 {
     m_trayManager = trayManager;
@@ -80,3 +82,5 @@ void LANMenu::createWidget(const std::vector<std::string>& lines)
         buttonLines[button] = line;  // Associer le bouton à la ligne de texte
     }
 }
+
+} // end namespace game

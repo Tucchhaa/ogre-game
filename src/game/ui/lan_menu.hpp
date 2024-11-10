@@ -4,6 +4,8 @@
 
 #include "ui_listener.hpp"
 
+namespace game {
+
 class UIManager;
 
 class LANMenu : public UIListener
@@ -27,3 +29,5 @@ protected:
     std::map<OgreBites::Button*, std::string> buttonLines;
     UIManager* m_uiManager;
 };
+
+}

@@ -7,6 +7,8 @@
 #include "lan_menu.hpp"
 #include "main_menu.hpp"
 
+namespace game {
+
 UIManager::UIManager(Ogre::Root* root, Ogre::SceneManager* scene_manager, OgreBites::TrayManager* tray_manager)
 {
     m_root = root;
@@ -90,3 +92,5 @@ Ogre::Camera* UIManager::getCamera()
 {
     return m_camera;
 }
+
+} // end namespace game

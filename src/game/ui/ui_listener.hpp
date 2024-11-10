@@ -2,6 +2,8 @@
 
 #include <OgreTrays.h>
 
+namespace game {
+
 class UIListener
 {
 public:
@@ -18,3 +20,5 @@ public:
     virtual void okDialogClosed(const Ogre::DisplayString& message) {}
     virtual void yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit) {}
 };
+
+} // end namespace game

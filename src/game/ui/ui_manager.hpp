@@ -4,6 +4,8 @@
 
 #include "ui_listener.hpp"
 
+namespace game {
+
 class UIManager: public OgreBites::TrayListener
 {
 public:
@@ -37,3 +39,5 @@ private:
     UIListener* lan_tray_listener;
     UIListener* main_menu_tray_listener;
 };
+
+} // end namespace game

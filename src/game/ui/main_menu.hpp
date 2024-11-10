@@ -5,6 +5,8 @@
 
 #include "ui_listener.hpp"
 
+namespace game {
+
 class UIManager;
 
 class MainMenu: public UIListener
@@ -28,3 +30,5 @@ protected:
     Ogre::Root* m_root;
     UIManager* m_uiManager;
 };
+
+} // end namespace game

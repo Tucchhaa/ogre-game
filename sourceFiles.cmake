@@ -49,3 +49,15 @@ set(CORE_SOURCE_FILES
     src/core/event.hpp
     src/core/utils.hpp
 )
+
+set(GAME_SOURCE_FILES
+    src/ui/lan_menu.h
+    src/ui/UI_Manager.cpp
+    src/ui/UI_Manager.h
+    src/ui/main_menu.cpp
+    src/ui/main_menu.h
+    src/ui/Tray_Listener.cpp
+    src/ui/Tray_Listener.h
+    src/ui/lan_menu.cpp
+    src/ui/lan_menu.h
+)

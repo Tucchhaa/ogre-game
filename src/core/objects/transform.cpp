@@ -6,7 +6,7 @@ using namespace Ogre;
 
 namespace core {
 
-void Transform::start() {
+void Transform::sceneInited() {
     updateState();
 }
 

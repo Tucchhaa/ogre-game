@@ -5,6 +5,9 @@
 #include "ui/main_menu.hpp"
 #include "ui/lan_menu.hpp"
 
+#include "scenes/menu_scene.hpp"
+#include "scenes/demo_scene.hpp"
+
 namespace game {
 
 std::shared_ptr<GalacticWarsGame> GalacticWarsGame::_instance = nullptr;
@@ -16,7 +19,16 @@ void GalacticWarsGame::init() {
     Game::UIManager()->addListener(std::make_shared<LANMenu>());
     Game::UIManager()->addListener(std::make_shared<LANPeerMenu>());
 
-    Game::UIManager()->showOnly("MAIN_MENU");
+    m_menuScene = std::make_shared<MenuScene>();
+    m_demoScene = std::make_shared<DemoScene>();
+}
+
+void GalacticWarsGame::startMenuScene() {
+    setScene(m_menuScene);
+}
+
+void GalacticWarsGame::startDemoScene() {
+    setScene(m_demoScene);
 }
 
 }

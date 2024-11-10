@@ -1,5 +1,6 @@
 #include "main_menu.hpp"
 
+#include "../galactic_wars_game.hpp"
 #include "../../core/game.hpp"
 
 namespace game {
@@ -17,7 +18,10 @@ void MainMenu::show() {
 
 void MainMenu::buttonHit(OgreBites::Button* button) {
     if (button->getName() == "open_missions_menu") {
+        hide();
+        core::Game::trayManager()->hideCursor();
 
+        GalacticWarsGame::instance().startDemoScene();
     }
     else if (button->getName() == "open_lan_menu") {
         core::Game::UIManager()->showOnly("LAN_MENU");

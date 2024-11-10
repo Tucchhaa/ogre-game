@@ -10,7 +10,7 @@ using namespace std;
 
 namespace core {
 
-void Collider::start() {
+void Collider::sceneInited() {
     resetRigidbodyTransform();
 }
 

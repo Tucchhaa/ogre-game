@@ -26,7 +26,7 @@ public:
 
     std::shared_ptr<TransformState> transformState() { return m_state; }
 
-    void start() override;
+    void sceneInited() override;
 
     void update(float dt) override;
 

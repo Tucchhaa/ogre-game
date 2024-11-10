@@ -8,7 +8,7 @@ namespace game {
 
 class UIManager;
 
-class MainMenu: public core::UIListener
+class MainMenu: public core::UserInterface
 {
 public:
     std::string getName() override { return "MAIN_MENU"; }

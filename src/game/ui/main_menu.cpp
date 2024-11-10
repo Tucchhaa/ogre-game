@@ -9,35 +9,24 @@ void MainMenu::show() {
 
     tray->showCursor();
 
-    widgets.insert(widgets.end(), {
-        tray->createButton(OgreBites::TL_CENTER,"MissionButton","Missions"),
-        tray->createButton(OgreBites::TL_CENTER,"LanButton","LAN"),
-        tray->createButton(OgreBites::TL_CENTER,"SettingsButton","Settings"),
-        tray->createButton(OgreBites::TL_CENTER,"ExitButton","Exit")
-    });
+    tray->createButton(OgreBites::TL_CENTER,"open_missions_menu","Missions");
+    tray->createButton(OgreBites::TL_CENTER,"open_lan_menu","LAN");
+    tray->createButton(OgreBites::TL_CENTER,"open_settings_menu","Settings");
+    tray->createButton(OgreBites::TL_CENTER,"exit","Exit");
 }
 
-void MainMenu::hide() {
-    for(auto& widget: widgets) {
-        core::Game::trayManager()->destroyWidget(widget);
-    }
-
-    widgets.clear();
-}
-
-void MainMenu::buttonHit(OgreBites::Button* button)
-{
-    if (button->getName() == "MissionButton") {
+void MainMenu::buttonHit(OgreBites::Button* button) {
+    if (button->getName() == "open_missions_menu") {
 
     }
-    else if (button->getName() == "LanButton") {
+    else if (button->getName() == "open_lan_menu") {
         core::Game::UIManager()->showOnly("LAN_MENU");
     }
-    else if (button->getName() == "SettingsButton")
+    else if (button->getName() == "open_settings_menu")
     {
 
     }
-    else if (button->getName() == "ExitButton")
+    else if (button->getName() == "exit")
     {
         core::Game::root()->queueEndRendering();
     }

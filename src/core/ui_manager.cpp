@@ -2,6 +2,10 @@
 
 #include "game.hpp"
 
+void core::UIListener::hide() {
+    Game::trayManager()->destroyAllWidgets();
+}
+
 void core::UIManager::addListener(const std::shared_ptr<UIListener>& listener) {
     const std::string name = listener->getName();
 

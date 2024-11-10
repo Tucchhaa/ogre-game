@@ -60,4 +60,6 @@ set(GAME_SOURCE_FILES
     src/game/ui/main_menu.hpp
     src/game/ui/lan_menu.cpp
     src/game/ui/lan_menu.hpp
+    src/game/ui/lan_peer_menu.cpp
+    src/game/ui/lan_peer_menu.hpp
 )

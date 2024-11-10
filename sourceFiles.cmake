@@ -51,6 +51,9 @@ set(CORE_SOURCE_FILES
 )
 
 set(GAME_SOURCE_FILES
+    src/game/galactic_wars_game.cpp
+    src/game/galactic_wars_game.hpp
+
     src/game/ui/lan_menu.hpp
     src/game/ui/ui_manager.cpp
     src/game/ui/ui_manager.hpp

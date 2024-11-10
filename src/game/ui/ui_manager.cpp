@@ -6,16 +6,13 @@
 
 #include "lan_menu.hpp"
 #include "main_menu.hpp"
+#include "../galactic_wars_game.hpp"
 
 namespace game {
 
-UIManager::UIManager(Ogre::Root* root, Ogre::SceneManager* scene_manager, OgreBites::TrayManager* tray_manager)
+UIManager::UIManager()
 {
-    m_root = root;
-    m_scene_manager = scene_manager;
-    m_tray_manager = tray_manager;
-    m_tray_manager->setListener(this);
-    createMenuScene();
+    core::Game::trayManager()->setListener(this);
 
     init_LanMenu();
     init_MainMenu();
@@ -23,50 +20,13 @@ UIManager::UIManager(Ogre::Root* root, Ogre::SceneManager* scene_manager, OgreBi
     show_MainMenu();
 }
 
-void UIManager::createMenuScene()
-{
-    // Clear the current scene.
-    m_scene_manager->clearScene();
-
-    // Create Main Menu Scene.
-    // Setup camera.
-    m_camera = m_scene_manager->createCamera("myCamera");
-    m_camera->setNearClipDistance(5); // specific to this sample
-    m_camera->setAutoAspectRatio(true);
-    Ogre::SceneNode* camNode = m_scene_manager->getRootSceneNode()->createChildSceneNode();
-    camNode->setFixedYawAxis(true);
-    camNode->setPosition(0, 300, 0);
-    camNode->lookAt(Ogre::Vector3(0, 0.001, 0), Ogre::Node::TS_PARENT);
-    camNode->attachObject(m_camera);
-
-    // Now create a plane on x-z plan for background texture menu
-    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0); // Y = 0, plane is horizontal
-    Ogre::MeshManager::getSingleton().createPlane("MenuPlane", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        plane, 1500, 1500, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z); // Size and subdivisions
-
-    // Create a scene node to attach the plane to
-    Ogre::SceneNode* planeNode = m_scene_manager->getRootSceneNode()->createChildSceneNode();
-    Ogre::Entity* planeEntity = m_scene_manager->createEntity("backgroundMenuEntity","MenuPlane");
-    //planeEntity->setMaterial("sd");
-    planeNode->attachObject(planeEntity);
-
-    // Add some Light to show the plan
-    Ogre::Light* light = m_scene_manager->createLight("MainLight");
-    light->setType(Ogre::Light::LT_POINT);
-    light->setDiffuseColour(Ogre::ColourValue::White);
-    light->setSpecularColour(Ogre::ColourValue::White);
-    Ogre::SceneNode* lightNode = m_scene_manager->getRootSceneNode()->createChildSceneNode();
-    lightNode->setPosition(0, 400, 0);
-    lightNode->attachObject(light);
-}
-
 void UIManager::init_MainMenu()
 {
-    main_menu_tray_listener = new MainMenu(m_root, m_tray_manager, this);
+    main_menu_tray_listener = new MainMenu(core::Game::root(), core::Game::trayManager(), this);
 }
 void UIManager::init_LanMenu()
 {
-    lan_tray_listener = new LANMenu(m_tray_manager, this);
+    lan_tray_listener = new LANMenu(core::Game::trayManager(), this);
 }
 
 void UIManager::buttonHit(OgreBites::Button* button)
@@ -76,14 +36,14 @@ void UIManager::buttonHit(OgreBites::Button* button)
 
 void UIManager::show_LanMenu()
 {
-    m_tray_manager->destroyAllWidgets();
+    core::Game::trayManager()->destroyAllWidgets();
     lan_tray_listener->initOverlay();
     current_tray_listener = lan_tray_listener;
 }
 
 void UIManager::show_MainMenu()
 {
-    m_tray_manager->destroyAllWidgets();
+    core::Game::trayManager()->destroyAllWidgets();
     main_menu_tray_listener->initOverlay();
     current_tray_listener = main_menu_tray_listener;
 }

@@ -6,11 +6,9 @@
 
 namespace game {
 
-class UIManager: public OgreBites::TrayListener
-{
+class UIManager: public OgreBites::TrayListener {
 public:
-    UIManager(Ogre::Root*, Ogre::SceneManager*, OgreBites::TrayManager* );
-    void createMenuScene();
+    UIManager();
 
     void init_MainMenu();
     void init_LanMenu();
@@ -29,9 +27,6 @@ public:
     // void yesNoDialogClosed(const Ogre::DisplayString& question, bool yesHit) {}
 
 private:
-    Ogre::Root* m_root;
-    Ogre::SceneManager* m_scene_manager;
-    OgreBites::TrayManager* m_tray_manager;
     Ogre::Camera* m_camera{};
     UIListener* current_tray_listener;
 

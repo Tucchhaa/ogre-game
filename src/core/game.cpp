@@ -18,9 +18,10 @@
 #include "objects/transform.hpp"
 
 #include "utils.hpp"
-#include "../game/ui/ui_manager.hpp"
 
 namespace core {
+
+std::shared_ptr<Game> Game::_instance = nullptr;
 
 void Game::configure() {
     const std::filesystem::path projectPath = std::filesystem::current_path().parent_path();
@@ -62,7 +63,7 @@ void Game::init() {
     overlaySystem = m_ctx->getOverlaySystem();
     m_sceneManager->addRenderQueueListener(overlaySystem);
 
-    m_trayManager = new OgreBites::TrayManager("MainTray",m_renderWindow);
+    m_trayManager = new OgreBites::TrayManager("MainTray", m_renderWindow);
     m_ctx->addInputListener(m_trayManager);
 }
 
@@ -75,6 +76,8 @@ void Game::startRendering() const {
     UIManager m_gui = UIManager(m_root,m_sceneManager,m_trayManager);
     game::UIManager m_gui = game::UIManager(m_root,m_sceneManager,m_trayManager);
     m_renderWindow->addViewport(m_gui.getCamera());
+    m_scene->init();
+    m_renderWindow->addViewport(m_scene->mainCamera);
     m_root->startRendering();
 }
 

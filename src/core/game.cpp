@@ -72,12 +72,7 @@ void Game::startRendering() const {
     m_renderWindow->addViewport(m_scene->mainCamera);
     m_sceneManager->_updateSceneGraph(m_scene->mainCamera);
     GameEventListener::callStart();
-    UI_Manager m_gui = UI_Manager(m_root,m_sceneManager,m_trayManager);
-    UIManager m_gui = UIManager(m_root,m_sceneManager,m_trayManager);
-    game::UIManager m_gui = game::UIManager(m_root,m_sceneManager,m_trayManager);
-    m_renderWindow->addViewport(m_gui.getCamera());
-    m_scene->init();
-    m_renderWindow->addViewport(m_scene->mainCamera);
+
     m_root->startRendering();
 }
 

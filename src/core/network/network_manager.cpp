@@ -1,6 +1,6 @@
-#include "network_layer_manager.hpp"
+#include "network_manager.hpp"
 
-#include "network_layer.hpp"
+#include "network_base.hpp"
 #include "lan_scanner.hpp"
 #include "server.hpp"
 #include "client.hpp"

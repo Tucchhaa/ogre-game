@@ -4,9 +4,9 @@
 
 #include "custom_scene_manager.hpp"
 #include "custom_scene_node.hpp"
-#include "game_event_listener.hpp"
 
-#include "physics_world.hpp"
+#include "../game_event_listener.hpp"
+#include "../physics/physics_world.hpp"
 
 namespace core {
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "lan_listener.hpp"
-#include "network_layer.hpp"
+#include "network_base.hpp"
 
 namespace core {
 

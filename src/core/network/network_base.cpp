@@ -1,9 +1,8 @@
-#include "network_layer.hpp"
+#include "network_base.hpp"
 
 #include <sstream>
 
 #include "../utils.hpp"
-#include "const.hpp"
 
 using namespace std;
 

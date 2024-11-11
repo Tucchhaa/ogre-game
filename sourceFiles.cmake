@@ -1,19 +1,31 @@
 set(CORE_SOURCE_FILES
-    src/core/input.cpp
-    src/core/input.hpp
+    src/core/event.hpp
     src/core/game.cpp
     src/core/game.hpp
-    src/core/scene.cpp
-    src/core/scene.hpp
-    src/core/window_manager.cpp
-    src/core/window_manager.hpp
     src/core/game_event_listener.hpp
     src/core/game_event_listener.cpp
-    src/core/custom_scene_manager.hpp
-    src/core/custom_scene_node.cpp
-    src/core/custom_scene_node.hpp
+    src/core/input.cpp
+    src/core/input.hpp
     src/core/ui_manager.cpp
     src/core/ui_manager.hpp
+    src/core/utils.hpp
+    src/core/window_manager.cpp
+    src/core/window_manager.hpp
+
+    src/core/network/client.cpp
+    src/core/network/client.hpp
+    src/core/network/const.hpp
+    src/core/network/lan_listener.cpp
+    src/core/network/lan_listener.hpp
+    src/core/network/lan_scanner.hpp
+    src/core/network/lan_scanner.cpp
+    src/core/network/network_base.cpp
+    src/core/network/network_base.hpp
+    src/core/network/network_manager.cpp
+    src/core/network/network_manager.hpp
+    src/core/network/server.cpp
+    src/core/network/server.hpp
+    src/core/network/server_info.hpp
 
     src/core/objects/base_movable_object.hpp
     src/core/objects/base_movable_object.cpp
@@ -23,33 +35,22 @@ set(CORE_SOURCE_FILES
     src/core/objects/transform.hpp
     src/core/objects/collider.cpp
     src/core/objects/collider.hpp
-    src/core/objects/state.hpp
-    src/core/objects/state.cpp
-    src/core/objects/transform_state.cpp
-    src/core/objects/transform_state.hpp
 
-    src/core/physics_world.cpp
-    src/core/physics_world.hpp
-    src/core/collider_drawer.cpp
-    src/core/collider_drawer.hpp
+    src/core/objects/state/state.hpp
+    src/core/objects/state/state.cpp
+    src/core/objects/state/transform_state.cpp
+    src/core/objects/state/transform_state.hpp
 
-    src/core/network_layer/network_layer_manager.cpp
-    src/core/network_layer/network_layer_manager.hpp
-    src/core/network_layer/network_layer.cpp
-    src/core/network_layer/network_layer.hpp
-    src/core/network_layer/server.cpp
-    src/core/network_layer/server.hpp
-    src/core/network_layer/client.cpp
-    src/core/network_layer/client.hpp
-    src/core/network_layer/lan_scanner.hpp
-    src/core/network_layer/lan_scanner.cpp
-    src/core/network_layer/lan_listener.cpp
-    src/core/network_layer/lan_listener.hpp
-    src/core/network_layer/const.hpp
-    src/core/network_layer/server_info.hpp
+    src/core/scene/custom_scene_manager.hpp
+    src/core/scene/custom_scene_node.cpp
+    src/core/scene/custom_scene_node.hpp
+    src/core/scene/scene.cpp
+    src/core/scene/scene.hpp
 
-    src/core/event.hpp
-    src/core/utils.hpp
+    src/core/physics/collider_drawer.cpp
+    src/core/physics/collider_drawer.hpp
+    src/core/physics/physics_world.cpp
+    src/core/physics/physics_world.hpp
 )
 
 set(GAME_SOURCE_FILES

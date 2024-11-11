@@ -4,12 +4,12 @@
 #include <Bites/OgreTrays.h>
 
 #include "game_event_listener.hpp"
-#include "custom_scene_manager.hpp"
-#include "scene.hpp"
+#include "scene/custom_scene_manager.hpp"
+#include "scene/scene.hpp"
 #include "input.hpp"
 #include "ui_manager.hpp"
 #include "window_manager.hpp"
-#include "network_layer/network_layer_manager.hpp"
+#include "network/network_manager.hpp"
 
 #include "objects/collider.hpp"
 #include "objects/free_character_controller.hpp"

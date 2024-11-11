@@ -1,8 +1,8 @@
 #include "state.hpp"
 
-#include "../game.hpp"
-#include "../utils.hpp"
-#include "../network_layer/network_layer.hpp"
+#include "../../game.hpp"
+#include "../../utils.hpp"
+#include "../../network/network_base.hpp"
 
 using namespace std;
 

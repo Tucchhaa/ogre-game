@@ -3,8 +3,6 @@
 #include <OgreSceneNode.h>
 #include <OgreSceneManager.h>
 
-#include "objects/transform.hpp"
-
 namespace core {
 
 class Transform;

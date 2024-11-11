@@ -4,7 +4,7 @@
 
 #include "transform.hpp"
 #include "../game.hpp"
-#include "../physics_world.hpp"
+#include "../physics/physics_world.hpp"
 
 using namespace std;
 

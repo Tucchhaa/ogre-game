@@ -28,7 +28,11 @@ void GalacticWarsGame::startMenuScene() {
 }
 
 void GalacticWarsGame::startDemoScene() {
+    auto singlePlayer = std::make_shared<core::SinglePlayer>();
+    setGameLoopThread(singlePlayer);
+
     setScene(m_demoScene);
+    singlePlayer->start();
 }
 
 }

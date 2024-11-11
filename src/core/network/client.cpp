@@ -1,6 +1,5 @@
 #include "client.hpp"
 
-#include <iostream>
 #include <sstream>
 
 #include "../utils.hpp"
@@ -10,30 +9,25 @@ using namespace std;
 
 namespace core {
 
-Client::Client(ServerInfo server): NetworkBase(HostType::Client),
-                                         m_server(server)
-{ }
-
-void Client::init() {
-    NetworkBase::init();
-
-    // connect to server
+void Client::connect(const ServerInfo server) {
     ENetAddress serverAddress;
-    serverAddress.host = m_server.host;
-    serverAddress.port = m_server.port;
+    serverAddress.host = server.host;
+    serverAddress.port = server.port;
 
-    ENetPeer* peer = enet_host_connect(m_host, &serverAddress, 2, 0);
+    m_peer = enet_host_connect(m_host, &serverAddress, 2, 0);
 
-    if(peer == nullptr) {
-        throw runtime_error("Cannot connect to server");
+    if(m_peer == nullptr) {
+        throw runtime_error("No available peers for initiating an ENet connection.");
     }
+}
 
-    // TODO: if connection was not established, then need to reset peer
-    // enet_peer_reset(peer)
+void Client::onDisconnected() {
+    enet_peer_reset(m_peer);
+    printf("Disconnected from server");
 }
 
 void Client::onConnected() {
-    cout << "Connected to server at port: " << m_server.port << endl;
+    printf("Connected to server");
 }
 
 void Client::onMessage(istream& stream) {
@@ -48,7 +42,5 @@ void Client::onMessage(istream& stream) {
         object->state()->deserialize(stream);
     }
 }
-
-void Client::tick(float dt) { }
 
 } // end namespace core

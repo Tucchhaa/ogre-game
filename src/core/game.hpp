@@ -3,6 +3,7 @@
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
 
+#include "game_loop_thread.hpp"
 #include "scene/custom_scene_manager.hpp"
 #include "scene/scene.hpp"
 #include "network/network_manager.hpp"
@@ -20,6 +21,7 @@ class UIManager;
 class Scene;
 class PhysicsWorld;
 class NetworkBase;
+class GameLoopThread;
 
 class Game {
 public:
@@ -58,16 +60,20 @@ public:
     static std::shared_ptr<Scene> scene() { return instance().m_scene; }
     static const std::unique_ptr<PhysicsWorld>& physics() { return instance().m_scene->physics(); }
     static std::shared_ptr<NetworkManager> networkManager() { return instance().m_networkManager; }
+    static std::shared_ptr<GameLoopThread> gameLoopThread() { return instance().m_gameLoopThread; }
     static bool debugMode() { return instance().m_debugMode; }
 
-    static long long previousUpdateTimestamp() { return networkManager()->previousUpdateTimestamp(); }
-    static long long currentUpdateTimestamp() { return networkManager()->currentUpdateTimestamp(); }
+    static long long previousUpdateTimestamp();
+    static long long currentUpdateTimestamp();
 
     // ===
     // Setters
     // ===
 
     void setScene(const std::shared_ptr<Scene>& scene);
+
+    void setGameLoopThread(const std::shared_ptr<GameLoopThread>& gameLoopThread)
+        { m_gameLoopThread = gameLoopThread; }
 
     /**
      * When debug mode is enabled, the game will draw collider shapes
@@ -91,6 +97,8 @@ private:
     std::shared_ptr<core::UIManager> m_UIManager;
     std::shared_ptr<Scene> m_scene;
     std::shared_ptr<NetworkManager> m_networkManager;
+
+    std::shared_ptr<GameLoopThread> m_gameLoopThread;
 
     class Listener : public Ogre::FrameListener {
     public:

@@ -4,6 +4,8 @@ set(CORE_SOURCE_FILES
     src/core/game.hpp
     src/core/game_event_listener.hpp
     src/core/game_event_listener.cpp
+    src/core/game_loop_thread.cpp
+    src/core/game_loop_thread.hpp
     src/core/input.cpp
     src/core/input.hpp
     src/core/ui_manager.cpp

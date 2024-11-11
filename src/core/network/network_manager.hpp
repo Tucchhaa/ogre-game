@@ -12,34 +12,27 @@ class Client;
 class NetworkBase;
 class LANScanner;
 
-enum class PeerType {
-    /** Used as initial value */
-    None,
-    /** Use to host a single player game */
-    SinglePlayer,
-    /** Use to host a LAN game */
-    LANHost,
-    /** Use to connect to LAN game */
-    LANPeer,
-};
-
 class NetworkManager {
+    enum class NetworkType {
+        /** Used as initial value */
+        None,
+        /** Use to host a LAN game */
+        LANHost,
+        /** Use to connect to LAN game */
+        LANPeer,
+    };
+
 public:
     NetworkManager();
     ~NetworkManager();
 
-    long long previousUpdateTimestamp() const;
-
-    long long currentUpdateTimestamp() const;
-
     /**
-     * Launches LAN scanner to find if there are some servers
+     * Scans LAN to discover servers
      */
-    bool searchLANGames();
+    void searchLANServers();
 
     void initClient();
     void initServer();
-    void initSinglePlayer();
 
     void start() const;
 
@@ -48,18 +41,20 @@ public:
      */
     void stop();
 
+    const std::shared_ptr<NetworkBase>& peer() const { return m_peer; }
     std::shared_ptr<Server> server() const;
     std::shared_ptr<Client> client() const;
 
+    const std::vector<ServerInfo>& getLANServers() const { return m_LANServers; }
+    const ServerInfo& getLANServerAt(int index) const { return m_LANServers[index]; }
+
 private:
-    PeerType m_peerType = PeerType::None;
+    NetworkType m_networkType = NetworkType::None;
     std::shared_ptr<NetworkBase> m_peer;
     std::shared_ptr<LANScanner> m_LANScanner;
     std::vector<ServerInfo> m_LANServers;
 
-    // std::shared_ptr<NetworkBase> createNetworkPeer(PeerType peerType);
-    std::shared_ptr<NetworkBase> createServer() const;
-    std::shared_ptr<NetworkBase> createClient();
+    std::shared_ptr<NetworkBase> createPeer(NetworkType networkType);
 };
 
 } // end namespace core

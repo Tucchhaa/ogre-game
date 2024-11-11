@@ -63,6 +63,16 @@ void Game::stop() const {
     m_root->queueEndRendering();
 }
 
+long long Game::previousUpdateTimestamp() {
+    auto gameLoopThread = instance().m_gameLoopThread;
+    return gameLoopThread == nullptr ? 0 : gameLoopThread->previousUpdateTimestamp();
+}
+
+long long Game::currentUpdateTimestamp() {
+    auto gameLoopThread = instance().m_gameLoopThread;
+    return gameLoopThread == nullptr ? 0 : gameLoopThread->currentUpdateTimestamp();
+}
+
 void Game::setScene(const std::shared_ptr<Scene>& scene) {
     const auto oldScene = m_scene;
 

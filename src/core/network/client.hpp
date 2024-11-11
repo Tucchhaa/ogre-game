@@ -7,19 +7,19 @@ namespace core {
 
 class Client : public NetworkBase {
 public:
-    explicit Client(ServerInfo server);
+    Client(): NetworkBase(HostType::Client) {}
 
-    void init() override;
+    void connect(ServerInfo server);
 
 protected:
     void onConnected() override;
 
+    void onDisconnected() override;
+
     void onMessage(std::istream& stream) override;
 
-    void tick(float dt) override;
-
 private:
-    ServerInfo m_server;
+    ENetPeer* m_peer = nullptr;
 };
 
 } // end namespace core

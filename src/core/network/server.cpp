@@ -23,6 +23,8 @@ void Server::init() {
 }
 
 void Server::tick(float dt) {
+    NetworkBase::tick(dt);
+
     if(m_state == ServerState::WAIT_CLIENTS) {
         m_LANListener->listen();
     }

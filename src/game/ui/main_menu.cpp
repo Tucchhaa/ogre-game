@@ -19,7 +19,6 @@ void MainMenu::show() {
 void MainMenu::buttonHit(OgreBites::Button* button) {
     if (button->getName() == "open_missions_menu") {
         hide();
-        core::Game::trayManager()->hideCursor();
 
         GalacticWarsGame::instance().startDemoScene();
     }

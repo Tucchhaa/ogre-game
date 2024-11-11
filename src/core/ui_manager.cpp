@@ -3,6 +3,7 @@
 #include "game.hpp"
 
 void core::UserInterface::hide() {
+    core::Game::trayManager()->hideCursor();
     Game::trayManager()->destroyAllWidgets();
 }
 

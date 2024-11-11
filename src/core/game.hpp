@@ -19,7 +19,7 @@ class WindowManager;
 class UIManager;
 class Scene;
 class PhysicsWorld;
-class NetworkLayer;
+class NetworkBase;
 
 class Game {
 public:
@@ -40,8 +40,6 @@ public:
 
     void stop() const;
 
-    void startNetwork() const;
-
     // ===
     // Static getters
     // ===
@@ -59,9 +57,11 @@ public:
     static std::shared_ptr<UIManager> UIManager() { return instance().m_UIManager; }
     static std::shared_ptr<Scene> scene() { return instance().m_scene; }
     static const std::unique_ptr<PhysicsWorld>& physics() { return instance().m_scene->physics(); }
-    static std::shared_ptr<NetworkLayerManager> networkLayerManager() { return instance().m_networkLayerManager; }
-    static std::shared_ptr<NetworkLayer> networkLayer() { return networkLayerManager()->networkLayer(); }
+    static std::shared_ptr<NetworkManager> networkManager() { return instance().m_networkManager; }
     static bool debugMode() { return instance().m_debugMode; }
+
+    static long long previousUpdateTimestamp() { return networkManager()->previousUpdateTimestamp(); }
+    static long long currentUpdateTimestamp() { return networkManager()->currentUpdateTimestamp(); }
 
     // ===
     // Setters
@@ -90,7 +90,7 @@ private:
     std::shared_ptr<WindowManager> m_windowManager;
     std::shared_ptr<core::UIManager> m_UIManager;
     std::shared_ptr<Scene> m_scene;
-    std::shared_ptr<NetworkLayerManager> m_networkLayerManager;
+    std::shared_ptr<NetworkManager> m_networkManager;
 
     class Listener : public Ogre::FrameListener {
     public:

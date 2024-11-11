@@ -5,13 +5,13 @@
 
 namespace core {
 
-class Client : public NetworkLayer {
+class Client : public NetworkBase {
 public:
     explicit Client(ServerInfo server);
 
-protected:
     void init() override;
 
+protected:
     void onConnected() override;
 
     void onMessage(std::istream& stream) override;

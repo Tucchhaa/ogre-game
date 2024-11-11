@@ -28,12 +28,17 @@ Ogre::Quaternion State::interpolate(const Ogre::Quaternion& a, const Ogre::Quate
 
 float State::calcInterpolationFactor() {
     const long long timestamp = utils::getTimestamp();
-    const long long start = Game::networkLayer()->previousUpdateTimestamp();
-    const long long end = Game::networkLayer()->currentUpdateTimestamp();
+    const long long start = Game::previousUpdateTimestamp();
+    const long long end = Game::currentUpdateTimestamp();
 
-    const float result = static_cast<float>(timestamp - start) / static_cast<float>(end - start);
+    const long long numerator = timestamp - start;
+    const long long denominator = end - start;
 
-    return result;
+    const float factor = denominator == 0
+        ? 1.f
+        : static_cast<float>(numerator) / static_cast<float>(denominator);
+
+    return factor;
 }
 
 } // end namespace core

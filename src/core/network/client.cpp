@@ -10,12 +10,12 @@ using namespace std;
 
 namespace core {
 
-Client::Client(ServerInfo server): NetworkLayer(HostType::Client),
+Client::Client(ServerInfo server): NetworkBase(HostType::Client),
                                          m_server(server)
 { }
 
 void Client::init() {
-    NetworkLayer::init();
+    NetworkBase::init();
 
     // connect to server
     ENetAddress serverAddress;

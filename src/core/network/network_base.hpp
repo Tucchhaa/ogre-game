@@ -15,10 +15,20 @@ enum class HostType {
 /*
  * Base class for Client and Server
  */
-class NetworkLayer {
+class NetworkBase {
 public:
-    explicit NetworkLayer(HostType hostType): m_hostType(hostType) {}
-    virtual ~NetworkLayer();
+    explicit NetworkBase(HostType hostType): m_hostType(hostType) {}
+    virtual ~NetworkBase();
+
+    /**
+     * Timestamp of the most recent update.
+     */
+    long long currentUpdateTimestamp();
+
+    /**
+     * The timestamp of the previous update.
+     */
+    long long previousUpdateTimestamp();
 
     virtual void init();
 
@@ -32,23 +42,7 @@ public:
      */
     virtual void stop();
 
-    /**
-     * Timestamp of the most recent update.
-     */
-    long long currentUpdateTimestamp() {
-        std::lock_guard _(updateTimestampMutex);
-        return m_currentUpdateTimestamp;
-    }
-
-    /**
-     * The timestamp of the previous update.
-     */
-    long long previousUpdateTimestamp() {
-        std::lock_guard _(updateTimestampMutex);
-        return m_previousUpdateTimestamp;
-    }
-
-protected:
+   protected:
     static constexpr enet_uint8 UNRELIABLE_CHANNEL_ID = 0;
     static constexpr enet_uint8 RELIABLE_CHANNEL_ID = 1;
 

@@ -12,12 +12,12 @@ using namespace std;
 
 namespace core {
 
-Server::Server(): NetworkLayer(HostType::Server) {
+Server::Server(): NetworkBase(HostType::Server) {
     m_state = ServerState::STARTING;
 }
 
 void Server::init() {
-    NetworkLayer::init();
+    NetworkBase::init();
     m_state = ServerState::WAIT_CLIENTS;
     m_LANListener = make_shared<LANListener>(m_host->address.port);
 }

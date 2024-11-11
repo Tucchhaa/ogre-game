@@ -24,7 +24,7 @@ enum class ServerState {
  * Physics simulation and fixed updates are called from the Server.
  * Synchronizes game states between all the clients.
  */
-class Server : public NetworkLayer {
+class Server : public NetworkBase {
 public:
     Server();
 

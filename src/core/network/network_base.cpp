@@ -8,11 +8,21 @@ using namespace std;
 
 namespace core {
 
-NetworkLayer::~NetworkLayer() {
-    NetworkLayer::stop();
+NetworkBase::~NetworkBase() {
+    NetworkBase::stop();
 }
 
-void NetworkLayer::init() {
+long long NetworkBase::currentUpdateTimestamp() {
+    std::lock_guard _(updateTimestampMutex);
+    return m_currentUpdateTimestamp;
+}
+
+long long NetworkBase::previousUpdateTimestamp() {
+    std::lock_guard _(updateTimestampMutex);
+    return m_previousUpdateTimestamp;
+}
+
+void NetworkBase::init() {
     m_host = createHost();
 
     if(m_host == nullptr) {
@@ -20,7 +30,7 @@ void NetworkLayer::init() {
     }
 }
 
-void NetworkLayer::start() {
+void NetworkBase::start() {
     m_running.store(true);
 
     m_tickThread = thread([this]() {
@@ -55,7 +65,7 @@ void NetworkLayer::start() {
     });
 }
 
-void NetworkLayer::stop() {
+void NetworkBase::stop() {
     if(m_running.load() == false) {
         return;
     }
@@ -67,7 +77,7 @@ void NetworkLayer::stop() {
     }
 }
 
-ENetHost* NetworkLayer::createHost() const {
+ENetHost* NetworkBase::createHost() const {
     constexpr int CLIENTS_NUMBER = 32;
     constexpr int CHANNELS_NUMBER = 2;
     constexpr int BANDWIDTH_IN = 0;
@@ -92,7 +102,7 @@ ENetHost* NetworkLayer::createHost() const {
     );
 }
 
-ENetPacket* NetworkLayer::createPacket(const ostringstream &stream, enet_uint8 channel_id) {
+ENetPacket* NetworkBase::createPacket(const ostringstream &stream, enet_uint8 channel_id) {
     const string data = stream.str();
     const auto packetType =
         channel_id == UNRELIABLE_CHANNEL_ID
@@ -104,7 +114,7 @@ ENetPacket* NetworkLayer::createPacket(const ostringstream &stream, enet_uint8 c
     return packet;
 }
 
-void NetworkLayer::handleEnetEvent() {
+void NetworkBase::handleEnetEvent() {
     ENetEvent event;
     enet_host_service(m_host, &event, 0);
 

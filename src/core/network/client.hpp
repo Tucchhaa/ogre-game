@@ -1,6 +1,6 @@
 #pragma once
 
-#include "network_layer.hpp"
+#include "network_base.hpp"
 #include "server_info.hpp"
 
 namespace core {

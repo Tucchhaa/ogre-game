@@ -3,7 +3,7 @@
 #include <OgreMovableObject.h>
 
 #include "../game_event_listener.hpp"
-#include "../objects/state.hpp"
+#include "state/state.hpp"
 
 namespace core {
 

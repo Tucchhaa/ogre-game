@@ -1,6 +1,6 @@
 #include "transform.hpp"
 
-#include "../custom_scene_node.hpp"
+#include "../scene/custom_scene_node.hpp"
 
 using namespace Ogre;
 

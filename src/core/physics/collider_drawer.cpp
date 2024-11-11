@@ -1,6 +1,6 @@
 #include "collider_drawer.hpp"
 
-#include "game.hpp"
+#include "../game.hpp"
 
 namespace core {
 

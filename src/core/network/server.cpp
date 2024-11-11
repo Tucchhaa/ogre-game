@@ -5,7 +5,7 @@
 #include "../game.hpp"
 #include "../game_event_listener.hpp"
 #include "../objects/base_movable_object.hpp"
-#include "../physics_world.hpp"
+#include "../physics/physics_world.hpp"
 #include "../utils.hpp"
 
 using namespace std;

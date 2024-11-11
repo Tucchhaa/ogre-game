@@ -3,9 +3,9 @@
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
 
-#include "custom_scene_manager.hpp"
-#include "scene.hpp"
-#include "network_layer/network_layer_manager.hpp"
+#include "scene/custom_scene_manager.hpp"
+#include "scene/scene.hpp"
+#include "network/network_manager.hpp"
 
 namespace OgreBites
 {

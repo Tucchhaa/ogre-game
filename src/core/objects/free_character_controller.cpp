@@ -1,5 +1,6 @@
 #include "free_character_controller.hpp"
 
+#include "transform.hpp"
 #include "../input.hpp"
 #include "../window_manager.hpp"
 

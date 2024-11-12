@@ -1,9 +1,8 @@
 #pragma once
 
-#include <thread>
-#include <atomic>
-#include <mutex>
 #include <enet/enet.h>
+
+#include "../game_loop_thread.hpp"
 
 namespace core {
 
@@ -15,38 +14,13 @@ enum class HostType {
 /*
  * Base class for Client and Server
  */
-class NetworkLayer {
+class NetworkBase : public GameLoopThread {
 public:
-    explicit NetworkLayer(HostType hostType): m_hostType(hostType) {}
-    virtual ~NetworkLayer();
+    explicit NetworkBase(HostType hostType): m_hostType(hostType) {}
 
     virtual void init();
 
-    /**
-     * Start logic thread
-     */
-    virtual void start();
-
-    /**
-     * Stop logic thread
-     */
-    virtual void stop();
-
-    /**
-     * Timestamp of the most recent update.
-     */
-    long long currentUpdateTimestamp() {
-        std::lock_guard _(updateTimestampMutex);
-        return m_currentUpdateTimestamp;
-    }
-
-    /**
-     * The timestamp of the previous update.
-     */
-    long long previousUpdateTimestamp() {
-        std::lock_guard _(updateTimestampMutex);
-        return m_previousUpdateTimestamp;
-    }
+    void stop() override;
 
 protected:
     static constexpr enet_uint8 UNRELIABLE_CHANNEL_ID = 0;
@@ -54,7 +28,7 @@ protected:
 
     ENetHost* m_host = nullptr;
 
-    virtual void tick(float dt) {}
+    void tick(float dt) override;
 
     /**
      * If server, then called when a client connects to the server.
@@ -77,18 +51,6 @@ protected:
     static ENetPacket* createPacket(const std::ostringstream &stream, enet_uint8 channel_id);
 
 private:
-    static constexpr int MILLISECONDS_BETWEEN_TICKS = 20; // 50 updates per second
-
-    std::atomic<bool> m_running{false};
-    std::thread m_tickThread;
-    // mutex for reading/writing @m_currentUpdateTimestamp, @m_previousUpdateTimestamp
-    std::mutex updateTimestampMutex;
-
-    // Important note: this is accessed from multiple threads.
-    long long m_currentUpdateTimestamp = 0;
-    // Important note: this is accessed from multiple threads.
-    long long m_previousUpdateTimestamp = 0;
-
     HostType m_hostType;
 
     ENetHost* createHost() const;

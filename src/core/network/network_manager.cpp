@@ -1,5 +1,7 @@
 #include "network_manager.hpp"
 
+#include "../game.hpp"
+
 #include "network_base.hpp"
 #include "lan_scanner.hpp"
 #include "server.hpp"
@@ -9,79 +11,77 @@ using namespace std;
 
 namespace core {
 
-NetworkLayerManager::NetworkLayerManager() {
+NetworkManager::NetworkManager() {
     enet_initialize();
 
     m_LANScanner = make_shared<LANScanner>();
 }
 
-NetworkLayerManager::~NetworkLayerManager() {
+NetworkManager::~NetworkManager() {
     enet_deinitialize();
 }
 
-// TODO: make it a return a list of found games, so later it will be shown as a list of found games
-bool NetworkLayerManager::searchLANGames() {
+void NetworkManager::searchLANServers() {
     m_LANServers = m_LANScanner->scan();
-
-    return !m_LANServers.empty();
 }
 
-void NetworkLayerManager::initNetworkLayer(NetworkType gameType) {
-    m_networkLayer = createNetworkLayer(gameType);
-    m_networkLayer->init();
+void NetworkManager::initClient() {
+    m_peer = createPeer(NetworkType::LANPeer);
 }
 
-void NetworkLayerManager::start() const {
-    if(m_networkType == NetworkType::None) {
-        throw runtime_error("Wrong game type: can not start");
-    }
-
-    m_networkLayer->start();
+void NetworkManager::initServer() {
+    m_peer = createPeer(NetworkType::LANHost);
 }
 
-void NetworkLayerManager::stop() {
-    if(m_networkLayer != nullptr) {
-        m_networkLayer->stop();
-        m_networkLayer.reset();
+void NetworkManager::start() const {
+    m_peer->start();
+}
+
+void NetworkManager::stop() {
+    if(m_peer != nullptr) {
+        m_peer->stop();
+        m_peer.reset();
+        Game::setGameLoopThread(nullptr);
     }
 }
 
-shared_ptr<Server> NetworkLayerManager::server() const {
-    if(m_networkType == NetworkType::SinglePlayer || m_networkType == NetworkType::LANHost)
-        return static_pointer_cast<Server>(m_networkLayer);
+shared_ptr<Server> NetworkManager::server() const {
+    if(m_networkType == NetworkType::LANHost)
+        return static_pointer_cast<Server>(m_peer);
 
     return nullptr;
 }
 
-shared_ptr<Client> NetworkLayerManager::client() const {
-    if(NetworkType::LANPeer == m_networkType)
-        return static_pointer_cast<Client>(m_networkLayer);
+shared_ptr<Client> NetworkManager::client() const {
+    if(m_networkType == NetworkType::LANPeer)
+        return static_pointer_cast<Client>(m_peer);
 
     return nullptr;
 }
 
-shared_ptr<NetworkLayer> NetworkLayerManager::createNetworkLayer(NetworkType gameType) {
-    m_networkType = gameType;
+std::shared_ptr<NetworkBase> NetworkManager::createPeer(NetworkType networkType) {
+    if(m_peer != nullptr) {
+        throw runtime_error("Network was not stopped. Stop it before starting new game.");
+    }
 
-    stop();
+    m_networkType = networkType;
+    std::shared_ptr<NetworkBase> peer;
 
-    switch (m_networkType) {
-        case NetworkType::SinglePlayer:
+    switch (networkType) {
         case NetworkType::LANHost:
-            return make_shared<Server>();
-
-        case NetworkType::LANPeer:
-            if(m_LANServers.empty()) {
-                throw runtime_error("No LAN servers found. Can not join");
-            }
-
-            // TODO: connect not to the first discovered, but to the selected by the user
-            return make_shared<Client>(m_LANServers[0]);
-        case NetworkType::None:
+            peer = make_shared<Server>();
             break;
+        case NetworkType::LANPeer:
+            peer = make_shared<Client>();
+            break;
+        default:
+            throw runtime_error("Incorrect PeerType can not create peer");
     }
 
-    throw runtime_error("Not implemented");
+    peer->init();
+    Game::setGameLoopThread(peer);
+
+    return peer;
 }
 
 } // end namespace core

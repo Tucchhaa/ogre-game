@@ -51,7 +51,7 @@ void Game::init() {
     m_windowManager = std::make_shared<WindowManager>();
     m_UIManager = std::make_shared<core::UIManager>();
     m_input = std::make_shared<Input>();
-    m_networkLayerManager = std::make_shared<NetworkLayerManager>();
+    m_networkManager = std::make_shared<NetworkManager>();
 
     m_shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
 
@@ -63,16 +63,14 @@ void Game::stop() const {
     m_root->queueEndRendering();
 }
 
-void Game::startNetwork() const {
-    if(utils::isClientExecutable()) {
-        m_networkLayerManager->searchLANGames();
-        m_networkLayerManager->initNetworkLayer(NetworkType::LANPeer);
-    }
-    else {
-        m_networkLayerManager->initNetworkLayer(NetworkType::LANHost);
-    }
+long long Game::previousUpdateTimestamp() {
+    auto gameLoopThread = instance().m_gameLoopThread;
+    return gameLoopThread == nullptr ? 0 : gameLoopThread->previousUpdateTimestamp();
+}
 
-    m_networkLayerManager->start();
+long long Game::currentUpdateTimestamp() {
+    auto gameLoopThread = instance().m_gameLoopThread;
+    return gameLoopThread == nullptr ? 0 : gameLoopThread->currentUpdateTimestamp();
 }
 
 void Game::setScene(const std::shared_ptr<Scene>& scene) {
@@ -84,18 +82,15 @@ void Game::setScene(const std::shared_ptr<Scene>& scene) {
     m_renderWindow->removeAllViewports();
     m_renderWindow->addViewport(m_scene->mainCamera);
 
+    GameEventListener::callSceneInited();
+    m_scene->start();
+
     if(oldScene != nullptr) {
         oldScene->sceneManager()->destroyCamera(oldScene->mainCamera);
         oldScene->mainCamera = nullptr;
-
-        GameEventListener::callSceneInited();
-        m_scene->start();
     }
-    // if there is no old scene, then this scene is first, and we need to start rendering
+    // if there is no old scene, then this scene is the entry point, and we need to start rendering
     else {
-        startNetwork();
-        GameEventListener::callSceneInited();
-        m_scene->start();
         m_root->startRendering();
     }
 }
@@ -113,7 +108,7 @@ bool Game::Listener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 
 bool Game::Listener::frameEnded(const Ogre::FrameEvent& evt) {
     if(root()->endRenderingQueued()) {
-        networkLayerManager()->stop();
+        networkManager()->stop();
         appContext()->closeApp();
         return false;
     }

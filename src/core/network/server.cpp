@@ -12,17 +12,33 @@ using namespace std;
 
 namespace core {
 
-Server::Server(): NetworkLayer(HostType::Server) {
+Server::Server(): NetworkBase(HostType::Server) {
     m_state = ServerState::STARTING;
 }
 
 void Server::init() {
-    NetworkLayer::init();
+    NetworkBase::init();
     m_state = ServerState::WAIT_CLIENTS;
     m_LANListener = make_shared<LANListener>(m_host->address.port);
 }
 
+void Server::startGame() {
+    m_state = ServerState::RUNNING;
+    m_LANListener.reset();
+}
+
+void Server::stop() {
+    NetworkBase::stop();
+    m_LANListener.reset();
+}
+
+unsigned int Server::getClientsCount() const {
+    return m_host->connectedPeers;
+}
+
 void Server::tick(float dt) {
+    NetworkBase::tick(dt);
+
     if(m_state == ServerState::WAIT_CLIENTS) {
         m_LANListener->listen();
     }
@@ -32,17 +48,13 @@ void Server::tick(float dt) {
 }
 
 void Server::onConnected() {
-    cout << "Peer connected" << endl;
-    // Note: starts game when one client connected.
-    // TODO: start when the user clicks to start
-    m_state = ServerState::RUNNING;
-
-    // delete LAN listener
-    m_LANListener.reset();
+    printf("Peer connected");
+    onClientsChange.invoke();
 }
 
 void Server::onDisconnected() {
-    cout << "Peer disconnected" << endl;
+    printf("Peer disconnected");
+    onClientsChange.invoke();
 }
 
 void Server::tickGame(float dt) const {

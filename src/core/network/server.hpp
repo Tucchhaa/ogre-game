@@ -3,6 +3,8 @@
 #include "lan_listener.hpp"
 #include "network_base.hpp"
 
+#include "../event.hpp"
+
 namespace core {
 
 enum class ServerState {
@@ -24,11 +26,25 @@ enum class ServerState {
  * Physics simulation and fixed updates are called from the Server.
  * Synchronizes game states between all the clients.
  */
-class Server : public NetworkLayer {
+class Server : public NetworkBase {
 public:
+    /// An event of clients connecting or disconnecting
+    Event<> onClientsChange;
+
     Server();
 
     void init() override;
+
+
+    /// Switches state to running and start the game
+    void startGame();
+
+    void stop() override;
+
+    /**
+     * Returns the count of connected to the server clients
+     */
+    unsigned int getClientsCount() const;
 
 protected:
     void tick(float dt) override;
@@ -38,7 +54,7 @@ protected:
     void onDisconnected() override;
 
 private:
-     std::atomic<ServerState> m_state{};
+    std::atomic<ServerState> m_state{};
 
     std::shared_ptr<LANListener> m_LANListener;
 

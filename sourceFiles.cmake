@@ -4,6 +4,8 @@ set(CORE_SOURCE_FILES
     src/core/game.hpp
     src/core/game_event_listener.hpp
     src/core/game_event_listener.cpp
+    src/core/game_loop_thread.cpp
+    src/core/game_loop_thread.hpp
     src/core/input.cpp
     src/core/input.hpp
     src/core/ui_manager.cpp
@@ -63,6 +65,8 @@ set(GAME_SOURCE_FILES
     src/game/ui/lan_menu.hpp
     src/game/ui/lan_peer_menu.cpp
     src/game/ui/lan_peer_menu.hpp
+    src/game/ui/lan_host_menu.cpp
+    src/game/ui/lan_host_menu.hpp
 
     src/game/scenes/menu_scene.cpp
     src/game/scenes/menu_scene.hpp

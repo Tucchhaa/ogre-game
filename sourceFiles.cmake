@@ -65,6 +65,8 @@ set(GAME_SOURCE_FILES
     src/game/ui/lan_menu.hpp
     src/game/ui/lan_peer_menu.cpp
     src/game/ui/lan_peer_menu.hpp
+    src/game/ui/lan_host_menu.cpp
+    src/game/ui/lan_host_menu.hpp
 
     src/game/scenes/menu_scene.cpp
     src/game/scenes/menu_scene.hpp

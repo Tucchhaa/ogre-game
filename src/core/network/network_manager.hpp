@@ -46,7 +46,6 @@ public:
     std::shared_ptr<Client> client() const;
 
     const std::vector<ServerInfo>& getLANServers() const { return m_LANServers; }
-    const ServerInfo& getLANServerAt(int index) const { return m_LANServers[index]; }
 
 private:
     NetworkType m_networkType = NetworkType::None;

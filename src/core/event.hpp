@@ -1,56 +1,92 @@
 #pragma once
 
 #include <functional>
-#include <map>
 #include <mutex>
 
 namespace core {
 
-template<typename TCallback>
-class TemplateEvent {
+// Note: Maybe do not need thread safety in Event class.
+// Probably we need it to work only in Logic Thread.
+
+template<typename... Args>
+class Event {
 public:
-    using callback_type = std::function<TCallback>;
+    using Listener = std::function<void(Args...)>;
 
-    virtual ~TemplateEvent() = default;
-    TemplateEvent() = default;
+    /// Subscribe a new listener to the event
+    /// Returns a unique identifier for the listener
+    size_t subscribe(const Listener& listener) {
+        size_t id = currentId.fetch_add(1, std::memory_order_relaxed);
+        std::lock_guard lock(m_mutex);
 
-    int subscribe(const callback_type& callback) {
-        std::lock_guard _(m_callbacks_mutex);
-
-        const int id = generateCallbackID();
-
-        m_callbacks[id] = callback;
+        listeners.emplace_back(id, listener);
 
         return id;
     }
 
-    void unsubscribe(int id) {
-        std::lock_guard _(m_callbacks_mutex);
-
-        m_callbacks.erase(id);
+    // Overload to subscribe member functions
+    template <typename T>
+    size_t subscribe(T* instance, void (T::*memberFunc)(Args...)) {
+        Listener listener = [=](Args... args) {
+            (instance->*memberFunc)(args...);
+        };
+        return subscribe(listener);
     }
 
-    virtual void fire() = 0;
+    // Overload to subscribe member functions
+    template <typename T>
+    size_t subscribe(T* instance, void (T::*memberFunc)(Args...) const) {
+        Listener listener = [=](Args... args) {
+            (instance->*memberFunc)(args...);
+        };
+        return subscribe(listener);
+    }
 
-protected:
-    std::mutex m_callbacks_mutex;
-    std::map<int, callback_type> m_callbacks;
+    void unsubscribe(size_t id) {
+        std::lock_guard lock(m_mutex);
+
+        auto it = find_if(
+            listeners.begin(), listeners.end(),
+            [id](auto item) { return item.id == id; }
+        );
+
+        if(it != listeners.end()) {
+            listeners.erase(it);
+        }
+    }
+
+
+    void invoke(Args... args) const {
+        std::vector<Listener> listenersCopy;
+        {
+            std::lock_guard lock(m_mutex);
+            // Copy the listeners to avoid holding the lock during invocation
+            for (const auto& item : listeners) {
+                listenersCopy.emplace_back(item.listener);
+            }
+        }
+
+        for (const auto& listener : listenersCopy) {
+            listener(args...);
+        }
+    }
+
+    void clear() {
+        std::lock_guard lock(m_mutex);
+        listeners.clear();
+    }
 
 private:
-    static int generateCallbackID() {
-        static int lastCallbackID = 0;
-        return ++lastCallbackID;
-    }
-};
+    struct ListenerItem {
+        size_t id;
+        Listener listener;
 
-class Event : public TemplateEvent<void()> {
-public:
-    void fire() override {
-        std::lock_guard _(m_callbacks_mutex);
+        ListenerItem(size_t listenerId, const Listener& lst) : id(listenerId), listener(lst) {}
+    };
 
-        for(const auto& [id, callback] : m_callbacks)
-            callback();
-    }
+    mutable std::mutex m_mutex;
+    std::vector<ListenerItem> listeners;
+    std::atomic<size_t> currentId = 0;
 };
 
 } // end namespace core

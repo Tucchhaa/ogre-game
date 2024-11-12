@@ -72,8 +72,8 @@ public:
 
     void setScene(const std::shared_ptr<Scene>& scene);
 
-    void setGameLoopThread(const std::shared_ptr<GameLoopThread>& gameLoopThread)
-        { m_gameLoopThread = gameLoopThread; }
+    static void setGameLoopThread(const std::shared_ptr<GameLoopThread>& gameLoopThread)
+        { instance().m_gameLoopThread = gameLoopThread; }
 
     /**
      * When debug mode is enabled, the game will draw collider shapes

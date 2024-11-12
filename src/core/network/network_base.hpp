@@ -20,6 +20,8 @@ public:
 
     virtual void init();
 
+    void stop() override;
+
 protected:
     static constexpr enet_uint8 UNRELIABLE_CHANNEL_ID = 0;
     static constexpr enet_uint8 RELIABLE_CHANNEL_ID = 1;

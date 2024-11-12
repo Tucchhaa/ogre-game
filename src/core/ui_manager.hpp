@@ -4,13 +4,24 @@
 
 namespace core {
 
+class NetworkManager;
+class UIManager;
+
 class UserInterface : public OgreBites::TrayListener {
 public:
+    UserInterface();
+
     virtual std::string getName() = 0;
 
     virtual void show() = 0;
 
     virtual void hide();
+
+protected:
+    OgreBites::TrayManager* m_tray;
+
+    std::shared_ptr<UIManager> m_ui;
+    std::shared_ptr<NetworkManager> m_network;
 };
 
 class UIManager {

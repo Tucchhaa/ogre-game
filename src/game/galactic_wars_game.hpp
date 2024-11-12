@@ -20,6 +20,7 @@ public:
 
     void startMenuScene();
     void startDemoScene();
+    void startDemoSceneMultiplayer();
 
 private:
     static std::shared_ptr<GalacticWarsGame> _instance;

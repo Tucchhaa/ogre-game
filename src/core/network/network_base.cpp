@@ -10,6 +10,11 @@ void NetworkBase::init() {
     m_host = createHost();
 }
 
+void NetworkBase::stop() {
+    GameLoopThread::stop();
+    enet_host_destroy(m_host);
+}
+
 void NetworkBase::tick(float dt) {
     handleEnetEvent();
 }
@@ -41,7 +46,7 @@ ENetHost* NetworkBase::createHost() const {
         );
     }
 
-    if(m_host == nullptr) {
+    if(host == nullptr) {
         throw runtime_error("An error occurred while trying to create an ENet host.");
     }
 
@@ -78,6 +83,7 @@ void NetworkBase::handleEnetEvent() {
 
         case ENET_EVENT_TYPE_RECEIVE:
             const auto data = string(reinterpret_cast<char*>(event.packet->data), event.packet->dataLength);
+            enet_packet_destroy(event.packet);
 
             istringstream stream(data, std::ios::binary);
             onMessage(stream);

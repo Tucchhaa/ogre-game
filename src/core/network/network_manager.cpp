@@ -1,5 +1,7 @@
 #include "network_manager.hpp"
 
+#include "../game.hpp"
+
 #include "network_base.hpp"
 #include "lan_scanner.hpp"
 #include "server.hpp"
@@ -28,7 +30,7 @@ void NetworkManager::initClient() {
 }
 
 void NetworkManager::initServer() {
-    m_peer = createPeer(NetworkType::LANPeer);
+    m_peer = createPeer(NetworkType::LANHost);
 }
 
 void NetworkManager::start() const {
@@ -39,6 +41,7 @@ void NetworkManager::stop() {
     if(m_peer != nullptr) {
         m_peer->stop();
         m_peer.reset();
+        Game::setGameLoopThread(nullptr);
     }
 }
 
@@ -76,6 +79,7 @@ std::shared_ptr<NetworkBase> NetworkManager::createPeer(NetworkType networkType)
     }
 
     peer->init();
+    Game::setGameLoopThread(peer);
 
     return peer;
 }

@@ -1,40 +1,59 @@
 #include "lan_peer_menu.hpp"
 
+#include "../galactic_wars_game.hpp"
 #include "../../core/game.hpp"
+#include "../../core/network/client.hpp"
+
+using namespace std;
 
 namespace game {
 
 void LANPeerMenu::show() {
-    const auto tray = core::Game::trayManager();
-    tray->showCursor();
+    m_tray->showCursor();
 
-    std::vector<std::string> host_list = {
-        "192.168.0.1",
-        "192.168.1.1",
-        "10.0.0.1",
-        "10.0.1.1",
-        "172.16.0.1",
-        "172.16.1.1",
-        "8.8.8.8",
-        "8.8.4.4",
-        "1.1.1.1",
-        "1.0.0.1"
-    };
+    m_tray->createButton(OgreBites::TL_CENTER, "search_lan_games", "Search");
 
-    for (size_t i = 0; i < host_list.size(); ++i) {
-        std::string line = host_list[i];
-        std::string labelName = "LineLabel" + std::to_string(i);
-        std::string buttonName = "LineButton" + std::to_string(i);
+    auto servers = m_network->getLANServers();
 
-        tray->createLabel(OgreBites::TL_CENTER, labelName, line, 300);
-        tray->createButton(OgreBites::TL_CENTER, buttonName, "Action " + std::to_string(i + 1), 100);
+    if(servers.empty()) {
+        m_tray->createTextBox(OgreBites::TL_CENTER, "empty_text", "No servers found", 300, 50);
+    }
+    else {
+        for (size_t i = 0; i < servers.size(); i++) {
+            auto server = servers[i];
+            string text = to_string(server.host) + ':' + to_string(server.port);
+            string labelName = "LineLabel" + to_string(i);
+            string buttonName = "connect_to_lan_" + to_string(i);
+
+            m_tray->createLabel(OgreBites::TL_CENTER, labelName, text);
+            m_tray->createButton(OgreBites::TL_CENTER, "connect", "Connect");
+        }
     }
 
-    tray->createButton(OgreBites::TL_BOTTOMLEFT,"return_to_lan_menu","Return");
+    m_tray->createButton(OgreBites::TL_BOTTOMLEFT,"return_to_lan_menu_from_peer","Return");
 }
 
 void LANPeerMenu::buttonHit(OgreBites::Button* button) {
-    if (button->getName() == "return_to_lan_menu") {
+    auto buttonName = button->getName();
+    
+    if(buttonName == "search_lan_games") {
+        // TODO: handle case when no servers found
+        m_network->searchLANServers();
+        hide();
+        show(); // render menu again to apply changes
+    }
+    else if(buttonName == "connect") {
+        m_network->initClient();
+        // TODO: make it to connect to the selected server, not the the first server
+        // TODO: handle case if connect was failed
+        m_network->client()->connect(
+            m_network->getLANServers()[0]
+        );
+        GalacticWarsGame::instance().startDemoSceneMultiplayer();
+        m_network->client()->start();
+        hide();
+    }
+    else if (buttonName == "return_to_lan_menu_from_peer") {
         core::Game::UIManager()->showOnly("LAN_MENU");
     }
 }

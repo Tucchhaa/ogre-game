@@ -2,12 +2,20 @@
 
 #include "game.hpp"
 
-void core::UserInterface::hide() {
-    core::Game::trayManager()->hideCursor();
-    Game::trayManager()->destroyAllWidgets();
+namespace core {
+
+UserInterface::UserInterface() {
+    m_tray = Game::trayManager();
+    m_ui = Game::UIManager();
+    m_network = Game::networkManager();
 }
 
-void core::UIManager::addListener(const std::shared_ptr<UserInterface>& listener) {
+void UserInterface::hide() {
+    m_tray->hideCursor();
+    m_tray->destroyAllWidgets();
+}
+
+void UIManager::addListener(const std::shared_ptr<UserInterface>& listener) {
     const std::string name = listener->getName();
 
     if(m_interfaces.find(name) != m_interfaces.end()) {
@@ -17,7 +25,7 @@ void core::UIManager::addListener(const std::shared_ptr<UserInterface>& listener
     m_interfaces[name] = listener;
 }
 
-void core::UIManager::showOnly(const std::string& name) {
+void UIManager::showOnly(const std::string& name) {
     for(auto& it : m_interfaces) {
         if(it.first != name) {
             it.second->hide();
@@ -31,3 +39,5 @@ void core::UIManager::showOnly(const std::string& name) {
     Game::trayManager()->setListener(listener.get());
     listener->show();
 }
+
+} // end namespace core

@@ -53,7 +53,7 @@ string LANListener::receiveData(ENetAddress* peerAddress) const {
     unique_ptr<char[]> buffer(new char[bufferLength]);
 
     ENetBuffer payload;
-    payload.data = &buffer;
+    payload.data = buffer.get();
     payload.dataLength = LAN_DISCOVER_MESSAGE_LEN;
 
     if (enet_socket_receive(m_listener, peerAddress, &payload, 1) <= 0) {

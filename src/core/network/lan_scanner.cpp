@@ -18,6 +18,7 @@ LANScanner::LANScanner() {
 
     // set socket option to broadcast
     enet_socket_set_option(m_scanner, ENET_SOCKOPT_BROADCAST, 1);
+    enet_socket_set_option(m_scanner, ENET_SOCKOPT_RCVTIMEO, RESPONSE_TIMEOUT);
 }
 
 LANScanner::~LANScanner() {
@@ -31,17 +32,19 @@ vector<ServerInfo> LANScanner::scan() const {
     ENetAddress serverAddress;
     unsigned int serverPort;
 
-    // TODO: this will work if there's only one server in the LAN
-    const string message = receiveData(&serverAddress, &serverPort);
+    vector<ServerInfo> result;
 
-    // check if message is from LANListener
-    if(message != LAN_DISCOVERED_MESSAGE) {
-        return {};
+    while(result.size() < MAX_SERVERS) {
+        const string message = receiveData(&serverAddress, &serverPort);
+
+        if(message.empty()) {
+            break;
+        }
+
+        result.push_back({ serverAddress.host, serverPort });
     }
 
-    ServerInfo server = { serverAddress.host, serverPort };
-
-    return { server };
+    return result;
 }
 
 string LANScanner::receiveData(ENetAddress* serverAddress, unsigned int* serverPort) const {
@@ -52,7 +55,6 @@ string LANScanner::receiveData(ENetAddress* serverAddress, unsigned int* serverP
     payload.data = buffer.get();
     payload.dataLength = bufferLength;
 
-    // Note: blocking function. TODO: make it to not block
     if(enet_socket_receive(m_scanner, serverAddress, &payload, 1) <= 0) {
         return "";
     }

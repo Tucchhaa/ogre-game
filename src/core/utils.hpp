@@ -3,6 +3,7 @@
 #include <OGRE/OgreVector.h>
 #include <btBulletDynamicsCommon.h>
 #include <chrono>
+#include <arpa/inet.h>
 
 namespace core::utils {
 
@@ -42,9 +43,12 @@ inline btQuaternion convertQuat(const Ogre::Quaternion& rotation) {
     return btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 }
 
-inline bool isClientExecutable() {
-    const char* isClientEnv = std::getenv("IS_CLIENT");
-    return isClientEnv != nullptr && std::atoi(isClientEnv) == 1;
+inline std::string convertIP(unsigned int host) {
+    in_addr ip_addr{ host };
+
+    auto result = std::string(inet_ntoa(ip_addr));
+
+    return result;
 }
 
 }

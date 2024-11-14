@@ -17,6 +17,8 @@ public:
 
     virtual void hide();
 
+    virtual void update();
+
 protected:
     OgreBites::TrayManager* m_tray;
 

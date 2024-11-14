@@ -30,8 +30,7 @@ void Game::configure() {
         setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
     #endif
 
-    const auto appName = utils::isClientExecutable() ? "OgreClient" : "OgreServer";
-    m_ctx = new OgreBites::ApplicationContext(appName);
+    m_ctx = new OgreBites::ApplicationContext("Galactic Wars");
 }
 
 void Game::init() {

@@ -3,6 +3,7 @@
 #include "../galactic_wars_game.hpp"
 #include "../../core/game.hpp"
 #include "../../core/network/client.hpp"
+#include "../../core/utils.hpp"
 
 using namespace std;
 
@@ -16,17 +17,18 @@ void LANPeerMenu::show() {
     auto servers = m_network->getLANServers();
 
     if(servers.empty()) {
-        m_tray->createTextBox(OgreBites::TL_CENTER, "empty_text", "No servers found", 300, 50);
+        auto a =m_tray->createTextBox(OgreBites::TL_CENTER, "empty_text", "", 300, 100);
+        a->appendText("No servers found");
     }
     else {
         for (size_t i = 0; i < servers.size(); i++) {
             auto server = servers[i];
-            string text = to_string(server.host) + ':' + to_string(server.port);
-            string labelName = "LineLabel" + to_string(i);
+            string text = core::utils::convertIP(server.host) + ':' + to_string(server.port);
+            string labelName = "connect_btn_label_" + to_string(i);
             string buttonName = "connect_to_lan_" + to_string(i);
 
             m_tray->createLabel(OgreBites::TL_CENTER, labelName, text);
-            m_tray->createButton(OgreBites::TL_CENTER, "connect", "Connect");
+            m_tray->createButton(OgreBites::TL_CENTER, buttonName, "Connect");
         }
     }
 
@@ -34,21 +36,20 @@ void LANPeerMenu::show() {
 }
 
 void LANPeerMenu::buttonHit(OgreBites::Button* button) {
-    auto buttonName = button->getName();
+    const auto& buttonName = button->getName();
     
     if(buttonName == "search_lan_games") {
-        // TODO: handle case when no servers found
         m_network->searchLANServers();
-        hide();
-        show(); // render menu again to apply changes
+        update();
     }
-    else if(buttonName == "connect") {
+    else if(buttonName.find("connect_to_lan_") != string::npos) {
+        const auto index_str = buttonName.substr(buttonName.rfind('_') + 1);
+        const int index = stoi(index_str);
+        const auto& server = m_network->getLANServers()[index];
+
         m_network->initClient();
-        // TODO: make it to connect to the selected server, not the the first server
         // TODO: handle case if connect was failed
-        m_network->client()->connect(
-            m_network->getLANServers()[0]
-        );
+        m_network->client()->connect(server);
         GalacticWarsGame::instance().startDemoSceneMultiplayer();
         m_network->client()->start();
         hide();

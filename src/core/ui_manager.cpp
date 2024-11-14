@@ -15,6 +15,11 @@ void UserInterface::hide() {
     m_tray->destroyAllWidgets();
 }
 
+void UserInterface::update() {
+    m_tray->destroyAllWidgets();
+    show();
+}
+
 void UIManager::addListener(const std::shared_ptr<UserInterface>& listener) {
     const std::string name = listener->getName();
 

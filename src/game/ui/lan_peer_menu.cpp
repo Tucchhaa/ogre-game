@@ -28,7 +28,7 @@ void LANPeerMenu::show() {
             string buttonName = "connect_to_lan_" + to_string(i);
 
             m_tray->createLabel(OgreBites::TL_CENTER, labelName, text);
-            m_tray->createButton(OgreBites::TL_CENTER, buttonName, "Connect");
+            m_tray->createButton(OgreBites::TL_CENTER, buttonName, "Connect", 300);
         }
     }
 

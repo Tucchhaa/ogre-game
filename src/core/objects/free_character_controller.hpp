@@ -20,6 +20,7 @@ public:
 
     const Ogre::String& getMovableType() const override { return FREE_CAMERA_CONTROLLER_TYPE; }
 
+private:
     void update(float dt) override;
 };
 

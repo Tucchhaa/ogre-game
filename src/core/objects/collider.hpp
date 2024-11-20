@@ -42,10 +42,6 @@ public:
     const Ogre::String& getMovableType() const override { return COLLIDER_TYPE; }
     std::shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
 
-    void sceneInited() override;
-
-    void fixedUpdate(float dt) override;
-
     /**
      * Sets shapes of the collider.
      * Note: call this method only once.
@@ -70,6 +66,10 @@ private:
     std::vector<Shape> m_shapes;
     std::shared_ptr<btRigidBody> m_rigidBody;
     float m_mass = 1.;
+
+    void sceneInited() override;
+
+    void fixedUpdate(float dt) override;
 
     /**
      * Update SceneNode's transfrom from rigidbody's transform

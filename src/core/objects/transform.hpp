@@ -26,13 +26,10 @@ public:
 
     std::shared_ptr<TransformState> transformState() { return m_state; }
 
-    void sceneInited() override;
-
-    void update(float dt) override;
-
     /**
      * Sets transform state's values to the Node's transform values
      * Call this function after any scene node transform changing functions: setPosition, translate, etc...
+     * But it's not necessary to call it in Scene::init(), because it's called in Transform::sceneInited()
      */
     void updateState() const;
 
@@ -44,6 +41,9 @@ private:
      */
     void updateSceneNodeTransform() const;
 
+    void sceneInited() override;
+
+    void update(float dt) override;
 };
 
 class TransformFactory : public Ogre::MovableObjectFactory {

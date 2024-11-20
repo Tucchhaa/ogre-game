@@ -11,7 +11,7 @@ void Transform::sceneInited() {
 }
 
 void Transform::update(float dt) {
-    const auto* node = getCustomNode();
+    const auto* node = getParentNode();
 
     if(node != nullptr) {
         updateSceneNodeTransform();

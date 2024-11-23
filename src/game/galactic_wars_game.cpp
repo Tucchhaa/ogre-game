@@ -25,6 +25,7 @@ void GalacticWarsGame::init() {
 
     m_menuScene = std::make_shared<MenuScene>();
     m_demoScene = std::make_shared<DemoScene>();
+    m_spaceScene = std::make_shared<SpaceScene>();
 }
 
 void GalacticWarsGame::startMenuScene() {

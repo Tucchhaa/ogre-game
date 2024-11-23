@@ -83,7 +83,7 @@ void Game::setScene(const std::shared_ptr<Scene>& scene) {
 
     GameEventListener::callSceneInited();
     m_scene->start();
-
+    // Ogre::HlmsManager
     if(oldScene != nullptr) {
         oldScene->sceneManager()->destroyCamera(oldScene->mainCamera);
         oldScene->mainCamera = nullptr;

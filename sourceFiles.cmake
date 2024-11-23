@@ -72,4 +72,6 @@ set(GAME_SOURCE_FILES
     src/game/scenes/menu_scene.hpp
     src/game/scenes/demo_scene.cpp
     src/game/scenes/demo_scene.hpp
+    src/game/scenes/space_scene.cpp
+    src/game/scenes/space_scene.hpp
 )

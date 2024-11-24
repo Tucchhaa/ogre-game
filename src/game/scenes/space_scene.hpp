@@ -15,6 +15,8 @@ class SpaceScene : public core::Scene {
 
     void createStarFighter() const;
 
+    void createAsteroids() const;
+
     void createEarth() const;
 
     void start() override {

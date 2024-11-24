@@ -3,6 +3,7 @@
 #include <OGRE/OgreVector.h>
 #include <btBulletDynamicsCommon.h>
 #include <chrono>
+#include <random>
 #include <arpa/inet.h>
 
 namespace core::utils {
@@ -67,5 +68,25 @@ inline std::string convertIP(unsigned int host) {
 
     return result;
 }
+
+class rand {
+public:
+    static float range(float min, float max) {
+        std::uniform_real_distribution<float> dis(min, max);
+        return dis(getGenerator());
+    }
+
+    static int range(int min, int max) {
+        std::uniform_int_distribution<int> dis(min, max);
+        return dis(getGenerator());
+    }
+
+private:
+    static std::mt19937& getGenerator() {
+        static std::mt19937 gen(std::random_device{}());
+        return gen;
+    }
+};
+
 
 }

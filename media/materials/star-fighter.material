@@ -34,7 +34,7 @@ material StarFighter_RTSS {
 
                 texturing_stage late_add_blend // for emission
 
-                image_based_lighting texture skyboxes/space1/1K/back.png luminance 4.0
+                // image_based_lighting texture skyboxes/space1/1K/back.png luminance 4.0
             }
         }
     }

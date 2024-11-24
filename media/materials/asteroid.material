@@ -1,0 +1,32 @@
+material Asteroid_RTSS {
+    technique
+    {
+        pass
+        {
+            lighting on
+
+            texture_unit
+            {
+                texture assets/asteroids/textures/albedo.jpeg
+            }
+
+            texture_unit
+            {
+                texture assets/asteroids/textures/normal.jpeg
+				sampler_ref RTSS/NormalMapSampler
+
+                rtshader_system
+                {
+                    normal_map tangent_space
+                }
+            }
+
+            rtshader_system
+            {
+                lighting_stage metal_roughness texture assets/asteroids/textures/metal_roughness.jpeg
+
+                ambient_occlusion
+            }
+        }
+    }
+}

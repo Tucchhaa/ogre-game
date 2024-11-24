@@ -1,5 +1,7 @@
 #include "physics_world.hpp"
 
+#include "tools.hpp"
+
 using namespace std;
 
 namespace core {
@@ -17,6 +19,7 @@ PhysicsWorld::PhysicsWorld() {
 
     m_dynamicsWorld->setGravity(m_gravity);
     m_dynamicsWorld->setDebugDrawer(m_colliderDrawer.get());
+    m_tools = make_unique<PhysicsTools>();
 }
 
 PhysicsWorld::~PhysicsWorld() {

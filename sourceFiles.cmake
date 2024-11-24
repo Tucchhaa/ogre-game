@@ -53,6 +53,8 @@ set(CORE_SOURCE_FILES
     src/core/physics/collider_drawer.hpp
     src/core/physics/physics_world.cpp
     src/core/physics/physics_world.hpp
+    src/core/physics/tools.cpp
+    src/core/physics/tools.hpp
 )
 
 set(GAME_SOURCE_FILES

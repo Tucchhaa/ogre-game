@@ -31,7 +31,8 @@ public:
     void objectAttached() override;
 
 private:
-    float m_minSpeed = 1000.0;
+    float m_minSpeed = 0;
+    // float m_minSpeed = 1000.0;
     float m_maxSpeed = 10000.0;
     float m_speed = m_minSpeed;
 

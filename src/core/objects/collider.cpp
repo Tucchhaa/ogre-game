@@ -15,7 +15,16 @@ void Collider::sceneInited() {
 }
 
 void Collider::fixedUpdate(float dt) {
-    updateTransform();
+    auto rigidbodyTransform = getRigidbodyTransform();
+
+    transformState()->setValues(
+        rigidbodyTransform.getOrigin(),
+        rigidbodyTransform.getRotation()
+    );
+}
+
+void Collider::update(float dt) {
+    getCustomNode()->transform()->updateNodeTransform();
 }
 
 void Collider::setShapes(const vector<Shape>& shapes) {
@@ -40,15 +49,6 @@ void Collider::setMass(float mass) {
 
 bool Collider::isDynamic() const {
     return m_mass != 0.f;
-}
-
-void Collider::updateTransform() const {
-    auto rigidbodyTransform = getRigidbodyTransform();
-
-    transformState()->setValues(
-        rigidbodyTransform.getOrigin(),
-        rigidbodyTransform.getRotation()
-    );
 }
 
 void Collider::resetRigidbodyTransform() const {

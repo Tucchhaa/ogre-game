@@ -43,6 +43,23 @@ inline btQuaternion convertQuat(const Ogre::Quaternion& rotation) {
     return btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 }
 
+inline btVector3 rotateVec3(const btVector3& v, const btQuaternion& rotation) {
+    btVector3 u(rotation.x(), rotation.y(), rotation.z());
+
+    float s = rotation.w();
+
+    auto result =
+            2.0f * v.dot(u) * u
+            + (s*s - u.dot(u)) * v
+            + 2.0f * s * u.cross(v);
+
+    return result;
+}
+
+inline float clamp(float a, float lower, float upper) {
+    return std::min(upper, std::max(lower, a));
+}
+
 inline std::string convertIP(unsigned int host) {
     in_addr ip_addr{ host };
 

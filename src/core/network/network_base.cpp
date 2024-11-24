@@ -6,6 +6,12 @@ using namespace std;
 
 namespace core {
 
+GameLoopThread::GameLoopType NetworkBase::type() const {
+    return m_hostType == HostType::Client
+        ? GameLoopType::LANMultiplayerPeer
+        : GameLoopType::LANMultiplayerHost;
+}
+
 void NetworkBase::init() {
     m_host = createHost();
 }

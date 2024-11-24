@@ -7,7 +7,15 @@ namespace core {
 
 class GameLoopThread {
 public:
+    enum class GameLoopType {
+        SinglePlayer,
+        LANMultiplayerHost,
+        LANMultiplayerPeer
+    };
+
     virtual ~GameLoopThread() = default;
+
+    virtual GameLoopType type() const = 0;
 
     /**
      * Timestamp of the most recent update.
@@ -53,6 +61,8 @@ private:
 class SinglePlayer : public GameLoopThread {
 protected:
     void tick(float dt) override;
+
+    GameLoopType type() const override { return GameLoopType::SinglePlayer; }
 };
 
 } // end namespace core

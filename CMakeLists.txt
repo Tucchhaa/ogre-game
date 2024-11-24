@@ -26,6 +26,8 @@ endif()
 
 set(CMAKE_TOOLCHAIN_FILE ./vcpkg/scripts/buildsystems/vcpkg.cmake)
 
+include_directories(./src)
+
 find_package(OGRE REQUIRED COMPONENTS Bites CONFIG)
 find_package(Bullet CONFIG REQUIRED)
 find_package(SDL2 REQUIRED)

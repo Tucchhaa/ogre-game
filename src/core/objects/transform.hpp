@@ -8,10 +8,8 @@ namespace core {
 const Ogre::String TRANSFORM_TYPE = "Transform";
 
 /**
- * Transform update Scene Node's transform from transform state.
- *
- * This object must present on a Scene Node if we want to
- * synchronize its transform in logic and rendering threads.
+ * This object must is used to synchronize Node's transform
+ * and collider transform.
  *
  * This object should be created before any other objects.
  */
@@ -26,24 +24,23 @@ public:
 
     std::shared_ptr<TransformState> transformState() { return m_state; }
 
-    void sceneInited() override;
-
-    void update(float dt) override;
-
     /**
      * Sets transform state's values to the Node's transform values
      * Call this function after any scene node transform changing functions: setPosition, translate, etc...
+     * But it's not necessary to call it in Scene::init(), because it's called in Transform::sceneInited()
      */
-    void updateState() const;
-
-private:
-    std::shared_ptr<TransformState> m_state = std::make_shared<TransformState>();
+    void resetState() const;
 
     /**
      * Updates scene node's transform from current transform state
      */
-    void updateSceneNodeTransform() const;
+    void updateNodeTransform() const;
 
+private:
+    std::shared_ptr<TransformState> m_state = std::make_shared<TransformState>();
+
+
+    void sceneInited() override;
 };
 
 class TransformFactory : public Ogre::MovableObjectFactory {

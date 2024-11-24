@@ -18,6 +18,8 @@ class NetworkBase : public GameLoopThread {
 public:
     explicit NetworkBase(HostType hostType): m_hostType(hostType) {}
 
+    GameLoopType type() const override;
+
     virtual void init();
 
     void stop() override;

@@ -7,40 +7,27 @@ using namespace Ogre;
 namespace core {
 
 void Transform::sceneInited() {
-    updateState();
+    resetState();
 }
 
-void Transform::update(float dt) {
-    const auto* node = getCustomNode();
-
-    if(node != nullptr) {
-        updateSceneNodeTransform();
-    }
-}
-
-void Transform::updateState() const {
+void Transform::resetState() const {
     const auto* node = getParentNode();
 
     m_state->resetValues(
-        node->_getDerivedPosition(),
-        node->_getDerivedOrientation()
+        node->getPosition(),
+        node->getOrientation()
     );
 }
 
-void Transform::updateSceneNodeTransform() const {
+void Transform::updateNodeTransform() const {
     Vector3 position;
     Quaternion rotation;
     auto* node = getParentNode();
 
     m_state->getValues(position, rotation);
 
-    if(position != node->_getDerivedPosition()) {
-        node->_setDerivedPosition(position);
-    }
-
-    if(rotation != node->_getDerivedOrientation()) {
-        node->_setDerivedOrientation(rotation);
-    }
+    node->setPosition(position);
+    node->setOrientation(rotation);
 }
 
 } // end namespace core

@@ -14,9 +14,10 @@ void LANHostMenu::show() {
 
     m_countBox = m_tray->createTextBox(
         OgreBites::TL_CENTER,
-        "connected_peers_num", getCountBoxText(),
-        300, 50
+        "connected_peers_num", "Info",
+        300, 80
     );
+    m_countBox->setText(getCountBoxText());
 
     m_callbackId = m_network->server()->onClientsChange.subscribe(this, &LANHostMenu::updateCountBox);
 

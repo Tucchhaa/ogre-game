@@ -1,7 +1,7 @@
 #include "galactic_wars_game.hpp"
 
-#include "../core/ui_manager.hpp"
-#include "../core/network/server.hpp"
+#include "core/ui_manager.hpp"
+#include "core/network/server.hpp"
 
 #include "ui/main_menu.hpp"
 #include "ui/lan_menu.hpp"
@@ -11,12 +11,16 @@
 #include "scenes/menu_scene.hpp"
 #include "scenes/demo_scene.hpp"
 
+#include "objects/star_fighter_controller.hpp"
+
 namespace game {
 
 std::shared_ptr<GalacticWarsGame> GalacticWarsGame::_instance = nullptr;
 
 void GalacticWarsGame::init() {
     Game::init();
+
+    root()->addMovableObjectFactory(new StarFighterControllerFactory);
 
     Game::UIManager()->addListener(std::make_shared<MainMenu>());
     Game::UIManager()->addListener(std::make_shared<LANMenu>());
@@ -25,6 +29,7 @@ void GalacticWarsGame::init() {
 
     m_menuScene = std::make_shared<MenuScene>();
     m_demoScene = std::make_shared<DemoScene>();
+    m_spaceScene = std::make_shared<SpaceScene>();
 }
 
 void GalacticWarsGame::startMenuScene() {
@@ -36,11 +41,17 @@ void GalacticWarsGame::startDemoScene() {
     setGameLoopThread(singlePlayer);
 
     setScene(m_demoScene);
-    singlePlayer->start();
 }
 
 void GalacticWarsGame::startDemoSceneMultiplayer() {
     setScene(m_demoScene);
+}
+
+void GalacticWarsGame::startSpaceScene() {
+    auto singlePlayer = std::make_shared<core::SinglePlayer>();
+    setGameLoopThread(singlePlayer);
+
+    setScene(m_spaceScene);
 }
 
 }

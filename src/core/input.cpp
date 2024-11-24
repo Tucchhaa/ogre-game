@@ -39,6 +39,9 @@ bool BaseInput::mousePressed(const OgreBites::MouseButtonEvent& evt) {
     if(evt.button == SDL_BUTTON_LEFT) {
         m_mouseState.leftButtonClicked = true;
     }
+    if(evt.button == SDL_BUTTON_RIGHT) {
+        m_mouseState.rightButtonClicked = true;
+    }
 
     return false;
 }
@@ -46,6 +49,9 @@ bool BaseInput::mousePressed(const OgreBites::MouseButtonEvent& evt) {
 bool BaseInput::mouseReleased(const OgreBites::MouseButtonEvent& evt) {
     if(evt.button == SDL_BUTTON_LEFT) {
         m_mouseState.leftButtonClicked = false;
+    }
+    if(evt.button == SDL_BUTTON_RIGHT) {
+        m_mouseState.rightButtonClicked = false;
     }
 
     return false;

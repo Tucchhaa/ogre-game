@@ -40,11 +40,9 @@ public:
     explicit Collider(const Ogre::String& name): BaseMovableObject(name) {}
 
     const Ogre::String& getMovableType() const override { return COLLIDER_TYPE; }
+
+    /// Returns btRigidbody. Must be accessed only in logic thread (aka fixedUpdate)
     std::shared_ptr<btRigidBody> rigidbody() const { return m_rigidBody; }
-
-    void sceneInited() override;
-
-    void fixedUpdate(float dt) override;
 
     /**
      * Sets shapes of the collider.
@@ -71,10 +69,11 @@ private:
     std::shared_ptr<btRigidBody> m_rigidBody;
     float m_mass = 1.;
 
-    /**
-     * Update SceneNode's transfrom from rigidbody's transform
-     */
-    void updateTransform() const;
+    void sceneInited() override;
+
+    void fixedUpdate(float dt) override;
+
+    void update(float dt) override;
 
     /**
      * Resets rigid body transform to parent scene node's transform.

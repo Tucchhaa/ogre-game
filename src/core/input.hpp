@@ -35,6 +35,7 @@ protected:
         int deltaX = 0;
         int deltaY = 0;
         bool leftButtonClicked = false;
+        bool rightButtonClicked = false;
     };
 
     std::map<SDL_Keycode, KeyState> m_keyState;
@@ -61,6 +62,8 @@ public:
     float deltaY() const { return m_deltaY; }
     float mouseDeltaX() const;
     float mouseDeltaY() const;
+    bool leftClick() const { return m_mouseState.leftButtonClicked; }
+    bool rightClick() const { return m_mouseState.rightButtonClicked; }
 
     /**
      * @return true, if key was released this frame

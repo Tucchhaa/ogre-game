@@ -12,6 +12,8 @@ public:
 
     ~PhysicsWorld();
 
+    const std::unique_ptr<btDynamicsWorld>& dynamicsWorld() const { return m_dynamicsWorld; }
+
     /**
      * Add rigidbody to physics simulation
      */

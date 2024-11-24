@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/game.hpp"
+#include "core/game.hpp"
 #include "scenes/space_scene.hpp"
 
 namespace game {
@@ -23,13 +23,7 @@ public:
     void startDemoScene();
     void startDemoSceneMultiplayer();
 
-    void startSpaceScene() {
-        auto singlePlayer = std::make_shared<core::SinglePlayer>();
-        setGameLoopThread(singlePlayer);
-
-        setScene(m_spaceScene);
-        singlePlayer->start();
-    }
+    void startSpaceScene();
 
 private:
     static std::shared_ptr<GalacticWarsGame> _instance;

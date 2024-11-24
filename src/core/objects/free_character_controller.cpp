@@ -26,8 +26,7 @@ void FreeCameraController::update(float dt) {
     const float z = Game::input()->deltaY() * dt * linearSpeed;
 
     node->translate(x, 0, -z, Ogre::Node::TS_LOCAL);
-    node->transform()->updateState();
-
+    node->transform()->resetState();
 }
 
 } // end namespace core

@@ -15,8 +15,6 @@
 #include "objects/free_character_controller.hpp"
 #include "objects/transform.hpp"
 
-#include "utils.hpp"
-
 namespace core {
 
 std::shared_ptr<Game> Game::_instance = nullptr;
@@ -83,7 +81,11 @@ void Game::setScene(const std::shared_ptr<Scene>& scene) {
 
     GameEventListener::callSceneInited();
     m_scene->start();
-    // Ogre::HlmsManager
+
+    if (m_gameLoopThread->type() == GameLoopThread::GameLoopType::SinglePlayer) {
+        m_gameLoopThread->start();
+    }
+
     if(oldScene != nullptr) {
         oldScene->sceneManager()->destroyCamera(oldScene->mainCamera);
         oldScene->mainCamera = nullptr;

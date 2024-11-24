@@ -2,7 +2,6 @@
 
 #include "../../game.hpp"
 #include "../../utils.hpp"
-#include "../../network/network_base.hpp"
 
 using namespace std;
 
@@ -23,7 +22,8 @@ Ogre::Vector3 State::interpolate(const Ogre::Vector3& a, const Ogre::Vector3& b)
 }
 
 Ogre::Quaternion State::interpolate(const Ogre::Quaternion& a, const Ogre::Quaternion& b) {
-    return Ogre::Quaternion::Slerp(calcInterpolationFactor(), a, b);
+    const float f = calcInterpolationFactor();
+    return Ogre::Quaternion::Slerp(f, a, b);
 }
 
 float State::calcInterpolationFactor() {

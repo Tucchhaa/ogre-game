@@ -66,7 +66,7 @@ void StarFighterController::moveAim(float dt) {
     const auto rigidbody = m_collider->rigidbody();
 
     const auto currentQuat = rigidbody->getOrientation();
-    auto targetQuat = core::utils::convertQuat(cameraNode()->transformState()->rotation());
+    auto targetQuat = core::utils::convertQuat(cameraNode()->transformState()->interpolate_rotation());
 
     if (currentQuat.dot(targetQuat) < 0.0f) {
         targetQuat = -targetQuat;

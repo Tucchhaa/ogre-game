@@ -21,6 +21,27 @@ enum class Key {
  * Don't use it directly. Use @link Input class instead
  */
 class BaseInput : public OgreBites::InputListener {
+public:
+    float mouseDeltaX() const;
+    float mouseDeltaY() const;
+    bool leftClick() const;
+    bool rightClick() const;
+
+    /**
+     * @return true, if key was released this frame
+     */
+    bool isKeyUp(Key keycode);
+
+    /**
+     * @return true, if key was just pressed this frame
+     */
+    bool isKeyDown(Key keycode);
+
+    /**
+     * @return true, if key was still pressed this frame
+     */
+    bool isKeyPressed(Key keycode);
+
 protected:
     enum class KeyState {
         None,
@@ -52,37 +73,24 @@ protected:
     bool mousePressed(const OgreBites::MouseButtonEvent& evt) override;
 
     bool mouseReleased(const OgreBites::MouseButtonEvent& evt) override;
+
+private:
+    mutable std::mutex m_mutex;
 };
 
 class Input : public BaseInput {
 public:
     void updateInputState() override;
 
-    float deltaX() const { return m_deltaX; }
-    float deltaY() const { return m_deltaY; }
-    float mouseDeltaX() const;
-    float mouseDeltaY() const;
-    bool leftClick() const { return m_mouseState.leftButtonClicked; }
-    bool rightClick() const { return m_mouseState.rightButtonClicked; }
+    float deltaX() const;
 
-    /**
-     * @return true, if key was released this frame
-     */
-    bool isKeyUp(Key keycode);
-
-    /**
-     * @return true, if key was just pressed this frame
-     */
-    bool isKeyDown(Key keycode);
-
-    /**
-     * @return true, if key was still pressed this frame
-     */
-    bool isKeyPressed(Key keycode);
+    float deltaY() const;
 
 private:
     float m_deltaX = 0;
     float m_deltaY = 0;
+
+    mutable std::mutex m_mutex;
 };
 
 } // end namespace core

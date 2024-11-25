@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     auto game = game::GalacticWarsGame();
-    game.debugMode(true);
+    // game.debugMode(true);
     game.configure();
     game.init();
     // game.startMenuScene();

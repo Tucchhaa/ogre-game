@@ -79,4 +79,9 @@ set(GAME_SOURCE_FILES
 
     src/game/objects/star_fighter_controller.cpp
     src/game/objects/star_fighter_controller.hpp
+
+    src/game/objects/star_fighters/base.cpp
+    src/game/objects/star_fighters/base.hpp
+    src/game/objects/star_fighters/fighter.cpp
+    src/game/objects/star_fighters/fighter.hpp
 )

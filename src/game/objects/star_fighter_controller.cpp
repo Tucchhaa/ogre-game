@@ -22,19 +22,26 @@ inline core::CustomSceneNode* StarFighterController::cameraNode() {
 }
 
 void StarFighterController::update(float dt) {
+    if(!core::Game::windowManager()->relativeMouseEnabled()) {
+        return;
+    }
+
     const auto input = core::Game::input();
 
-    if(core::Game::windowManager()->relativeMouseEnabled()) {
-        // Don't multiply by timeSinceLastFrame because mouseDeltaX/Y are already frame-rate independent
-        float sensitivity = 5;
-        const float rx = -input->mouseDeltaX() * sensitivity;
-        const float ry = -input->mouseDeltaY() * sensitivity;
-        const float rz = -input->deltaX() * dt * m_rollSpeed;
+    // TODO: move sensitivity to settings
+    constexpr float sensitivity = 5;
+    // Don't multiply by timeSinceLastFrame because mouseDeltaX/Y are already frame-rate independent
+    const float rx = -input->mouseDeltaX() * sensitivity;
+    const float ry = -input->mouseDeltaY() * sensitivity;
+    const float rz = -input->deltaX() * dt * m_rollSpeed;
 
-        cameraNode()->yaw(Ogre::Radian(rx));
-        cameraNode()->pitch(Ogre::Radian(ry));
-        cameraNode()->roll(Ogre::Radian(rz));
-    }
+    cameraNode()->yaw(Ogre::Radian(rx));
+    cameraNode()->pitch(Ogre::Radian(ry));
+    cameraNode()->roll(Ogre::Radian(rz));
+
+    const float t = dt * m_cameraRollBiasLerpFactor;
+    const auto targetBias = -input->deltaX() * m_cameraRollBiasMax;
+    m_cameraRollBias = core::utils::lerp(t, m_cameraRollBias, targetBias);
 
     moveCamera();
     cameraNode()->transform()->resetState();
@@ -59,7 +66,7 @@ void StarFighterController::moveAim(float dt) {
     const auto rigidbody = m_collider->rigidbody();
 
     const auto currentQuat = rigidbody->getOrientation();
-    auto targetQuat = core::utils::convertQuat(cameraNode()->getOrientation());
+    auto targetQuat = core::utils::convertQuat(cameraNode()->transformState()->rotation());
 
     if (currentQuat.dot(targetQuat) < 0.0f) {
         targetQuat = -targetQuat;
@@ -67,11 +74,8 @@ void StarFighterController::moveAim(float dt) {
 
     const auto deltaQuat = (targetQuat * currentQuat.inverse()).normalize();
 
-    const auto angle = deltaQuat.getAngle();
+    const auto angle = std::min(deltaQuat.getAngle(), 0.5f);
     const auto axis = deltaQuat.getAxis();
-
-    // auto roll = btVector3(0, 0, rz * m_rollSpeed);
-    // roll = core::utils::rotateVec3(roll, rotation);
 
     m_angularVelocity += axis * (angle * m_angularSpeed * dt);
 }
@@ -95,8 +99,8 @@ void StarFighterController::moveCamera() {
     const auto* node = getCustomNode();
 
     const auto t = (m_speed - m_minSpeed) / (m_maxSpeed - m_minSpeed);
-    const auto interpolatedBias = core::utils::lerp(t, m_cameraPosBiasMin, m_cameraPosBiasMax);
-    const auto bias = cameraNode()->getOrientation() * interpolatedBias;
+    const auto interpolatedBias = core::utils::lerp(t, m_cameraBiasMin, m_cameraBiasMax);
+    const auto bias = cameraNode()->getOrientation() * (interpolatedBias + m_cameraRollBias);
 
     const auto cameraPosition = node->getPosition() + bias;
 

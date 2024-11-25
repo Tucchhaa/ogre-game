@@ -4,18 +4,40 @@
 #include "core/objects/collider.hpp"
 #include "core/physics/tools.hpp"
 #include "game/objects/star_fighter_controller.hpp"
+#include "game/objects/star_fighters/fighter.hpp"
 
+/*
+TODO:
+Graphics:
+- Precompute tangents
+- Ambient occlusion map
+- Bloom effect
+- Particles
+
+Game:
+- GameLoop
+- Health
+- Shooting
+- Destroying small asteroids
+- Reviving
+- Enemy AI
+- Turret AI
+- Game UI
+- Death zone
+ */
 void game::SpaceScene::init() {
     Scene::init();
 
     m_physics->dynamicsWorld()->setGravity(btVector3(0, 0, 0));
 
     m_sceneManager->setSkyBox(true, "Skybox/Starfield", 10000, true);
+    // m_sceneManager->setSkyBox(true, "Skybox/Space1_1K", 10000, true);
 
     createCamera();
     createLight();
     createDummy();
     createStarFighter();
+    createStarship5();
     createAsteroids();
     createEarth();
 }
@@ -39,6 +61,8 @@ void game::SpaceScene::createLight() const {
     lightNode->setPosition(0, 20, 15);
     lightNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
     lightNode->attachObject(light);
+
+    m_sceneManager->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
 }
 
 void game::SpaceScene::createDummy() const {
@@ -52,36 +76,20 @@ void game::SpaceScene::createDummy() const {
     shipNode->attachObject(shipEntity);
 }
 
-void game::SpaceScene::createStarFighter() const {
-    auto* shipNodeWrapper = m_rootNode->createChildSceneNode("ShipNodeWrapper");
+void game::SpaceScene::createStarFighter() {
+    m_playerFighter = std::make_shared<Fighter>();
+}
 
-    // collider
-    auto colliderMesh = Ogre::MeshManager::getSingletonPtr()->load("assets/star_fighters/convex/StarFighterConvex1.obj", "General");
-    auto shape = physics()->tools()->getConvexHull(colliderMesh);
-    shape.transform()->setRotation(btQuaternion(btVector3(0, 1, 0), SIMD_PI));
+void game::SpaceScene::createStarship5() const {
+    auto* entity = m_sceneManager->createEntity("StarShipEntity", "assets/starships/starship5/starship.fbx");
+    entity->getMesh()->buildTangentVectors();
+    entity->setMaterialName("StarShip5_RTSS");
 
-    auto* colliderObj = m_sceneManager->createMovableObject("ShipCollider", "Collider");
-    auto* collider = static_cast<core::Collider*>(colliderObj);
-    collider->setShapes({ shape });
-    collider->rigidbody()->setActivationState(DISABLE_DEACTIVATION);
-
-    shipNodeWrapper->attachObject(collider);
-
-    // controller
-    auto* shipController = m_sceneManager->createMovableObject("StarFighterController");
-    static_cast<StarFighterController*>(shipController)->setCollider(collider);
-
-    shipNodeWrapper->attachObject(shipController);
-
-    // entity
-    auto* shipEntity = m_sceneManager->createEntity("ShipEntity", "assets/star_fighters/StarFighter01.fbx");
-    shipEntity->getMesh()->buildTangentVectors();
-    shipEntity->setMaterialName("StarFighter_RTSS");
-
-    auto* shipNode = shipNodeWrapper->createChildSceneNode("ShipNode");
-    shipNode->scale(0.01, 0.01, 0.01);
-    shipNode->rotate(Ogre::Vector3::UNIT_Y, Ogre::Degree(180));
-    shipNode->attachObject(shipEntity);
+    auto* node = m_rootNode->createChildSceneNode("StarShipNode");
+    node->scale(1.5, 1.5, 1.5);
+    node->rotate(Ogre::Vector3::UNIT_X, Ogre::Degree(-90));
+    node->translate(0, 0, 400);
+    node->attachObject(entity);
 }
 
 void game::SpaceScene::createAsteroids() const {

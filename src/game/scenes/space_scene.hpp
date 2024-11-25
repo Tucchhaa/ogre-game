@@ -4,6 +4,8 @@
 
 namespace game {
 
+class Fighter;
+
 class SpaceScene : public core::Scene {
     void init() override;
 
@@ -13,13 +15,16 @@ class SpaceScene : public core::Scene {
 
     void createDummy() const;
 
-    void createStarFighter() const;
+    void createStarFighter();
+
+    void createStarship5() const;
+
+    void createAsteroids() const;
 
     void createEarth() const;
 
-    void start() override {
-
-    }
+private:
+    std::shared_ptr<Fighter> m_playerFighter;
 };
 
 } // end namespace game

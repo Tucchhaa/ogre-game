@@ -6,6 +6,9 @@
 #include "collider_drawer.hpp"
 
 namespace core {
+
+class PhysicsTools;
+
 class PhysicsWorld {
 public:
     PhysicsWorld();
@@ -13,6 +16,8 @@ public:
     ~PhysicsWorld();
 
     const std::unique_ptr<btDynamicsWorld>& dynamicsWorld() const { return m_dynamicsWorld; }
+
+    const std::unique_ptr<PhysicsTools>& tools() const { return m_tools; }
 
     /**
      * Add rigidbody to physics simulation
@@ -48,6 +53,7 @@ private:
     btVector3 m_gravity = btVector3(0, -10, 0);
     btAlignedObjectArray<std::shared_ptr<btCollisionShape>> m_collisionShapes;
     std::unique_ptr<debug::ColliderDrawer> m_colliderDrawer;
+    std::unique_ptr<PhysicsTools> m_tools;
 };
 
 } // end namespace core

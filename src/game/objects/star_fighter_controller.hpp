@@ -31,16 +31,20 @@ public:
     void objectAttached() override;
 
 private:
-    float m_minSpeed = 1000.0;
-    float m_maxSpeed = 10000.0;
-    float m_speed = m_minSpeed;
+    const float m_minSpeed = 0;
+    // const float m_minSpeed = 1000.0;
+    const float m_maxSpeed = 10000.0;
+    std::atomic<float> m_speed = m_minSpeed;
 
-    float m_acceleration = 100;
-    float m_angularSpeed = 100.0;
-    float m_rollSpeed = 2.5;
+    const float m_acceleration = 100;
+    const float m_angularSpeed = 600.0;
+    const float m_rollSpeed = 2.5;
 
-    Ogre::Vector3 m_cameraPosBiasMin = Ogre::Vector3(0, 6, 25);
-    Ogre::Vector3 m_cameraPosBiasMax = Ogre::Vector3(0, 9, 35);
+    const Ogre::Vector3 m_cameraBiasMin = Ogre::Vector3(0, 6, 25);
+    const Ogre::Vector3 m_cameraBiasMax = Ogre::Vector3(0, 9, 35);
+    const Ogre::Vector3 m_cameraRollBiasMax = Ogre::Vector3(5, 0, 0);
+    Ogre::Vector3 m_cameraRollBias = Ogre::Vector3::ZERO;
+    const float m_cameraRollBiasLerpFactor = 3;
 
     core::Collider* m_collider = nullptr;
     btVector3 m_velocity = btVector3(0, 0, 0);

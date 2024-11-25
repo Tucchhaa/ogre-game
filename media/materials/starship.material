@@ -1,0 +1,104 @@
+material Starship1_RTSS {
+    technique
+    {
+        pass
+        {
+            lighting on
+
+            texture_unit
+            {
+                texture assets/starship1/textures/normal.jpg
+				sampler_ref RTSS/NormalMapSampler
+
+                rtshader_system
+                {
+                    normal_map tangent_space
+                }
+            }
+        }
+    }
+}
+
+material StarShip3_RTSS {
+    technique
+    {
+        pass
+        {
+            lighting on
+
+            texture_unit
+            {
+                texture assets/starships/starship3/textures/main_albedo.jpeg
+            }
+
+            // emission
+            texture_unit
+            {
+                texture assets/starships/starship3/textures/main_emission.jpeg
+                colour_op add
+            }
+
+            texture_unit
+            {
+                texture assets/starships/starship3/textures/main_normal.png
+				sampler_ref RTSS/NormalMapSampler
+
+                rtshader_system
+                {
+                    normal_map tangent_space
+                }
+            }
+
+            rtshader_system
+            {
+                lighting_stage metal_roughness texture assets/starships/starship3/textures/main_metalRoughness.jpeg
+
+                texturing_stage late_add_blend // for emission
+
+                // image_based_lighting texture skyboxes/space1/1K/back.png luminance 4.0
+            }
+        }
+    }
+}
+
+material StarShip5_RTSS {
+    technique
+    {
+        pass
+        {
+            lighting on
+
+            texture_unit
+            {
+                texture assets/starships/starship5/textures/albedo.png
+            }
+
+            // emission
+            texture_unit
+            {
+                texture assets/starships/starship5/textures/emission.png
+                colour_op add
+            }
+
+            texture_unit
+            {
+                texture assets/starships/starship5/textures/normal.png
+				sampler_ref RTSS/NormalMapSampler
+
+                rtshader_system
+                {
+                    normal_map tangent_space
+                }
+            }
+
+            rtshader_system
+            {
+                lighting_stage metal_roughness texture assets/starships/starship5/textures/metalRoughness.png
+
+                texturing_stage late_add_blend // for emission
+
+                // image_based_lighting texture skyboxes/space1/1K/back.png luminance 4.0
+            }
+        }
+    }
+}

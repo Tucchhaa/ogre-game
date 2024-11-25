@@ -50,6 +50,7 @@ public:
     static Ogre::Root* root() { return instance().m_root; }
     static CustomSceneManager* sceneManager() { return instance().m_scene->sceneManager(); }
     static Ogre::MaterialManager* materialManager() { return instance().m_materialManager; }
+    static Ogre::MeshManager* meshManager() { return instance().m_meshManager; }
     static Ogre::RenderWindow* renderWindow() { return instance().m_renderWindow; }
     static Ogre::RTShader::ShaderGenerator* shaderGenerator() { return instance().m_shaderGenerator; }
     static OgreBites::TrayManager* trayManager() { return instance().m_trayManager; }
@@ -88,6 +89,7 @@ private:
     OgreBites::ApplicationContext* m_ctx = nullptr;
     Ogre::Root* m_root = nullptr;
     Ogre::MaterialManager* m_materialManager = nullptr;
+    Ogre::MeshManager* m_meshManager = nullptr;
     Ogre::RenderWindow* m_renderWindow = nullptr;
     Ogre::RTShader::ShaderGenerator* m_shaderGenerator = nullptr;
     OgreBites::TrayManager* m_trayManager = nullptr;

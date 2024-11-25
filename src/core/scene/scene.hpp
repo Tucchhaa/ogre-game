@@ -17,6 +17,7 @@ public:
 
     CustomSceneManager* sceneManager() const { return m_sceneManager; }
     const std::unique_ptr<PhysicsWorld>& physics() const { return m_physics; }
+    CustomSceneNode* root() const { return m_rootNode; }
 
     virtual void init();
 

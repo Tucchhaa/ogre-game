@@ -53,6 +53,8 @@ set(CORE_SOURCE_FILES
     src/core/physics/collider_drawer.hpp
     src/core/physics/physics_world.cpp
     src/core/physics/physics_world.hpp
+    src/core/physics/tools.cpp
+    src/core/physics/tools.hpp
 )
 
 set(GAME_SOURCE_FILES
@@ -77,4 +79,9 @@ set(GAME_SOURCE_FILES
 
     src/game/objects/star_fighter_controller.cpp
     src/game/objects/star_fighter_controller.hpp
+
+    src/game/objects/star_fighters/base.cpp
+    src/game/objects/star_fighters/base.hpp
+    src/game/objects/star_fighters/fighter.cpp
+    src/game/objects/star_fighters/fighter.hpp
 )

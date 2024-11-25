@@ -42,6 +42,7 @@ void Game::init() {
     m_root->addFrameListener(new Listener);
 
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
+    m_meshManager = Ogre::MeshManager::getSingletonPtr();
     m_renderWindow = m_ctx->getRenderWindow();
     m_trayManager = new OgreBites::TrayManager("MainTray", m_renderWindow);
 

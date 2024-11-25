@@ -6,6 +6,16 @@ using namespace std;
 
 namespace core {
 
+Ogre::Quaternion TransformState::rotation() {
+    shared_lock _(m_mutex);
+    return interpolate_rotation_unsafe();
+}
+
+Ogre::Vector3 TransformState::position() {
+    shared_lock _(m_mutex);
+    return interpolate_position_unsafe();
+}
+
 void TransformState::setValues(const btVector3& position, const btQuaternion& rotation) {
     unique_lock _(m_mutex);
 

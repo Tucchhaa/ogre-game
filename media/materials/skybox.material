@@ -1,179 +1,51 @@
-material Skybox/Starfield
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
+import SkyboxMaterial from "base.material"
 
-			texture_unit
-			{
-				cubic_texture skyboxes/starfield/front.jpg skyboxes/starfield/back.jpg skyboxes/starfield/right.jpg skyboxes/starfield/left.jpg skyboxes/starfield/up.jpg skyboxes/starfield/down.jpg separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
+material Skybox/Starfield : SkyboxMaterial
+{
+    set $posX "skyboxes/starfield/right.jpg"
+    set $negX "skyboxes/starfield/left.jpg"
+    set $posY "skyboxes/starfield/up.jpg"
+    set $negY "skyboxes/starfield/down.jpg"
+    set $posZ "skyboxes/starfield/front.jpg"
+    set $negZ "skyboxes/starfield/back.jpg"
 }
 
-material Skybox/Space1_1K
+material Skybox/Space1_1K : SkyboxMaterial
 {
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space1/1K/front.jpg skyboxes/space1/1K/back.jpg skyboxes/space1/1K/right.jpg skyboxes/space1/1K/left.jpg skyboxes/space1/1K/up.jpg skyboxes/space1/1K/down.jpg separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
+    set $posX "skyboxes/space1/1K/right.jpg"
+    set $negX "skyboxes/space1/1K/left.jpg"
+    set $posY "skyboxes/space1/1K/up.jpg"
+    set $negY "skyboxes/space1/1K/down.jpg"
+    set $posZ "skyboxes/space1/1K/front.jpg"
+    set $negZ "skyboxes/space1/1K/back.jpg"
 }
 
-material Skybox/Space1_2K
+material Skybox/Space1_4K : SkyboxMaterial
 {
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space1/2K/front.png skyboxes/space1/2K/back.png skyboxes/space1/2K/right.png skyboxes/space1/2K/left.png skyboxes/space1/2K/up.png skyboxes/space1/2K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
+    set $posX "skyboxes/space1/4K/right.jpg"
+    set $negX "skyboxes/space1/4K/left.jpg"
+    set $posY "skyboxes/space1/4K/up.jpg"
+    set $negY "skyboxes/space1/4K/down.jpg"
+    set $posZ "skyboxes/space1/4K/front.jpg"
+    set $negZ "skyboxes/space1/4K/back.jpg"
 }
 
-material Skybox/Space1_4K
+material Skybox/Space2_1K : SkyboxMaterial
 {
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space1/4K/front.png skyboxes/space1/4K/back.png skyboxes/space1/4K/right.png skyboxes/space1/4K/left.png skyboxes/space1/4K/up.png skyboxes/space1/4K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
+    set $posX "skyboxes/space2/1K/right.jpg"
+    set $negX "skyboxes/space2/1K/left.jpg"
+    set $posY "skyboxes/space2/1K/up.jpg"
+    set $negY "skyboxes/space2/1K/down.jpg"
+    set $posZ "skyboxes/space2/1K/front.jpg"
+    set $negZ "skyboxes/space2/1K/back.jpg"
 }
 
-material Skybox/Space2_1K
+material Skybox/Space2_4K : SkyboxMaterial
 {
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space2/1K/front.png skyboxes/space2/1K/back.png skyboxes/space2/1K/right.png skyboxes/space2/1K/left.png skyboxes/space2/1K/up.png skyboxes/space2/1K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-
-material Skybox/Space2_2K
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space2/2K/front.png skyboxes/space2/2K/back.png skyboxes/space2/2K/right.png skyboxes/space2/2K/left.png skyboxes/space2/2K/up.png skyboxes/space2/2K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-
-material Skybox/Space2_4K
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space2/4K/front.png skyboxes/space2/4K/back.png skyboxes/space2/4K/right.png skyboxes/space2/4K/left.png skyboxes/space2/4K/up.png skyboxes/space2/4K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-
-material Skybox/Space3_1K
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space3/1K/front.png skyboxes/space3/1K/back.png skyboxes/space3/1K/right.png skyboxes/space3/1K/left.png skyboxes/space3/1K/up.png skyboxes/space3/1K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-
-material Skybox/Space3_2K
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space3/2K/front.png skyboxes/space3/2K/back.png skyboxes/space3/2K/right.png skyboxes/space3/2K/left.png skyboxes/space3/2K/up.png skyboxes/space3/2K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
-}
-
-material Skybox/Space3_4K
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-
-			texture_unit
-			{
-				cubic_texture skyboxes/space3/4K/front.png skyboxes/space3/4K/back.png skyboxes/space3/4K/right.png skyboxes/space3/4K/left.png skyboxes/space3/4K/up.png skyboxes/space3/4K/down.png separateUV
-				tex_address_mode clamp
-			}
-		}
-	}
+    set $posX "skyboxes/space2/4K/right.jpg"
+    set $negX "skyboxes/space2/4K/left.jpg"
+    set $posY "skyboxes/space2/4K/up.jpg"
+    set $negY "skyboxes/space2/4K/down.jpg"
+    set $posZ "skyboxes/space2/4K/front.jpg"
+    set $negZ "skyboxes/space2/4K/back.jpg"
 }

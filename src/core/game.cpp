@@ -41,6 +41,9 @@ void Game::init() {
     m_root->addSceneManagerFactory(new CustomSceneManagerFactory);
     m_root->addFrameListener(new Listener);
 
+    m_shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+    m_shaderGenerator->initialize();
+
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
     m_meshManager = Ogre::MeshManager::getSingletonPtr();
     m_renderWindow = m_ctx->getRenderWindow();
@@ -50,8 +53,6 @@ void Game::init() {
     m_UIManager = std::make_shared<core::UIManager>();
     m_input = std::make_shared<Input>();
     m_networkManager = std::make_shared<NetworkManager>();
-
-    m_shaderGenerator = Ogre::RTShader::ShaderGenerator::getSingletonPtr();
 
     m_ctx->addInputListener(m_input.get());
     m_ctx->addInputListener(m_trayManager);

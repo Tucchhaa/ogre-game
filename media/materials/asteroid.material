@@ -1,32 +1,14 @@
-material Asteroid_RTSS {
+import PbrPass from "base.material"
+
+material Asteroid_RTSS
+{
     technique
     {
-        pass
+        pass : PbrPass
         {
-            lighting on
-
-            texture_unit
-            {
-                texture assets/asteroids/textures/albedo.jpeg
-            }
-
-            texture_unit
-            {
-                texture assets/asteroids/textures/normal.jpeg
-				sampler_ref RTSS/NormalMapSampler
-
-                rtshader_system
-                {
-                    normal_map tangent_space
-                }
-            }
-
-            rtshader_system
-            {
-                lighting_stage metal_roughness texture assets/asteroids/textures/metal_roughness.jpeg
-
-                ambient_occlusion
-            }
+            set $diffuse_texture "assets/asteroids/textures/albedo.jpeg"
+            set $normal_texture "assets/asteroids/textures/normal.jpeg"
+            set $metalRoughness_texture "assets/asteroids/textures/metal_roughness.jpeg"
         }
     }
 }

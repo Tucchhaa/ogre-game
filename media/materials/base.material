@@ -1,0 +1,83 @@
+// This file contains only abstract passes
+
+
+// albedo + normal
+abstract pass AlbedoNormalPass
+{
+    lighting on
+
+    texture_unit
+    {
+        texture $diffuse_texture
+    }
+
+    texture_unit
+    {
+        texture $normal_texture
+        sampler_ref RTSS/NormalMapSampler
+
+        rtshader_system
+        {
+            normal_map tangent_space
+        }
+    }
+}
+
+
+// albedo + normal + metalRoughness
+abstract pass PbrPass : AlbedoNormalPass {
+    rtshader_system
+    {
+        lighting_stage metal_roughness texture $metalRoughness_texture
+
+        // image_based_lighting texture $ibl_texture luminance 4.0
+    }
+}
+
+// albedo + normal + emission
+abstract pass EmissivePass : AlbedoNormalPass
+{
+    texture_unit {}
+    texture_unit {}
+
+    texture_unit
+    {
+        texture $emission_texture
+        colour_op add
+    }
+
+    rtshader_system {
+        texturing_stage late_add_blend // for emission
+    }
+}
+
+// albedo + normal + emission + metalRoughness
+abstract pass PbrEmissivePass : EmissivePass
+{
+    rtshader_system {}
+
+    rtshader_system
+    {
+        lighting_stage metal_roughness texture $metalRoughness_texture
+
+        // image_based_lighting texture $ibl_texture luminance 4.0
+    }
+}
+
+abstract material SkyboxMaterial
+{
+    technique
+    {
+        pass SkyboxPass
+        {
+            lighting off
+            depth_write off
+
+            texture_unit
+            {
+                cubic_texture $posZ $negZ $posX $negX $posY $negY separateUV
+                tex_address_mode clamp
+            }
+        }
+    }
+}

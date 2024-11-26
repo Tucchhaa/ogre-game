@@ -23,7 +23,10 @@ Ogre::Vector3 State::interpolate(const Ogre::Vector3& a, const Ogre::Vector3& b)
 
 Ogre::Quaternion State::interpolate(const Ogre::Quaternion& a, const Ogre::Quaternion& b) {
     const float f = calcInterpolationFactor();
-    return Ogre::Quaternion::Slerp(f, a, b);
+
+    return a.Dot(b) >= 0.f
+        ? Ogre::Quaternion::Slerp(f, a, b)
+        : Ogre::Quaternion::Slerp(f, a, -b);
 }
 
 float State::calcInterpolationFactor() {

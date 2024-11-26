@@ -2,6 +2,7 @@
 
 #include <OGRE/Ogre.h>
 #include <OgreApplicationContext.h>
+#include <OgreOverlayManager.h>
 
 #include "game_loop_thread.hpp"
 #include "scene/custom_scene_manager.hpp"
@@ -46,13 +47,17 @@ public:
     // Static getters
     // ===
 
+    static int windowWidth();
+    static int windowHeight();
+
     static OgreBites::ApplicationContext* appContext() { return instance().m_ctx; }
     static Ogre::Root* root() { return instance().m_root; }
+    static Ogre::RTShader::ShaderGenerator* shaderGenerator() { return instance().m_shaderGenerator; }
     static CustomSceneManager* sceneManager() { return instance().m_scene->sceneManager(); }
     static Ogre::MaterialManager* materialManager() { return instance().m_materialManager; }
     static Ogre::MeshManager* meshManager() { return instance().m_meshManager; }
     static Ogre::RenderWindow* renderWindow() { return instance().m_renderWindow; }
-    static Ogre::RTShader::ShaderGenerator* shaderGenerator() { return instance().m_shaderGenerator; }
+    static Ogre::OverlayManager* overlayManager() { return instance().m_overlayManager; }
     static OgreBites::TrayManager* trayManager() { return instance().m_trayManager; }
 
     static std::shared_ptr<Input> input() { return instance().m_input; }
@@ -88,10 +93,11 @@ private:
 
     OgreBites::ApplicationContext* m_ctx = nullptr;
     Ogre::Root* m_root = nullptr;
+    Ogre::RTShader::ShaderGenerator* m_shaderGenerator = nullptr;
     Ogre::MaterialManager* m_materialManager = nullptr;
     Ogre::MeshManager* m_meshManager = nullptr;
     Ogre::RenderWindow* m_renderWindow = nullptr;
-    Ogre::RTShader::ShaderGenerator* m_shaderGenerator = nullptr;
+    Ogre::OverlayManager* m_overlayManager = nullptr;
     OgreBites::TrayManager* m_trayManager = nullptr;
 
     std::shared_ptr<Input> m_input;

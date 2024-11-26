@@ -1,0 +1,8 @@
+font Tomorrow/SemiBold
+{
+	type 		truetype
+	source 		fonts/Tomorrow/Tomorrow-SemiBold.ttf
+	size 		50
+	resolution 	180
+	code_points 32-126 192-255
+}

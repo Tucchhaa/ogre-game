@@ -14,9 +14,6 @@ class TransformState: public State {
     STATE_INTERPOLATABLE_PROP(Ogre::Quaternion, rotation);
 
 public:
-    Ogre::Quaternion rotation();
-    Ogre::Vector3 position();
-
     void setValues(const btVector3& position, const btQuaternion& rotation);
 
     void getValues(Ogre::Vector3& position, Ogre::Quaternion& rotation);

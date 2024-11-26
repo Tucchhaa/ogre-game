@@ -61,6 +61,8 @@ set(GAME_SOURCE_FILES
     src/game/galactic_wars_game.cpp
     src/game/galactic_wars_game.hpp
 
+    src/game/ui/fighter_indicators.cpp
+    src/game/ui/fighter_indicators.hpp
     src/game/ui/main_menu.cpp
     src/game/ui/main_menu.hpp
     src/game/ui/lan_menu.cpp

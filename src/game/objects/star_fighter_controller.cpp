@@ -66,18 +66,22 @@ void StarFighterController::moveAim(float dt) {
     const auto rigidbody = m_collider->rigidbody();
 
     const auto currentQuat = rigidbody->getOrientation();
-    auto targetQuat = core::utils::convertQuat(cameraNode()->transformState()->rotation());
+    auto targetQuat = core::utils::convertQuat(cameraNode()->transformState()->interpolate_rotation());
 
-    if (currentQuat.dot(targetQuat) < 0.0f) {
+    const auto dot = currentQuat.dot(targetQuat);
+    if (dot < 0.0f) {
         targetQuat = -targetQuat;
+    }
+    if (dot >= 0.9999f) {
+        return;
     }
 
     const auto deltaQuat = (targetQuat * currentQuat.inverse()).normalize();
 
-    const auto angle = std::min(deltaQuat.getAngle(), 0.5f);
+    const auto angle = std::min(deltaQuat.getAngle()*dt, 0.5f*dt);
     const auto axis = deltaQuat.getAxis();
 
-    m_angularVelocity += axis * (angle * m_angularSpeed * dt);
+    m_angularVelocity += axis * (angle * m_angularSpeed);
 }
 
 void StarFighterController::moveShip(float dt) {

@@ -47,6 +47,7 @@ void Game::init() {
     m_materialManager = Ogre::MaterialManager::getSingletonPtr();
     m_meshManager = Ogre::MeshManager::getSingletonPtr();
     m_renderWindow = m_ctx->getRenderWindow();
+    m_overlayManager = Ogre::OverlayManager::getSingletonPtr();
     m_trayManager = new OgreBites::TrayManager("MainTray", m_renderWindow);
 
     m_windowManager = std::make_shared<WindowManager>();
@@ -60,6 +61,14 @@ void Game::init() {
 
 void Game::stop() const {
     m_root->queueEndRendering();
+}
+
+int Game::windowWidth() {
+    return renderWindow()->getViewport(0)->getActualWidth();
+}
+
+int Game::windowHeight() {
+    return renderWindow()->getViewport(0)->getActualHeight();
 }
 
 long long Game::previousUpdateTimestamp() {

@@ -1,0 +1,55 @@
+abstract material UI/BaseMaterial
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_check off
+
+            texture_unit {
+                texture white.png
+                colour_op_ex modulate src_texture src_manual $color
+                alpha_op_ex modulate src_texture src_manual $alpha
+            }
+        }
+    }
+}
+
+material UI/Background : UI/BaseMaterial
+{
+    set $color "0.1 0.1 0.1"
+    set $alpha 0.6
+}
+
+material UI/Primary : UI/BaseMaterial
+{
+    set $color "0.9 0.9 0.9"
+    set $alpha 1.0
+}
+
+material UI/Secondary : UI/BaseMaterial
+{
+    set $color "0.2039 0.5961 0.8588"
+    set $alpha 1.0
+}
+
+material UI/Aim
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_check off
+
+            texture_unit
+            {
+                texture aim.png
+                colour_op_ex add_signed src_texture src_manual 0.2039 0.5961 0.8588
+            }
+        }
+    }
+}

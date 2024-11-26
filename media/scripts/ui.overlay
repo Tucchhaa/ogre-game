@@ -1,0 +1,64 @@
+material Foo
+{
+}
+
+overlay FighterIndicators
+{
+    overlay_element BottomLeftPanel Panel
+    {
+        width 0.2
+        height 0.097
+        left 0.003
+        top 0.9
+        material UI/Background
+
+        overlay_element HP_Text TextArea
+        {
+            width 0.02
+            height 0.025
+            top 0.008
+            left 0.0025
+            colour 1.0 1.0 1.0
+            char_height 0.025
+            caption "HP"
+            font_name Tomorrow/SemiBold
+        }
+
+        overlay_element HP_Bar Panel
+        {
+            width 0.165
+            height 0.025
+            left 0.03
+            top 0.01
+            material UI/Primary
+        }
+
+        overlay_element AP_Text TextArea
+        {
+            width 0.02
+            height 0.025
+            top 0.042
+            left 0.0025
+            colour 0.2039 0.5961 0.8588
+            char_height 0.017
+            caption "AP"
+            font_name Tomorrow/SemiBold
+        }
+
+        overlay_element AP_Bar Panel
+        {
+            width 0.165
+            height 0.015
+            left 0.03
+            top 0.045
+            material UI/Secondary
+        }
+    }
+
+    overlay_element Aim Panel
+    {
+        material UI/Aim
+        width 100
+        height 100
+    }
+}

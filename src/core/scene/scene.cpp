@@ -26,6 +26,8 @@ void Scene::start() {
 void Scene::stop() {
     m_sceneManager->clearScene();
     m_physics.reset();
+    Game::shaderGenerator()->removeSceneManager(m_sceneManager);
+    Game::root()->destroySceneManager(m_sceneManager);
 }
 
 void Scene::update(float dt) {

@@ -5,6 +5,7 @@
 #include "core/physics/tools.hpp"
 #include "game/objects/star_fighter_controller.hpp"
 #include "game/objects/star_fighters/fighter.hpp"
+#include "game/ui/fighter_indicators.hpp"
 
 /*
 TODO:
@@ -15,6 +16,7 @@ Graphics:
 - Particles
 
 Game:
+- Correct rotation on Right-Click in star fighter controller
 - GameLoop
 - Health
 - Shooting
@@ -42,12 +44,18 @@ void game::SpaceScene::init() {
     createEarth();
 }
 
+void game::SpaceScene::start() {
+    Scene::start();
+
+    m_fighterIndicators->show();
+}
+
 void game::SpaceScene::createCamera() {
     auto* cameraNode = m_rootNode->createChildSceneNode("CameraNode");
     cameraNode->setPosition(0, 0, 15);
     cameraNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
 
-    mainCamera = m_sceneManager->createCamera("Camera");
+    mainCamera = m_sceneManager->createCamera("MainCamera");
     mainCamera->setNearClipDistance(0.1);
     mainCamera->setAutoAspectRatio(true);
     cameraNode->attachObject(mainCamera);
@@ -88,7 +96,7 @@ void game::SpaceScene::createStarship5() const {
     auto* node = m_rootNode->createChildSceneNode("StarShipNode");
     node->scale(1.5, 1.5, 1.5);
     node->rotate(Ogre::Vector3::UNIT_X, Ogre::Degree(-90));
-    node->translate(0, 0, 400);
+    node->translate(0, 0, -800);
     node->attachObject(entity);
 }
 

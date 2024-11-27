@@ -14,7 +14,8 @@ enum class Key {
     D = SDLK_d,
     SHIFT = SDLK_LSHIFT,
     ESCAPE = SDLK_ESCAPE,
-    SPACE = SDLK_SPACE
+    SPACE = SDLK_SPACE,
+    CTRL = SDLK_LCTRL
 };
 
 /**
@@ -83,12 +84,13 @@ public:
     void updateInputState() override;
 
     float deltaX() const;
-
     float deltaY() const;
+    bool space();
 
 private:
     float m_deltaX = 0;
     float m_deltaY = 0;
+    bool m_space = false;
 
     mutable std::mutex m_mutex;
 };

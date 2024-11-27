@@ -1,0 +1,15 @@
+material Bullet
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+
+            texture_unit {
+                texture white.png
+                colour_op_ex modulate src_texture src_manual 1.0 0.0 0.0
+            }
+        }
+    }
+}

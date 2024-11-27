@@ -22,12 +22,12 @@ public:
     /**
      * Add rigidbody to physics simulation
      */
-    void addRigidBody(const std::shared_ptr<btRigidBody>& rigidBody) const;
+    void addRigidbody(const std::shared_ptr<btRigidBody>& rigidbody, int group, int mask) const;
 
     /**
      * Remove rigidbody from physics simulation
      */
-    void removeRigidBody(const std::shared_ptr<btRigidBody>& rigidBody) const;
+    void removeRigidbody(const std::shared_ptr<btRigidBody>& rigidbody) const;
 
     /**
      * Step physics simulation by delta time (seconds).

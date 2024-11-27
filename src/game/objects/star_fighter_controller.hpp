@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../../../vcpkg/buildtrees/bullet3/src/3.25-98f155ca90.clean/src/LinearMath/btVector3.h"
-#include "core/objects/base_movable_object.hpp"
+#include <LinearMath/btVector3.h>
 
-class btVector3;
+#include "core/objects/base_movable_object.hpp"
 
 namespace core {
 
@@ -29,6 +28,9 @@ public:
     void setCollider(core::Collider* collider) { m_collider = collider; }
 
     void objectAttached() override;
+
+    /// Velocity of the star fighter. Note: use only in logic thread
+    const btVector3& velocity() const {return m_velocity; }
 
 private:
     const float m_minSpeed = 0;

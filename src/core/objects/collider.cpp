@@ -33,6 +33,11 @@ void Collider::setShapes(const vector<Shape>& shapes) {
     m_rigidBody = createRigidBody();
 }
 
+void Collider::setCollisionLayer(int group, int mask) {
+    m_group = group;
+    m_mask = mask;
+}
+
 void Collider::setMass(float mass) {
     this->m_mass = mass;
     btVector3 inertia(0, 0, 0);
@@ -68,7 +73,7 @@ void Collider::resetRigidbodyTransform() const {
 }
 
 void Collider::objectAttached() {
-    Game::physics()->addRigidBody(m_rigidBody);
+    Game::physics()->addRigidbody(m_rigidBody, m_group, m_mask);
 }
 
 btTransform Collider::getRigidbodyTransform() const {
@@ -103,9 +108,9 @@ shared_ptr<btRigidBody> Collider::createRigidBody() const {
 
     auto* motionState = new btDefaultMotionState(btTransform::getIdentity());
     auto info = btRigidBody::btRigidBodyConstructionInfo(m_mass, motionState, m_shape.get(), localInertia);
-    auto rigidBody = make_shared<btRigidBody>(info);
+    auto rigidbody = make_shared<btRigidBody>(info);
 
-    return rigidBody;
+    return rigidbody;
 }
 
 } // end namespace core

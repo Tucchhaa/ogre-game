@@ -6,6 +6,8 @@
 
 namespace core {
 
+class Collider;
+
 const Ogre::String CUSTOM_SCENE_MANAGER_TYPE = "CustomSceneManager";
 
 class CustomSceneManager : public Ogre::SceneManager {
@@ -13,18 +15,18 @@ public:
     explicit CustomSceneManager(const std::string& instanceName)
         : SceneManager(instanceName) { }
 
-    const std::string& getTypeName() const override {
-        return CUSTOM_SCENE_MANAGER_TYPE;
-    }
+    const std::string& getTypeName() const override { return CUSTOM_SCENE_MANAGER_TYPE; }
+
+    Transform* createTransform();
+    Transform* createTransform(const std::string& name);
+
+    Collider* createCollider();
+    Collider* createCollider(const std::string& name);
 
 private:
-    Ogre::SceneNode* createSceneNodeImpl() override {
-        return new CustomSceneNode(this);
-    }
+    Ogre::SceneNode* createSceneNodeImpl() override;
 
-    Ogre::SceneNode* createSceneNodeImpl(const std::string& name) override {
-        return new CustomSceneNode(this, name);
-    }
+    Ogre::SceneNode* createSceneNodeImpl(const std::string& name) override;
 };
 
 class CustomSceneManagerFactory : public Ogre::SceneManagerFactory {

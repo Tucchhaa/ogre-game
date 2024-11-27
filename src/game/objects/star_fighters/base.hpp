@@ -1,30 +1,43 @@
 #pragma once
 #include <string>
 
-namespace game {
-class StarFighterController;
-}
+#include "core/game_event_listener.hpp"
 
 namespace core {
+class Collider;
 class CustomSceneNode;
 }
 
 namespace game {
 
-class BaseStarFighter {
+class StarFighterController;
+
+class BaseStarFighter : core::GameEventListener {
 public:
-    BaseStarFighter(const std::string &model);
+    virtual ~BaseStarFighter() = default;
 
-private:
+    explicit BaseStarFighter(const std::string &model);
+
+protected:
     const int ID;
-
+    core::CustomSceneNode* m_wrapperNode;
     core::CustomSceneNode* m_node;
+
     StarFighterController* m_controller;
 
+    virtual void primaryAttack(float dt) = 0;
+
+    virtual void secondaryAttack(float dt) = 0;
+
+private:
     static int generateID() {
         static int cnt = 0;
         return ++cnt;
     }
+
+    void fixedUpdate(float dt) override;
+
+    static core::Collider* createCollider(const std::string& convexHullFile);
 };
 
 } // end namespace game

@@ -125,4 +125,9 @@ float Input::deltaY() const {
     lock_guard _(m_mutex);
     return m_deltaY;
 }
+
+bool Input::space() {
+    return isKeyPressed(Key::SPACE);
+}
+
 } // end namespace core

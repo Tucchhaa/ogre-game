@@ -44,6 +44,7 @@ set(CORE_SOURCE_FILES
     src/core/objects/state/transform_state.hpp
 
     src/core/scene/custom_scene_manager.hpp
+    src/core/scene/custom_scene_manager.cpp
     src/core/scene/custom_scene_node.cpp
     src/core/scene/custom_scene_node.hpp
     src/core/scene/scene.cpp

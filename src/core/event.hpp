@@ -5,9 +5,6 @@
 
 namespace core {
 
-// Note: Maybe do not need thread safety in Event class.
-// Probably we need it to work only in Logic Thread.
-
 template<typename... Args>
 class Event {
 public:

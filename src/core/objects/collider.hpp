@@ -50,6 +50,11 @@ public:
      */
     void setShapes(const std::vector<Shape> &shapes);
 
+    /// Configure which collider groups can collide with this collider
+    /// @param group which group this collider belong to
+    /// @param mask which groups can collide with this collider
+    void setCollisionLayer(int group, int mask);
+
     /**
      * Sets mass of the collider. If mass is 0, the collider is fixed in space.
      */
@@ -60,6 +65,12 @@ public:
      */
     bool isDynamic() const;
 
+    /**
+     * Resets rigid body transform to parent scene node's transform.
+     * Call it after Ogre::SceneNode transform was changed to update rigid body's state
+     */
+    void resetRigidbodyTransform() const;
+
 protected:
     void objectAttached() override;
 
@@ -67,6 +78,8 @@ private:
     std::shared_ptr<btCompoundShape> m_shape;
     std::vector<Shape> m_shapes;
     std::shared_ptr<btRigidBody> m_rigidBody;
+    int m_mask = 0;
+    int m_group = 0;
     float m_mass = 1.;
 
     void sceneInited() override;
@@ -74,12 +87,6 @@ private:
     void fixedUpdate(float dt) override;
 
     void update(float dt) override;
-
-    /**
-     * Resets rigid body transform to parent scene node's transform.
-     * Call it after Ogre::SceneNode transform was changed to update rigid body's state
-     */
-    void resetRigidbodyTransform() const;
 
     std::shared_ptr<btCompoundShape> createCompoundShape() const;
 

@@ -1,8 +1,11 @@
 #include "space_scene.hpp"
 
+#include "core/input.hpp"
 #include "core/utils.hpp"
+#include "core/window_manager.hpp"
 #include "core/objects/collider.hpp"
 #include "core/physics/tools.hpp"
+#include "game/galactic_wars_game.hpp"
 #include "game/objects/star_fighter_controller.hpp"
 #include "game/objects/star_fighters/fighter.hpp"
 #include "game/ui/fighter_indicators.hpp"
@@ -27,7 +30,10 @@ Game:
 - Game UI
 - Death zone
  */
-void game::SpaceScene::init() {
+
+namespace game {
+
+void SpaceScene::init() {
     Scene::init();
 
     m_physics->dynamicsWorld()->setGravity(btVector3(0, 0, 0));
@@ -35,22 +41,24 @@ void game::SpaceScene::init() {
     m_sceneManager->setSkyBox(true, "Skybox/Starfield", 10000, true);
     // m_sceneManager->setSkyBox(true, "Skybox/Space1_1K", 10000, true);
 
+    m_fighterIndicators = std::make_shared<FighterIndicators>();
+
     createCamera();
     createLight();
-    createDummy();
+    // createDummy();
     createStarFighter();
-    createStarship5();
+    // createStarship5();
     createAsteroids();
-    createEarth();
+    // createEarth();
 }
 
-void game::SpaceScene::start() {
+void SpaceScene::start() {
     Scene::start();
 
     m_fighterIndicators->show();
 }
 
-void game::SpaceScene::createCamera() {
+void SpaceScene::createCamera() {
     auto* cameraNode = m_rootNode->createChildSceneNode("CameraNode");
     cameraNode->setPosition(0, 0, 15);
     cameraNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
@@ -61,7 +69,7 @@ void game::SpaceScene::createCamera() {
     cameraNode->attachObject(mainCamera);
 }
 
-void game::SpaceScene::createLight() const {
+void SpaceScene::createLight() const {
     auto* light = m_sceneManager->createLight("MainLight");
     light->setType(Ogre::Light::LT_DIRECTIONAL);
 
@@ -73,7 +81,7 @@ void game::SpaceScene::createLight() const {
     m_sceneManager->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
 }
 
-void game::SpaceScene::createDummy() const {
+void SpaceScene::createDummy() const {
     auto* shipEntity = m_sceneManager->createEntity("DummyShipEntity", "assets/star_fighters/StarFighter03.fbx");
     shipEntity->getMesh()->buildTangentVectors();
     shipEntity->setMaterialName("StarFighter_RTSS");
@@ -84,11 +92,11 @@ void game::SpaceScene::createDummy() const {
     shipNode->attachObject(shipEntity);
 }
 
-void game::SpaceScene::createStarFighter() {
+void SpaceScene::createStarFighter() {
     m_playerFighter = std::make_shared<Fighter>();
 }
 
-void game::SpaceScene::createStarship5() const {
+void SpaceScene::createStarship5() const {
     auto* entity = m_sceneManager->createEntity("StarShipEntity", "assets/starships/starship5/starship.fbx");
     entity->getMesh()->buildTangentVectors();
     entity->setMaterialName("StarShip5_RTSS");
@@ -100,7 +108,9 @@ void game::SpaceScene::createStarship5() const {
     node->attachObject(entity);
 }
 
-void game::SpaceScene::createAsteroids() const {
+void SpaceScene::createAsteroids() const {
+    constexpr float density = 10000;
+
     struct AsteroidRegion {
         Ogre::Vector3 position;
         float radius;
@@ -146,9 +156,10 @@ void game::SpaceScene::createAsteroids() const {
             auto shape = m_physics->tools()->getConvexHull(entity->getMesh());
             shape.shapePtr()->setLocalScaling(btVector3(scale, scale, scale));
 
-            auto* colliderObj = m_sceneManager->createMovableObject("Collider");
-            auto* collider = static_cast<core::Collider*>(colliderObj);
+            auto* collider = m_sceneManager->createCollider();
             collider->setShapes({ shape });
+            collider->setCollisionLayer((int)CollisionLayer::Asteroid, (int)CollisionLayer::All);
+            collider->setMass(scale * density);
 
             asteroidNode->attachObject(collider);
 
@@ -177,7 +188,7 @@ void game::SpaceScene::createAsteroids() const {
     }
 }
 
-void game::SpaceScene::createEarth() const {
+void SpaceScene::createEarth() const {
     // planet
     auto* earthEntity = m_sceneManager->createEntity("EarthEntity", "assets/earth/earth.fbx");
     earthEntity->getSubEntities()[0]->setMaterialName("EarthPlanet_RTSS");
@@ -192,3 +203,18 @@ void game::SpaceScene::createEarth() const {
     earthNode->rotate(Ogre::Vector3(0, 1, 0), Ogre::Radian(90));
     earthNode->rotate(Ogre::Vector3(1, 0, 0), Ogre::Radian(-170));
 }
+
+void SpaceScene::update(float dt) {
+    Scene::update(dt);
+
+    if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
+        core::Game::instance().stop();
+    }
+    if(core::Game::input()->space()) {
+        core::Game::windowManager()->relativeMouseEnabled(
+            !core::Game::windowManager()->relativeMouseEnabled()
+        );
+    }
+}
+
+} // end namespace game

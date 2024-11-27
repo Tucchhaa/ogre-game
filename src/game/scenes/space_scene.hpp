@@ -31,6 +31,8 @@ class SpaceScene : public core::Scene {
     void createAsteroids() const;
 
     void createEarth() const;
+
+    void update(float dt);
 };
 
 } // end namespace game

@@ -46,12 +46,17 @@ PhysicsWorld::~PhysicsWorld() {
     m_collisionShapes.clear();
 }
 
-void PhysicsWorld::addRigidBody(const shared_ptr<btRigidBody>& rigidBody) const {
-    m_dynamicsWorld->addRigidBody(rigidBody.get());
+void PhysicsWorld::addRigidbody(const shared_ptr<btRigidBody>& rigidbody, int group, int mask) const {
+    if (group <= 0 || mask <= 0) {
+        m_dynamicsWorld->addRigidBody(rigidbody.get());
+    }
+    else {
+        m_dynamicsWorld->addRigidBody(rigidbody.get(), group, mask);
+    }
 }
 
-void PhysicsWorld::removeRigidBody(const shared_ptr<btRigidBody>& rigidBody) const {
-    m_dynamicsWorld->removeRigidBody(rigidBody.get());
+void PhysicsWorld::removeRigidbody(const shared_ptr<btRigidBody>& rigidbody) const {
+    m_dynamicsWorld->removeRigidBody(rigidbody.get());
 }
 
 void PhysicsWorld::stepSimulation(float dt) const {

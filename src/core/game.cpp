@@ -28,7 +28,7 @@ void Game::configure() {
         setenv("OGRE_CONFIG_DIR", projectPath.c_str(), 1);
     #endif
 
-    m_ctx = new OgreBites::ApplicationContext("Galactic Wars");
+    m_ctx = new OgreBites::ApplicationContext("GalacticWars");
 }
 
 void Game::init() {

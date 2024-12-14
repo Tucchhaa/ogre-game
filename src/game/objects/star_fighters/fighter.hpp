@@ -14,6 +14,8 @@ protected:
 
     void secondaryAttack(float dt) override;
 
+    void fixedUpdate(float dt) override;
+
 private:
     struct BulletInfo {
         core::CustomSceneNode* node;
@@ -25,14 +27,16 @@ private:
     const Ogre::Vector3 m_shootingPos3 = Ogre::Vector3::ZERO;
     const Ogre::Vector3 m_shootingPos4 = Ogre::Vector3::ZERO;
 
-    const int m_maxAmmo = 100;
-    const float m_reloadAmmoPerSecond = 10;
+    const int m_maxAmmo = 50;
     const float m_bulletSpeed = 500;
-    const long long m_delayPerShootMs = 100;
+    const float m_bulletMass = 0.000001;
+    const int m_delayPerShoot = 100;
+    const int m_delayPerReload = 200;
 
     int m_bulletIndex = 0;
+    int m_ammo = m_maxAmmo;
     long long m_lastPrimaryAttackTimestamp = 0;
-    float m_ammo = (float)m_maxAmmo;
+    long long m_lastPrimaryReloadTimestamp = 0;
 };
 
 } // end namespace game

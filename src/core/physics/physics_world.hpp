@@ -54,6 +54,8 @@ private:
     btAlignedObjectArray<std::shared_ptr<btCollisionShape>> m_collisionShapes;
     std::unique_ptr<debug::ColliderDrawer> m_colliderDrawer;
     std::unique_ptr<PhysicsTools> m_tools;
+
+    void processCollisions() const;
 };
 
 } // end namespace core

@@ -3,14 +3,15 @@
 #include "core/scene/scene.hpp"
 
 namespace game {
+
 class FighterIndicators;
-}
-
-namespace game {
-
 class Fighter;
 
 class SpaceScene : public core::Scene {
+public:
+    std::shared_ptr<FighterIndicators> fighterIndicators() { return m_fighterIndicators; }
+
+private:
     std::shared_ptr<Fighter> m_playerFighter;
     std::shared_ptr<FighterIndicators> m_fighterIndicators;
 

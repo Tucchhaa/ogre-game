@@ -36,6 +36,8 @@ const Ogre::String COLLIDER_TYPE = "Collider";
  */
 class Collider : public BaseMovableObject {
 public:
+    using callback_type = std::function<void(Collider* self, const btCollisionObject* other)>;
+
     Collider() = default;
     explicit Collider(const Ogre::String& name): BaseMovableObject(name) {}
 
@@ -65,11 +67,15 @@ public:
      */
     bool isDynamic() const;
 
+    void setOnCollide(const callback_type& callback) { m_onCollideCallback = callback; }
+
     /**
      * Resets rigid body transform to parent scene node's transform.
      * Call it after Ogre::SceneNode transform was changed to update rigid body's state
      */
     void resetRigidbodyTransform() const;
+
+    void onCollide(const btCollisionObject* other);
 
 protected:
     void objectAttached() override;
@@ -78,6 +84,8 @@ private:
     std::shared_ptr<btCompoundShape> m_shape;
     std::vector<Shape> m_shapes;
     std::shared_ptr<btRigidBody> m_rigidBody;
+    callback_type m_onCollideCallback;
+
     int m_mask = 0;
     int m_group = 0;
     float m_mass = 1.;

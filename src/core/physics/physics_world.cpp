@@ -1,6 +1,8 @@
 #include "physics_world.hpp"
 
+#include <unordered_set>
 #include "tools.hpp"
+#include "core/objects/collider.hpp"
 
 using namespace std;
 
@@ -65,10 +67,45 @@ void PhysicsWorld::stepSimulation(float dt) const {
 
 void PhysicsWorld::stepSimulationFixed(float dt) const {
     m_dynamicsWorld->stepSimulation(dt, 0);
+
+    processCollisions();
 }
 
 void PhysicsWorld::drawColliders() const {
     m_dynamicsWorld->debugDrawWorld();
     m_colliderDrawer->render();
 }
+
+void PhysicsWorld::processCollisions() const {
+    int numManifolds = m_dispatcher->getNumManifolds();
+    unordered_map<const btCollisionObject*, vector<const btCollisionObject*>> collisions;
+
+    for (int i = 0; i < numManifolds; i++) {
+        auto* manifold = m_dispatcher->getManifoldByIndexInternal(i);
+
+        auto* objA = manifold->getBody0();
+        auto* objB = manifold->getBody1();
+
+        int numContacts = manifold->getNumContacts();
+
+        for (int j = 0; j < numContacts; j++) {
+            btManifoldPoint& pt = manifold->getContactPoint(j);
+
+            if (pt.getDistance() < 0.f) {
+                collisions[objA].push_back(objB);
+                collisions[objB].push_back(objA);
+                break;
+            }
+        }
+    }
+
+    for (const auto& collision : collisions) {
+        auto* collider = static_cast<Collider*>(collision.first->getUserPointer());
+
+        for (const auto* other : collision.second) {
+            collider->onCollide(other);
+        }
+    }
+}
+
 } // end namespace core

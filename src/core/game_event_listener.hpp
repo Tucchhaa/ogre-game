@@ -40,7 +40,7 @@ private:
     }
 
     /**
-     * Called before first frame rendered.
+     * Called after Scene::init() and viewport created
      */
     virtual void sceneInited() {}
 

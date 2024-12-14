@@ -61,4 +61,35 @@ overlay FighterIndicators
         width 100
         height 100
     }
+
+    overlay_element Ammo Panel
+    {
+        material UI/Background
+        width 0.2
+        height 0.097
+        left 0.797
+        top 0.9
+
+        overlay_element PrimaryAmmo_Text TextArea
+        {
+            width 0.02
+            height 0.025
+            top 0.008
+            left 0.003
+            colour 1.0 1.0 1.0
+            char_height 0.025
+            font_name Tomorrow/SemiBold
+        }
+
+        overlay_element MaxPrimaryAmmo_Text TextArea
+        {
+            width 0.02
+            height 0.025
+            top 0.008
+            left 0.0225
+            colour 1.0 1.0 1.0
+            char_height 0.025
+            font_name Tomorrow/SemiBold
+        }
+    }
 }

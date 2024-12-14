@@ -27,10 +27,18 @@ void Collider::update(float dt) {
     getCustomNode()->transform()->updateNodeTransform();
 }
 
+void Collider::onCollide(const btCollisionObject* other) {
+    if (m_onCollideCallback) {
+        m_onCollideCallback(this, other);
+    }
+}
+
 void Collider::setShapes(const vector<Shape>& shapes) {
     m_shapes = shapes;
     m_shape = createCompoundShape();
     m_rigidBody = createRigidBody();
+
+    m_rigidBody->setUserPointer(this);
 }
 
 void Collider::setCollisionLayer(int group, int mask) {

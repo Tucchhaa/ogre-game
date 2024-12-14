@@ -65,6 +65,7 @@ void GameLoopThread::stop() {
 
 void SinglePlayer::tick(float dt) {
     Game::physics()->stepSimulationFixed(dt);
+
     GameEventListener::callFixedUpdate(dt);
 }
 

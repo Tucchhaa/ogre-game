@@ -29,13 +29,13 @@ protected:
 
     virtual void secondaryAttack(float dt) = 0;
 
+    void fixedUpdate(float dt) override;
+
 private:
     static int generateID() {
         static int cnt = 0;
         return ++cnt;
     }
-
-    void fixedUpdate(float dt) override;
 
     static core::Collider* createCollider(const std::string& convexHullFile);
 };

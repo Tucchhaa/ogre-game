@@ -23,7 +23,6 @@ Game:
 - GameLoop
 - Health
 - Shooting
-- Destroying small asteroids
 - Reviving
 - Enemy AI
 - Turret AI
@@ -47,9 +46,9 @@ void SpaceScene::init() {
     createLight();
     // createDummy();
     createStarFighter();
-    // createStarship5();
+    createStarship5();
     createAsteroids();
-    // createEarth();
+    createEarth();
 }
 
 void SpaceScene::start() {

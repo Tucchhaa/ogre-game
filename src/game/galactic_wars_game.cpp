@@ -10,7 +10,7 @@
 
 #include "scenes/menu_scene.hpp"
 #include "scenes/demo_scene.hpp"
-#include "scenes/space_scene.hpp"
+#include "scenes/space_scene/scene.hpp"
 
 #include "objects/star_fighter_controller.hpp"
 

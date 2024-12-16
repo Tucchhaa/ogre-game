@@ -1,113 +1,77 @@
-#include "space_scene.hpp"
+#include "environment.hpp"
 
-#include "core/input.hpp"
+#include "scene.hpp"
 #include "core/utils.hpp"
-#include "core/window_manager.hpp"
 #include "core/objects/collider.hpp"
 #include "core/physics/tools.hpp"
 #include "game/galactic_wars_game.hpp"
-#include "game/objects/star_fighter_controller.hpp"
 #include "game/objects/star_fighters/fighter.hpp"
-#include "game/ui/fighter_indicators.hpp"
-
-/*
-TODO:
-Graphics:
-- Precompute tangents
-- Ambient occlusion map
-- Bloom effect
-- Particles
-
-Game:
-- Correct rotation on Right-Click in star fighter controller
-- GameLoop
-- Health
-- Shooting
-- Reviving
-- Enemy AI
-- Turret AI
-- Game UI
-- Death zone
- */
 
 namespace game {
 
-void SpaceScene::init() {
-    Scene::init();
-
-    m_physics->dynamicsWorld()->setGravity(btVector3(0, 0, 0));
-
-    m_sceneManager->setSkyBox(true, "Skybox/Starfield", 10000, true);
-    // m_sceneManager->setSkyBox(true, "Skybox/Space1_1K", 10000, true);
-
-    m_fighterIndicators = std::make_shared<FighterIndicators>();
-
-    createCamera();
-    createLight();
-    // createDummy();
-    createStarFighter();
-    createStarship5();
-    createAsteroids();
-    createEarth();
+Environment::Environment(SpaceScene* scene): m_scene(scene) {
+    m_sceneManager = m_scene->sceneManager();
 }
 
-void SpaceScene::start() {
-    Scene::start();
-
-    m_fighterIndicators->show();
-}
-
-void SpaceScene::createCamera() {
-    auto* cameraNode = m_rootNode->createChildSceneNode("CameraNode");
+Ogre::SceneNode* Environment::createCamera() {
+    auto* cameraNode = m_sceneManager->createSceneNode("CameraNode");
     cameraNode->setPosition(0, 0, 15);
     cameraNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
 
-    mainCamera = m_sceneManager->createCamera("MainCamera");
+    auto mainCamera = m_sceneManager->createCamera("MainCamera");
     mainCamera->setNearClipDistance(0.1);
     mainCamera->setAutoAspectRatio(true);
     cameraNode->attachObject(mainCamera);
+
+    return cameraNode;
 }
 
-void SpaceScene::createLight() const {
+Ogre::SceneNode* Environment::createLight() const {
     auto* light = m_sceneManager->createLight("MainLight");
     light->setType(Ogre::Light::LT_DIRECTIONAL);
 
-    auto* lightNode = m_rootNode->createChildSceneNode("MainLightNode");
+    auto* lightNode = m_sceneManager->createSceneNode("MainLightNode");
     lightNode->setPosition(0, 20, 15);
     lightNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
     lightNode->attachObject(light);
 
     m_sceneManager->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+
+    return lightNode;
 }
 
-void SpaceScene::createDummy() const {
-    auto* shipEntity = m_sceneManager->createEntity("DummyShipEntity", "assets/star_fighters/StarFighter03.fbx");
-    shipEntity->getMesh()->buildTangentVectors();
-    shipEntity->setMaterialName("StarFighter_RTSS");
-
-    auto* shipNode = m_rootNode->createChildSceneNode("DummyShipNode");
-    shipNode->scale(0.01, 0.01, 0.01);
-    shipNode->translate(40, 0, 40);
-    shipNode->attachObject(shipEntity);
+void Environment::createDummy() const {
+    // auto* shipEntity = m_sceneManager->createEntity("DummyShipEntity", "assets/star_fighters/StarFighter03.fbx");
+    // shipEntity->getMesh()->buildTangentVectors();
+    // shipEntity->setMaterialName("StarFighter_RTSS");
+    //
+    // auto* shipNode = m_rootNode->createChildSceneNode("DummyShipNode");
+    // shipNode->scale(0.01, 0.01, 0.01);
+    // shipNode->translate(40, 0, 40);
+    // shipNode->attachObject(shipEntity);
 }
 
-void SpaceScene::createStarFighter() {
-    m_playerFighter = std::make_shared<Fighter>();
+std::shared_ptr<Fighter> Environment::createStarFighter() {
+    auto fighter = std::make_shared<Fighter>();
+
+    return fighter;
 }
 
-void SpaceScene::createStarship5() const {
+Ogre::SceneNode* Environment::createStarship() const {
     auto* entity = m_sceneManager->createEntity("StarShipEntity", "assets/starships/starship5/starship.fbx");
     entity->getMesh()->buildTangentVectors();
     entity->setMaterialName("StarShip5_RTSS");
 
-    auto* node = m_rootNode->createChildSceneNode("StarShipNode");
+    auto* node = m_sceneManager->createSceneNode("StarShipNode");
     node->scale(1.5, 1.5, 1.5);
     node->rotate(Ogre::Vector3::UNIT_X, Ogre::Degree(-90));
     node->translate(0, 0, -800);
     node->attachObject(entity);
+
+    return node;
 }
 
-void SpaceScene::createAsteroids() const {
+Ogre::SceneNode* Environment::createAsteroids() const {
     constexpr float density = 10000;
 
     struct AsteroidRegion {
@@ -120,7 +84,7 @@ void SpaceScene::createAsteroids() const {
 
     using utils_rand = core::utils::rand;
 
-    auto* asteroidsNode = m_rootNode->createChildSceneNode("Asteroids");
+    auto* asteroidsNode = m_sceneManager->createSceneNode("Asteroids");
 
     std::vector<std::string> meshes = {
         "asteroid1.fbx", "asteroid2.fbx", "asteroid3.fbx", "asteroid4.fbx", "asteroid5.fbx",
@@ -152,7 +116,7 @@ void SpaceScene::createAsteroids() const {
             asteroidNode->attachObject(entity);
 
             // collider
-            auto shape = m_physics->tools()->getConvexHull(entity->getMesh());
+            auto shape = m_scene->physics()->tools()->getConvexHull(entity->getMesh());
             shape.shapePtr()->setLocalScaling(btVector3(scale, scale, scale));
 
             auto* collider = m_sceneManager->createCollider();
@@ -185,35 +149,24 @@ void SpaceScene::createAsteroids() const {
             asteroidNode->setPosition(Ogre::Vector3(x, y, z) + region.position);
         }
     }
+
+    return asteroidsNode;
 }
 
-void SpaceScene::createEarth() const {
-    // planet
+Ogre::SceneNode* Environment::createEarth() const {
     auto* earthEntity = m_sceneManager->createEntity("EarthEntity", "assets/earth/earth.fbx");
     earthEntity->getSubEntities()[0]->setMaterialName("EarthPlanet_RTSS");
     earthEntity->getSubEntities()[1]->setMaterialName("EarthClouds_RTSS");
     earthEntity->getSubEntities()[2]->setMaterialName("EarthAtmosphere_RTSS");
 
-    auto* earthNode = m_rootNode->createChildSceneNode("EarthNode");
-
+    auto* earthNode = m_sceneManager->createSceneNode("EarthNode");
     earthNode->attachObject(earthEntity);
     earthNode->setPosition(Ogre::Vector3(0, -3000, 0));
     earthNode->setScale(25, 25, 25);
     earthNode->rotate(Ogre::Vector3(0, 1, 0), Ogre::Radian(90));
     earthNode->rotate(Ogre::Vector3(1, 0, 0), Ogre::Radian(-170));
-}
 
-void SpaceScene::update(float dt) {
-    Scene::update(dt);
-
-    if(core::Game::input()->isKeyPressed(core::Key::ESCAPE)) {
-        core::Game::instance().stop();
-    }
-    if(core::Game::input()->space()) {
-        core::Game::windowManager()->relativeMouseEnabled(
-            !core::Game::windowManager()->relativeMouseEnabled()
-        );
-    }
+    return earthNode;
 }
 
 } // end namespace game

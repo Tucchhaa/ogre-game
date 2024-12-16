@@ -6,7 +6,7 @@
 #include "core/objects/transform.hpp"
 #include "game/galactic_wars_game.hpp"
 #include "game/objects/star_fighter_controller.hpp"
-#include "game/scenes/space_scene.hpp"
+#include "game/scenes/space_scene/scene.hpp"
 #include "game/ui/fighter_indicators.hpp"
 
 namespace game {
@@ -103,8 +103,7 @@ void Fighter::fixedUpdate(float dt) {
         m_lastPrimaryReloadTimestamp = now;
     }
 
-    auto indicators = std::static_pointer_cast<SpaceScene>(core::Game::scene())->fighterIndicators();
-    indicators->updateAmmoIndicators(m_ammo, m_maxAmmo);
+    m_indicators->updateAmmoIndicators(m_ammo, m_maxAmmo);
 }
 
 } // game

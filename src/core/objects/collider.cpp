@@ -15,9 +15,6 @@ void Collider::sceneInited() {
 }
 
 void Collider::fixedUpdate(float dt) {
-    if (getCustomNode()->getName().find("StarFighterNode_") != string::npos) {
-        int a = 7;
-    }
     auto rigidbodyTransform = getRigidbodyTransform();
 
     transformState()->setValues(

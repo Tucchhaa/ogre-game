@@ -15,6 +15,7 @@ class CustomSceneNode;
 }
 
 namespace game {
+class Starship;
 class Fighter;
 
 class SpaceScene;
@@ -31,15 +32,19 @@ public:
 
     std::shared_ptr<Fighter> createStarFighter();
 
-    Ogre::SceneNode* createStarship() const;
+    std::shared_ptr<Starship> createRedStarship() const;
 
-    Ogre::SceneNode* createAsteroids() const;
+    std::shared_ptr<Starship> createBlueStarship() const;
 
-    Ogre::SceneNode* createEarth() const;
+    core::CustomSceneNode* createAsteroids() const;
+
+    core::CustomSceneNode* createEarth() const;
 
 private:
     SpaceScene* m_scene;
     core::CustomSceneManager* m_sceneManager = nullptr;
+
+    std::shared_ptr<Starship> createStarship(const std::string& prefix) const;
 };
 
 } // namespace game

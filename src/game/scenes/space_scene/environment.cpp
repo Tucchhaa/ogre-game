@@ -5,6 +5,7 @@
 #include "core/objects/collider.hpp"
 #include "core/physics/tools.hpp"
 #include "game/galactic_wars_game.hpp"
+#include "game/objects/starship.hpp"
 #include "game/objects/star_fighters/fighter.hpp"
 
 namespace game {
@@ -35,7 +36,7 @@ Ogre::SceneNode* Environment::createLight() const {
     lightNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
     lightNode->attachObject(light);
 
-    m_sceneManager->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+    m_sceneManager->setAmbientLight(Ogre::ColourValue(0.2, 0.2, 0.2));
 
     return lightNode;
 }
@@ -57,21 +58,25 @@ std::shared_ptr<Fighter> Environment::createStarFighter() {
     return fighter;
 }
 
-Ogre::SceneNode* Environment::createStarship() const {
-    auto* entity = m_sceneManager->createEntity("StarShipEntity", "assets/starships/starship5/starship.fbx");
-    entity->getMesh()->buildTangentVectors();
-    entity->setMaterialName("StarShip5_RTSS");
+std::shared_ptr<Starship> Environment::createRedStarship() const {
+    auto starship = createStarship("Red");
 
-    auto* node = m_sceneManager->createSceneNode("StarShipNode");
-    node->scale(1.5, 1.5, 1.5);
-    node->rotate(Ogre::Vector3::UNIT_X, Ogre::Degree(-90));
-    node->translate(0, 0, -800);
-    node->attachObject(entity);
+    starship->node()->translate(0, 0, -2000);
+    starship->node()->rotate(Ogre::Vector3::UNIT_X, Ogre::Degree(-90));
 
-    return node;
+    return starship;
 }
 
-Ogre::SceneNode* Environment::createAsteroids() const {
+std::shared_ptr<Starship> Environment::createBlueStarship() const {
+    auto starship = createStarship("Blue");
+
+    starship->node()->translate(0, 0, 2000);
+    starship->node()->rotate(Ogre::Vector3::UNIT_X, Ogre::Degree(90));
+
+    return starship;
+}
+
+core::CustomSceneNode* Environment::createAsteroids() const {
     constexpr float density = 10000;
 
     struct AsteroidRegion {
@@ -93,7 +98,7 @@ Ogre::SceneNode* Environment::createAsteroids() const {
     const std::string path = "assets/asteroids/";
 
     std::vector<AsteroidRegion> regions = {
-        { Ogre::Vector3(0, 0, 0), 100, 10, 0.01, 0.05 }
+        { Ogre::Vector3(0, 0, -800), 2000, 200, 0.01, 0.2 }
     };
 
     for (int i=0; i < regions.size(); i++) {
@@ -150,10 +155,10 @@ Ogre::SceneNode* Environment::createAsteroids() const {
         }
     }
 
-    return asteroidsNode;
+    return static_cast<core::CustomSceneNode*>(asteroidsNode);
 }
 
-Ogre::SceneNode* Environment::createEarth() const {
+core::CustomSceneNode* Environment::createEarth() const {
     auto* earthEntity = m_sceneManager->createEntity("EarthEntity", "assets/earth/earth.fbx");
     earthEntity->getSubEntities()[0]->setMaterialName("EarthPlanet_RTSS");
     earthEntity->getSubEntities()[1]->setMaterialName("EarthClouds_RTSS");
@@ -161,12 +166,27 @@ Ogre::SceneNode* Environment::createEarth() const {
 
     auto* earthNode = m_sceneManager->createSceneNode("EarthNode");
     earthNode->attachObject(earthEntity);
-    earthNode->setPosition(Ogre::Vector3(0, -3000, 0));
-    earthNode->setScale(25, 25, 25);
+    earthNode->setPosition(Ogre::Vector3(0, -8000, 0));
+    earthNode->setScale(50, 50, 50);
     earthNode->rotate(Ogre::Vector3(0, 1, 0), Ogre::Radian(90));
     earthNode->rotate(Ogre::Vector3(1, 0, 0), Ogre::Radian(-170));
 
-    return earthNode;
+    return static_cast<core::CustomSceneNode*>(earthNode);
+}
+
+std::shared_ptr<Starship> Environment::createStarship(const std::string& prefix) const {
+    auto* entity = m_sceneManager->createEntity(prefix+"StarShipEntity", "assets/starships/starship5/starship.fbx");
+    entity->getMesh()->buildTangentVectors();
+    entity->setMaterialName("StarShip5_RTSS");
+
+    auto node = m_scene->root()->createChildSceneNode(prefix+"StarShipNode");
+    node->scale(1.5, 1.5, 1.5);
+
+    node->attachObject(entity);
+
+    auto starship = std::make_shared<Starship>(node);
+
+    return starship;
 }
 
 } // end namespace game

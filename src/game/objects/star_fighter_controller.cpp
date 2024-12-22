@@ -72,9 +72,9 @@ void StarFighterController::moveAim(float dt) {
     if (dot < 0.0f) {
         targetQuat = -targetQuat;
     }
-    if (dot >= 0.9999f) {
-        return;
-    }
+    // if (dot >= 0.9999f) {
+    //     return;
+    // }
 
     const auto deltaQuat = (targetQuat * currentQuat.inverse()).normalize();
 
@@ -87,7 +87,6 @@ void StarFighterController::moveAim(float dt) {
 void StarFighterController::moveShip(float dt) {
     const auto input = core::Game::input();
 
-    // velocity
     const float z = input->deltaY();
     m_speed = core::utils::clamp(m_speed + z * m_acceleration, m_minSpeed, m_maxSpeed);
 

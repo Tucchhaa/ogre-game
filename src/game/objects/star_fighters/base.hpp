@@ -19,7 +19,9 @@ public:
 
     explicit BaseStarFighter(const std::string &model);
 
-    std::shared_ptr<FighterIndicators> indicators() { return m_indicators; }
+    std::shared_ptr<FighterIndicators> indicators() const { return m_indicators; }
+
+    core::CustomSceneNode* node() const { return m_node; }
 
 protected:
     const int ID;

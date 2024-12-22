@@ -72,7 +72,7 @@ overlay FighterIndicators
 
         overlay_element PrimaryAmmo_Text TextArea
         {
-            width 0.02
+            width 0.025
             height 0.025
             top 0.008
             left 0.003
@@ -86,7 +86,7 @@ overlay FighterIndicators
             width 0.02
             height 0.025
             top 0.008
-            left 0.0225
+            left 0.0275
             colour 1.0 1.0 1.0
             char_height 0.025
             font_name Tomorrow/SemiBold

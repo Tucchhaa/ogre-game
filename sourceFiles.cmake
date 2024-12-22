@@ -80,13 +80,13 @@ set(GAME_SOURCE_FILES
 
     src/game/scenes/space_scene/scene.cpp
     src/game/scenes/space_scene/scene.hpp
-    src/game/scenes/space_scene/loop.cpp
-    src/game/scenes/space_scene/loop.hpp
     src/game/scenes/space_scene/environment.cpp
     src/game/scenes/space_scene/environment.hpp
 
     src/game/objects/star_fighter_controller.cpp
     src/game/objects/star_fighter_controller.hpp
+    src/game/objects/starship.cpp
+    src/game/objects/starship.hpp
 
     src/game/objects/star_fighters/base.cpp
     src/game/objects/star_fighters/base.hpp

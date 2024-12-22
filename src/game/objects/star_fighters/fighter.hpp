@@ -21,17 +21,22 @@ private:
         core::CustomSceneNode* node;
         core::Collider* collider;
     };
-    std::vector<BulletInfo> m_bullets;
-    const Ogre::Vector3 m_shootingPos1 = Ogre::Vector3(0, 0, -10);
-    const Ogre::Vector3 m_shootingPos2 = Ogre::Vector3::ZERO;
-    const Ogre::Vector3 m_shootingPos3 = Ogre::Vector3::ZERO;
-    const Ogre::Vector3 m_shootingPos4 = Ogre::Vector3::ZERO;
 
-    const int m_maxAmmo = 50;
-    const float m_bulletSpeed = 500;
+    std::vector<BulletInfo> m_bullets;
+
+    const std::vector<Ogre::Vector3> m_shootingPositions = {
+        Ogre::Vector3(-7, 0, -8),
+        Ogre::Vector3(7, 0, -8),
+        Ogre::Vector3(-1, -1, -15),
+        Ogre::Vector3(1, -1, -15)
+    };
+
+    const int m_ammoPerShoot = m_shootingPositions.size();
+    const int m_maxAmmo = 400;
+    const float m_bulletSpeed = 1000;
     const float m_bulletMass = 0.000001;
     const int m_delayPerShoot = 100;
-    const int m_delayPerReload = 200;
+    const int m_delayPerReload = 100;
 
     int m_bulletIndex = 0;
     int m_ammo = m_maxAmmo;

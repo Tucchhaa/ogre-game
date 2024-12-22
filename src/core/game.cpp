@@ -93,7 +93,7 @@ void Game::setScene(const std::shared_ptr<Scene>& scene) {
     GameEventListener::callSceneInited();
     m_scene->start();
 
-    if (m_gameLoopThread->type() == GameLoopThread::GameLoopType::SinglePlayer) {
+    if (m_gameLoopThread && m_gameLoopThread->type() == GameLoopThread::GameLoopType::SinglePlayer) {
         m_gameLoopThread->start();
     }
 

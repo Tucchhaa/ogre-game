@@ -35,7 +35,7 @@ public:
 private:
     const float m_minSpeed = 0;
     // const float m_minSpeed = 1000.0;
-    const float m_maxSpeed = 10000.0;
+    const float m_maxSpeed = 12000.0;
     std::atomic<float> m_speed = m_minSpeed;
 
     const float m_acceleration = 100;
@@ -62,7 +62,7 @@ private:
 
     void moveShip(float dt);
 
-    void moveCamera();
+    void moveCamera() const;
 };
 
 class StarFighterControllerFactory : public Ogre::MovableObjectFactory {

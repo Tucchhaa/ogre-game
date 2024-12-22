@@ -77,11 +77,16 @@ set(GAME_SOURCE_FILES
     src/game/scenes/menu_scene.hpp
     src/game/scenes/demo_scene.cpp
     src/game/scenes/demo_scene.hpp
-    src/game/scenes/space_scene.cpp
-    src/game/scenes/space_scene.hpp
+
+    src/game/scenes/space_scene/scene.cpp
+    src/game/scenes/space_scene/scene.hpp
+    src/game/scenes/space_scene/environment.cpp
+    src/game/scenes/space_scene/environment.hpp
 
     src/game/objects/star_fighter_controller.cpp
     src/game/objects/star_fighter_controller.hpp
+    src/game/objects/starship.cpp
+    src/game/objects/starship.hpp
 
     src/game/objects/star_fighters/base.cpp
     src/game/objects/star_fighters/base.hpp

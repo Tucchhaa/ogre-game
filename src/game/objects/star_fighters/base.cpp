@@ -7,6 +7,7 @@
 #include "core/physics/tools.hpp"
 #include "game/galactic_wars_game.hpp"
 #include "game/objects/star_fighter_controller.hpp"
+#include "game/ui/fighter_indicators.hpp"
 
 namespace game {
 
@@ -32,6 +33,8 @@ BaseStarFighter::BaseStarFighter(const std::string& model): ID(generateID()) {
         sceneManager->createMovableObject("StarFighterController")
     );
     m_controller->setCollider(collider);
+
+    m_indicators = std::make_shared<FighterIndicators>();
 
     m_node->attachObject(m_controller);
 

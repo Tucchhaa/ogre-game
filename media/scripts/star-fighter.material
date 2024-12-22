@@ -6,7 +6,7 @@ material StarFighter_RTSS
     {
         pass : PbrEmissivePass
         {
-            set $diffuse_texture "assets/star_fighters/textures/StarFighter_Black.png"
+            set $diffuse_texture "assets/star_fighters/textures/StarFighter_Red.png"
             set $emission_texture "assets/star_fighters/textures/StarFighter_Emission.png"
             set $normal_texture "assets/star_fighters/textures/StarFighter_Normal.png"
             set $metalRoughness_texture "assets/star_fighters/textures/StarFighter_MetalRoughness.png"

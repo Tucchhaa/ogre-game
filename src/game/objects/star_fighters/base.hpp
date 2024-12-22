@@ -10,6 +10,7 @@ class CustomSceneNode;
 
 namespace game {
 
+class FighterIndicators;
 class StarFighterController;
 
 class BaseStarFighter : core::GameEventListener {
@@ -18,12 +19,17 @@ public:
 
     explicit BaseStarFighter(const std::string &model);
 
+    std::shared_ptr<FighterIndicators> indicators() const { return m_indicators; }
+
+    core::CustomSceneNode* node() const { return m_node; }
+
 protected:
     const int ID;
     core::CustomSceneNode* m_wrapperNode;
     core::CustomSceneNode* m_node;
 
     StarFighterController* m_controller;
+    std::shared_ptr<FighterIndicators> m_indicators;
 
     virtual void primaryAttack(float dt) = 0;
 

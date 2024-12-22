@@ -10,9 +10,9 @@ int main()
     // game.debugMode(true);
     game.configure();
     game.init();
-    // game.startMenuScene();
+    game.startMenuScene();
     // game.startDemoScene();
-    game.startSpaceScene();
+    // game.startSpaceScene();
 
     return 0;
 }

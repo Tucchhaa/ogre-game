@@ -12,6 +12,7 @@ enum class Key {
     A = SDLK_a,
     S = SDLK_s,
     D = SDLK_d,
+    G = SDLK_g,
     SHIFT = SDLK_LSHIFT,
     ESCAPE = SDLK_ESCAPE,
     SPACE = SDLK_SPACE,

@@ -78,6 +78,12 @@ void SpaceScene::update(float dt) {
         );
     }
 
+    if (core::Game::input()->isKeyDown(core::Key::G)) {
+        core::Game::instance().debugMode(
+            !core::Game::debugMode()
+        );
+    }
+
     m_earth->setPosition(m_fighter->node()->getPosition() + m_earthDelta);
     m_earth->transform()->resetState();
 }

@@ -28,6 +28,8 @@ void Transform::updateNodeTransform() const {
 
     node->setPosition(position);
     node->setOrientation(rotation);
+
+    node->_update(true, true);
 }
 
 } // end namespace core

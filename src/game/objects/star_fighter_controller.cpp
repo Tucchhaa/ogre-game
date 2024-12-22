@@ -98,7 +98,7 @@ void StarFighterController::moveShip(float dt) {
     m_velocity += velocity;
 }
 
-void StarFighterController::moveCamera() {
+void StarFighterController::moveCamera() const {
     const auto* node = getCustomNode();
 
     const auto t = (m_speed - m_minSpeed) / (m_maxSpeed - m_minSpeed);

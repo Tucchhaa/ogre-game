@@ -1,5 +1,8 @@
 # Game project
 
+## Demo
+https://www.youtube.com/watch?v=hugO41AU3YA
+
 ## Dependencies
 
 - ogre 14.2.2
